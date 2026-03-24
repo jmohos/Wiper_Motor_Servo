@@ -1000,6 +1000,177 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector_Generic:Conn_01x03"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x03"
+				(at 0 -5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Conn_01x03_1_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector_Generic:Conn_01x04"
 			(pin_names
 				(offset 1.016)
@@ -6823,6 +6994,18 @@
 		(uuid 48875a38-0d4b-408e-a244-0eb63115fad7)
 	)
 	(rectangle
+		(start 149.86 53.975)
+		(end 179.07 92.71)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 5fa287d6-e286-44ef-b875-8d37502bc441)
+	)
+	(rectangle
 		(start 208.915 19.05)
 		(end 281.94 151.13)
 		(stroke
@@ -6929,6 +7112,26 @@
 			(justify left top)
 		)
 		(uuid "38dff84f-f322-41fd-adcd-1ae877fbf55e")
+	)
+	(text_box "TODO: ADD 8 chan level shifter for servos and motor PWMs."
+		(exclude_from_sim no)
+		(at 152.4 86.36 0)
+		(size 22.86 6.35)
+		(margins 0.9525 0.9525 0.9525 0.9525)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "44bd7f60-4ade-4886-885a-97b10d63caa0")
 	)
 	(text_box "Isolated RS485 Section.\nIsolated power rails.\nOptoisolated diff bus."
 		(exclude_from_sim no)
@@ -7425,10 +7628,6 @@
 		(uuid "35ea11c4-a910-4b40-8218-e8e765b14bcc")
 	)
 	(no_connect
-		(at 77.47 106.68)
-		(uuid "49a7ca6e-439f-41b4-9959-d135c8b56a57")
-	)
-	(no_connect
 		(at 203.2 92.71)
 		(uuid "51efac0a-fbcb-4108-8171-d1c89596af6e")
 	)
@@ -7455,10 +7654,6 @@
 	(no_connect
 		(at 218.44 95.25)
 		(uuid "920d0cf7-eff9-411f-9274-c4ebd60a018c")
-	)
-	(no_connect
-		(at 77.47 109.22)
-		(uuid "9c115119-f901-4229-8aa4-f07db163731c")
 	)
 	(no_connect
 		(at 214.63 59.69)
@@ -7512,6 +7707,16 @@
 	)
 	(wire
 		(pts
+			(xy 162.56 68.58) (xy 162.56 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "06d98e0e-1134-43cd-b698-2a6984e68bfa")
+	)
+	(wire
+		(pts
 			(xy 49.53 54.61) (xy 49.53 53.34)
 		)
 		(stroke
@@ -7549,6 +7754,16 @@
 			(type default)
 		)
 		(uuid "0b41632f-fe90-4be0-b7c9-d5082c2cce11")
+	)
+	(wire
+		(pts
+			(xy 162.56 62.23) (xy 161.29 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "10dc24f1-bd8e-4bfd-b8ec-68c8d9f3ba84")
 	)
 	(wire
 		(pts
@@ -7609,6 +7824,16 @@
 			(type default)
 		)
 		(uuid "165cfe5c-90d7-42be-9bce-a60d91a1c121")
+	)
+	(wire
+		(pts
+			(xy 161.29 64.77) (xy 162.56 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "18b39ecf-3340-4a52-aefc-b0c9ee0cbd02")
 	)
 	(wire
 		(pts
@@ -8522,6 +8747,16 @@
 	)
 	(wire
 		(pts
+			(xy 161.29 82.55) (xy 162.56 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7d4f744e-a65a-48a8-9f99-d86ab4c04290")
+	)
+	(wire
+		(pts
 			(xy 214.63 67.31) (xy 222.25 67.31)
 		)
 		(stroke
@@ -8679,6 +8914,16 @@
 			(type default)
 		)
 		(uuid "8a8ba64a-822f-4b30-b1a4-5b5386536ad0")
+	)
+	(wire
+		(pts
+			(xy 161.29 68.58) (xy 162.56 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8e5a82b3-ce7c-469e-bb94-50d5d536fe17")
 	)
 	(wire
 		(pts
@@ -9172,6 +9417,16 @@
 	)
 	(wire
 		(pts
+			(xy 162.56 82.55) (xy 162.56 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c52273c2-c875-480c-845d-0b1ab961323a")
+	)
+	(wire
+		(pts
 			(xy 41.91 162.56) (xy 40.64 162.56)
 		)
 		(stroke
@@ -9262,6 +9517,16 @@
 	)
 	(wire
 		(pts
+			(xy 162.56 76.2) (xy 161.29 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cff8bcfe-a6b3-40f9-88dc-f61391300a93")
+	)
+	(wire
+		(pts
 			(xy 27.94 173.99) (xy 26.67 173.99)
 		)
 		(stroke
@@ -9289,6 +9554,16 @@
 			(type default)
 		)
 		(uuid "d47e784c-8181-487e-9112-9c450a8ba36a")
+	)
+	(wire
+		(pts
+			(xy 161.29 78.74) (xy 162.56 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d553fe7a-23fd-4363-b13f-c5729a1bab18")
 	)
 	(wire
 		(pts
@@ -9810,6 +10085,26 @@
 		)
 		(uuid "3036b9fc-9235-490f-a174-93f67191759e")
 	)
+	(label "SERVO_0"
+		(at 77.47 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "336588f3-60c9-4a78-b8e7-0a008cef1b2f")
+	)
+	(label "SERVO_1"
+		(at 77.47 109.22 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3f4071b1-8fab-413d-8e74-dfe3048d04bf")
+	)
 	(label "UI_ENC_A"
 		(at 31.75 109.22 180)
 		(effects
@@ -9850,6 +10145,16 @@
 		)
 		(uuid "68735ec4-be26-4d70-91ba-d71606b1610e")
 	)
+	(label "SERVO_0"
+		(at 161.29 68.58 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6a04ee52-e4ff-4143-98ad-8b180536a087")
+	)
 	(label "UI_ENC_B"
 		(at 132.08 110.49 180)
 		(effects
@@ -9889,6 +10194,16 @@
 			(justify right bottom)
 		)
 		(uuid "791475b2-f16e-4101-9aac-083654eeb866")
+	)
+	(label "SERVO_1"
+		(at 161.29 82.55 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7bb77a75-053c-4efc-9313-894023bdf09b")
 	)
 	(label "RS485_DE_TTL"
 		(at 194.31 100.33 180)
@@ -11338,6 +11653,79 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 167.64 64.77 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "17a0b2b9-4bd9-417c-a6c9-7956574204f4")
+		(property "Reference" "J1"
+			(at 170.18 63.4999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Servo1"
+			(at 170.18 66.0399 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 167.64 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 167.64 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 167.64 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "f72fbe23-78bf-449d-a437-178df0104ba0")
+		)
+		(pin "1"
+			(uuid "409a49c3-bfe5-4705-a7ce-3eb469c6024e")
+		)
+		(pin "3"
+			(uuid "fd45dd6c-7de3-4988-8666-d078baf84168")
+		)
+		(instances
+			(project ""
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 118.11 30.48 0)
 		(unit 1)
@@ -11464,6 +11852,73 @@
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
 					(reference "H2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_SparkFun-PowerSymbol:GND")
+		(at 161.29 64.77 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1da714d9-e8b7-4f83-b2d5-9f39483c6fd7")
+		(property "Reference" "#PWR015"
+			(at 154.94 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 157.48 64.77 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 161.29 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 161.29 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 152.4 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "70b9b3aa-fa41-4abc-9771-5e4526475042")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "#PWR015")
 					(unit 1)
 				)
 			)
@@ -12503,6 +12958,73 @@
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
 					(reference "#PWR083")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_SparkFun-PowerSymbol:GND")
+		(at 161.29 78.74 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "33800c38-24a5-4fe9-8eb3-0b841f63cf54")
+		(property "Reference" "#PWR028"
+			(at 154.94 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 157.48 78.74 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 161.29 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 161.29 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 152.4 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0937ac56-7235-47d5-9cc4-cba3740a6d6f")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "#PWR028")
 					(unit 1)
 				)
 			)
@@ -14628,6 +15150,73 @@
 		)
 	)
 	(symbol
+		(lib_id "PCM_SparkFun-PowerSymbol:5V")
+		(at 161.29 76.2 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "795b5ca0-2d29-4f9e-a78e-8b0c566ac459")
+		(property "Reference" "#PWR016"
+			(at 161.29 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "5V"
+			(at 161.29 72.39 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 161.29 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 161.29 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"5V\""
+			(at 161.29 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e582bc66-4248-4312-b194-0b5a8db8700c")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "#PWR016")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "PCM_SparkFun-PowerSymbol:GND")
 		(at 90.17 39.37 0)
 		(unit 1)
@@ -15284,6 +15873,79 @@
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
 					(reference "#PWR031")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 167.64 78.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "90cf0c36-66cd-4daf-908b-6d78a64946ac")
+		(property "Reference" "J8"
+			(at 170.18 77.4699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Servo2"
+			(at 170.18 80.0099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 167.64 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 167.64 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 167.64 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "3d618c94-7d61-43d6-9d93-3e947fcbc915")
+		)
+		(pin "1"
+			(uuid "6dab552c-cbff-4fd9-bfa6-4442720439aa")
+		)
+		(pin "3"
+			(uuid "24e2e4bd-9e0b-4911-ac74-f507a0edbacc")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "J8")
 					(unit 1)
 				)
 			)
@@ -17738,6 +18400,73 @@
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
 					(reference "#PWR023")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_SparkFun-PowerSymbol:5V")
+		(at 161.29 62.23 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d25e2805-6d7d-4d41-8e4c-ba81777c5b45")
+		(property "Reference" "#PWR04"
+			(at 161.29 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "5V"
+			(at 161.29 58.42 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 161.29 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 161.29 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"5V\""
+			(at 161.29 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4fed8766-4595-4477-bd28-91e60432b73d")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "#PWR04")
 					(unit 1)
 				)
 			)
