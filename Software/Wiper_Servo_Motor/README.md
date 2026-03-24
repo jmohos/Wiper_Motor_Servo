@@ -33,6 +33,7 @@ Closed-loop brushless windshield wiper motor controller running on a Raspberry P
 | SPI monochrome OLED | 1 | 1.3" display (SSD1306/SH1106 or compatible) |
 | Rotary encoder with pushbutton | 1 | Integrated on OLED board |
 | RS485 transceiver | 1 | SN75176 / MAX485 or equivalent, for DMX512 |
+| RC servo (optional) | 0–2 | Standard 50 Hz PWM servo on GPIO26/27 |
 
 ### Pin Assignment
 
@@ -94,6 +95,15 @@ Both sensors share the AS5600 address (0x36) — isolation is achieved by placin
 | DC | 20 | Data/Command select |
 | CS | 21 | Chip select (active-low) |
 | RST | 22 | Reset (active-low; tie HIGH if unused) |
+
+#### RC Servo Outputs (optional)
+
+Standard 50 Hz PWM, 1–2 ms pulse width (0–180°). Uses the arduino-pico `Servo` library — **not** `analogWrite()` — so the motor PWM slices are not affected.
+
+| Signal | GPIO | PWM Slice | Notes |
+|--------|------|-----------|-------|
+| Servo 0 | 26 | Slice 5A | Commanded via `servo 0 <angle>` |
+| Servo 1 | 27 | Slice 5B | Commanded via `servo 1 <angle>` |
 
 #### Miscellaneous
 
@@ -459,6 +469,14 @@ Connect at 115200 baud. Commands are case-insensitive. Press Enter to send.
 | `save` | Write all motor settings and calibration to flash |
 | `load` | Reload settings from flash, discarding unsaved RAM changes (applied to all motors) |
 | `defaults` | Apply factory defaults in RAM for all motors (follow with `save` to persist) |
+
+### RC Servo Commands
+
+`s` = servo index (0 or 1).
+
+| Command | Description |
+|---------|-------------|
+| `servo <s> <angle>` | Move servo s to angle (0–180°) |
 
 ### Data Logger Commands
 

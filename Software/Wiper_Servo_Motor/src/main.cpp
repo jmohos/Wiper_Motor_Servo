@@ -46,7 +46,8 @@
     pki <m> <n>        Position PID Ki (also resets integrator)
     pkd <m> <n>        Position PID Kd
     zero <m>           Set current position as mechanical zero (RAM only)
-    servo <s> <n>      RC servo s (0 or 1) — angle 0–180°
+    servo  <s> <n>     RC servo s (0 or 1) — target angle 0–180°
+    servor <s> <n>     RC servo s ramp rate in deg/s (default 90)
     freeze             Stop logging, coast all motors, dump CSV to console
     resume             Clear buffer, restart logging
     save               Write motor 0 settings/cal to non-volatile flash
@@ -66,9 +67,14 @@
 #include "DataLogger.h"
 #include "Settings.h"
 #include <Servo.h>
+#include "Display.h"
 
-// RC servo instances — attached in setup(); commanded via "servo <idx> <angle>"
+// RC servo instances — attached in setup(); driven by controlLoop() ramp.
 static Servo g_servo[NUM_SERVOS];
+// Per-servo ramp state — written by Core 0 controlLoop(), read by Core 1 display.
+static volatile float g_servoTarget  [NUM_SERVOS] = {90.0f, 90.0f}; // commanded target (deg)
+static volatile float g_servoActual  [NUM_SERVOS] = {90.0f, 90.0f}; // current ramped output (deg)
+static volatile float g_servoRampRate[NUM_SERVOS] = {90.0f, 90.0f}; // ramp rate (deg/s)
 
 // One encoder instance per I2C bus — both sensors share address 0x36 but
 // are isolated on separate buses so they coexist without conflict.
@@ -166,6 +172,13 @@ void loop1() {
     if (now - lastPrintMs >= 500) {
         lastPrintMs = now;
 
+        // Build display state from the same volatile snapshot.
+        DisplayState ds;
+        for (uint8_t si = 0; si < NUM_SERVOS; si++) {
+            ds.servoActual[si] = (int)roundf(g_servoActual[si]);
+            ds.servoTarget[si] = (int)roundf(g_servoTarget[si]);
+        }
+
         for (uint8_t m = 0; m < NUM_MOTORS; m++) {
             // Snapshot all volatiles for a consistent frame.
             ControlMode mode    = g_mode[m];
@@ -180,6 +193,16 @@ void loop1() {
             float       pidOut  = g_pidOutput[m];
             float       posErr  = g_posError[m];
             int16_t     duty    = MotorPWM::rawDuty[m];
+
+            // Populate display state for this motor.
+            ds.mode[m]         = (uint8_t)mode;
+            ds.measVel[m]      = measVel;
+            ds.measPosAbs[m]   = absPos;
+            ds.targetVel[m]    = tgtVel;
+            ds.commandedVel[m] = cmdVel;
+            ds.targetPos[m]    = tgtPos;
+            ds.posError[m]     = posErr;
+            ds.duty[m]         = duty;
 
             Serial.print("M"); Serial.print(m);
 
@@ -204,6 +227,7 @@ void loop1() {
             Serial.print("  PID:"); Serial.print(pidOut, 1);
             Serial.print("  Duty:"); Serial.println(duty);
         }
+        Display::update(ds);
     }
 
     delay(100);
@@ -231,6 +255,7 @@ void setup() {
     const uint8_t servoPins[NUM_SERVOS] = { SERVO_0_PIN, SERVO_1_PIN };
     for (uint8_t i = 0; i < NUM_SERVOS; i++) g_servo[i].attach(servoPins[i]);
 
+    Display::begin();
     DataLogger::begin();
     Settings::begin();
     applySettings();
@@ -432,6 +457,19 @@ static void controlLoop(uint32_t now) {
                                logSetpoint, meas, logError,
                                pidOut, rawAngle, MotorPWM::rawDuty[0]);
         }
+    }
+
+    // --- RC servo ramp (both servos, same 50 Hz tick) ---
+    for (uint8_t s = 0; s < NUM_SERVOS; s++) {
+        float target = g_servoTarget[s];
+        float actual = g_servoActual[s];
+        float diff   = target - actual;
+        float step   = g_servoRampRate[s] * dt;
+        if (fabsf(diff) <= step) actual = target;
+        else                     actual += (diff > 0.0f) ? step : -step;
+        actual = constrain(actual, 0.0f, 180.0f);
+        g_servoActual[s] = actual;
+        g_servo[s].write((int)roundf(actual));
     }
 }
 
@@ -767,6 +805,23 @@ static void processCommand(const String& raw) {
         Serial.print("[M"); Serial.print(m); Serial.print(" VEL] kd="); Serial.println(g_velPid[m].kd, 4);
         return;
 
+    // ---- RC servo ramp rate ------------------------------------------
+    } else if (cmd.startsWith("servor ") || cmd.startsWith("SERVOR ")) {
+        String args = cmd.substring(7);
+        args.trim();
+        int sp = args.indexOf(' ');
+        if (sp <= 0) { Serial.println("[ERR] Usage: servor <idx> <rate deg/s>"); return; }
+        uint8_t idx  = (uint8_t)args.toInt();
+        float   rate = args.substring(sp + 1).toFloat();
+        if (idx >= NUM_SERVOS) {
+            Serial.print("[ERR] servor: invalid index (0–"); Serial.print(NUM_SERVOS - 1); Serial.println(")");
+            return;
+        }
+        g_servoRampRate[idx] = max(1.0f, rate);
+        Serial.print("[SERVO"); Serial.print(idx); Serial.print("] ramp rate ");
+        Serial.print(g_servoRampRate[idx], 1); Serial.println(" deg/s");
+        return;
+
     // ---- RC servo ----------------------------------------------------
     } else if (cmd.startsWith("servo ") || cmd.startsWith("SERVO ")) {
         String args = cmd.substring(6);
@@ -780,8 +835,9 @@ static void processCommand(const String& raw) {
             return;
         }
         int deg = constrain((int)angle, 0, 180);
-        g_servo[idx].write(deg);
-        Serial.print("[SERVO"); Serial.print(idx); Serial.print("] "); Serial.print(deg); Serial.println(" deg");
+        g_servoTarget[idx] = (float)deg;
+        Serial.print("[SERVO"); Serial.print(idx); Serial.print("] target "); Serial.print(deg);
+        Serial.print(" deg  ramp "); Serial.print(g_servoRampRate[idx], 1); Serial.println(" deg/s");
         return;
 
     // ---- Unknown command ---------------------------------------------
