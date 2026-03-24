@@ -1,0 +1,16 @@
+# KiCad auto-save and lock files
+\#auto_saved_files\#
+~*.lck
+*.lck
+
+# KiCad local/personal preference files (machine-specific, not project-specific)
+*.kicad_prl
+
+# KiCad footprint cache (auto-regenerated)
+fp-info-cache
+
+# PlatformIO build artifacts (also covered by nested .gitignore)
+**/.pio/
+
+# Claude Code local settings (machine-specific)
+**/.claude/settings.local.json

@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Joe_Mohos_Symbols")(type "KiCad")(uri "${KIPRJMOD}/Joe_Custom_Libs/Joe_Mohos_Symbols.kicad_sym")(options "")(descr ""))
+  (lib (name "RFB-0505S")(type "KiCad")(uri "${KIPRJMOD}/RFB-0505S/RFB-0505S.kicad_sym")(options "")(descr ""))
+)
