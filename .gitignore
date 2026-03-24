@@ -1,3 +1,6 @@
+# KiCad backups folder
+**/backups/
+
 # KiCad auto-save and lock files
 \#auto_saved_files\#
 ~*.lck
