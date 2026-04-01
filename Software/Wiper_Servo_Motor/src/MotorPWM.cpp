@@ -41,7 +41,7 @@ void MotorPWM::setMotorDuty(uint8_t idx, int16_t duty) {
 }
 
 // ---------------------------------------------------------------------------
-// setMotor — DMX-style uint8_t path (manual mode, I2C commands)
+// setMotor — motor-byte uint8_t path (manual mode, I2C commands)
 // Also updates rawDuty so the display is always consistent.
 // ---------------------------------------------------------------------------
 void MotorPWM::setMotor(uint8_t idx, uint8_t speed) {
@@ -81,3 +81,4 @@ void MotorPWM::stopAll() {
         analogWrite(i * 2 + 1, 0);
     }
 }
+

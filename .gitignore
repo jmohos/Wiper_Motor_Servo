@@ -1,5 +1,5 @@
 # KiCad backups folder
-**/backups/
+**/*-backups/
 
 # KiCad auto-save and lock files
 \#auto_saved_files\#

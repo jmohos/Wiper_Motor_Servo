@@ -625,239 +625,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Connector_Audio:XLR3"
-			(pin_names
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "J"
-				(at 0 8.89 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "XLR3"
-				(at 0 6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "XLR Connector, Male or Female, 3 Pins"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "xlr connector"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Jack*XLR*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "XLR3_0_1"
-				(polyline
-					(pts
-						(xy -5.08 0) (xy -4.572 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -3.556 0)
-					(radius 1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0 0)
-					(radius 5.08)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(circle
-					(center 0 -3.556)
-					(radius 1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -5.08) (xy 0 -4.572)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 3.556 0)
-					(radius 1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.08 0) (xy 4.572 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(text "1"
-					(at -3.556 1.778 0)
-					(effects
-						(font
-							(size 1.016 1.016)
-							(bold yes)
-						)
-					)
-				)
-				(text "3"
-					(at 0 -1.778 0)
-					(effects
-						(font
-							(size 1.016 1.016)
-							(bold yes)
-						)
-					)
-				)
-				(text "2"
-					(at 3.556 1.778 0)
-					(effects
-						(font
-							(size 1.016 1.016)
-							(bold yes)
-						)
-					)
-				)
-				(pin passive line
-					(at -7.62 0 0)
-					(length 2.54)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -7.62 90)
-					(length 2.54)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 7.62 0 180)
-					(length 2.54)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Connector_Generic:Conn_01x02"
 			(pin_names
 				(offset 1.016)
@@ -4067,6 +3834,131 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Joe_Mohos_Symbols:+3.3V_ISO"
+			(power)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "+3.3V_ISO"
+				(at 0 3.556 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "+3.3V_ISO_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "+3.3V_ISO_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Joe_Mohos_Symbols:+5V_ISO"
 			(power)
 			(pin_numbers
@@ -7113,26 +7005,6 @@
 		)
 		(uuid "38dff84f-f322-41fd-adcd-1ae877fbf55e")
 	)
-	(text_box "TODO: ADD 8 chan level shifter for servos and motor PWMs."
-		(exclude_from_sim no)
-		(at 152.4 86.36 0)
-		(size 22.86 6.35)
-		(margins 0.9525 0.9525 0.9525 0.9525)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill
-			(type none)
-		)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left top)
-		)
-		(uuid "44bd7f60-4ade-4886-885a-97b10d63caa0")
-	)
 	(text_box "Isolated RS485 Section.\nIsolated power rails.\nOptoisolated diff bus."
 		(exclude_from_sim no)
 		(at 225.425 142.24 0)
@@ -7254,12 +7126,6 @@
 		(uuid "f6c95490-dd51-4d04-9bf5-273c8800324a")
 	)
 	(junction
-		(at 250.19 41.91)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "00371893-e071-4d7d-8b8d-d84014010f17")
-	)
-	(junction
 		(at 256.54 50.8)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7272,16 +7138,16 @@
 		(uuid "0cf1e6ce-4d70-403e-bc4d-0afb4ca73029")
 	)
 	(junction
-		(at 243.84 41.91)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0f52b281-cf0c-43a3-8a5c-2443cf5a67df")
-	)
-	(junction
 		(at 100.33 171.45)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "12b9ab5d-bcc9-494c-81f1-c42554bbb91c")
+	)
+	(junction
+		(at 264.16 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "13596f15-38dd-4df1-bfc7-2f2de04b37f3")
 	)
 	(junction
 		(at 49.53 54.61)
@@ -7296,6 +7162,12 @@
 		(uuid "1589d788-a7cd-4444-8d6e-a23772e0a75d")
 	)
 	(junction
+		(at 229.87 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1d7e7be6-fd7c-46b6-943d-039f23c91076")
+	)
+	(junction
 		(at 252.73 87.63)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7308,10 +7180,10 @@
 		(uuid "1f0f875d-afd9-4ae3-911a-e2396eb03510")
 	)
 	(junction
-		(at 160.02 172.72)
+		(at 242.57 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "20235160-091c-4a25-8656-4b6ce5a08441")
+		(uuid "1fbf557d-5c91-4dd3-b4ef-46c9178623ab")
 	)
 	(junction
 		(at 107.95 31.75)
@@ -7332,10 +7204,16 @@
 		(uuid "34f001b1-85c9-4235-b5ea-5be39ebae37c")
 	)
 	(junction
-		(at 228.6 31.75)
+		(at 160.02 172.72)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "366dfe51-8661-4da0-98c9-b61700f5d626")
+		(uuid "36bd6959-d054-48bd-b648-955a4fe60086")
+	)
+	(junction
+		(at 255.27 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3bf17ec1-23b6-4a37-b26f-9922601a9ee6")
 	)
 	(junction
 		(at 104.14 148.59)
@@ -7344,16 +7222,16 @@
 		(uuid "3e198ef3-907a-49b9-9660-e8851eb18ea6")
 	)
 	(junction
-		(at 149.86 180.34)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "427c6451-a5e9-45fb-959f-3f1b629df87c")
-	)
-	(junction
 		(at 36.83 31.75)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4c4d885c-84ec-4da8-81fb-00c16f3c94dd")
+	)
+	(junction
+		(at 157.48 165.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4cfc5f4f-4f47-4bb0-8d4e-7ea2d09344a5")
 	)
 	(junction
 		(at 100.33 161.29)
@@ -7368,16 +7246,28 @@
 		(uuid "502c0841-6928-4bca-917a-78e57dee6140")
 	)
 	(junction
-		(at 256.54 41.91)
+		(at 160.02 167.64)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "5624b935-a4b3-450b-a6eb-d8ecdc123a86")
+		(uuid "5187aca2-ca4f-4640-9bf9-c1018a8d07f3")
 	)
 	(junction
-		(at 250.19 31.75)
+		(at 160.02 177.8)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "5feb5d31-a85c-46d7-9dcc-58fb47f3899e")
+		(uuid "53eb81b5-26a2-40a3-9aa7-ca684b84ca4d")
+	)
+	(junction
+		(at 248.92 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5ddb5e47-8bed-4ccc-a0a2-1d2c163fb191")
+	)
+	(junction
+		(at 242.57 31.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5dea5c89-ba98-4829-9fb4-7680ccc0320f")
 	)
 	(junction
 		(at 201.93 53.34)
@@ -7392,22 +7282,16 @@
 		(uuid "69d68248-6637-42e0-9e6b-b7994e0fb8dc")
 	)
 	(junction
-		(at 160.02 167.64)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6ff4f0a8-ab63-4490-9f3b-46d84547246e")
-	)
-	(junction
-		(at 160.02 162.56)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "702803f3-c548-483e-a399-40bf2e9a761e")
-	)
-	(junction
 		(at 152.4 152.4)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "711627d7-b8e6-4eb5-944d-d61ed1c85d97")
+	)
+	(junction
+		(at 255.27 31.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "723a8b44-7a7c-44b7-b6ae-b3cb16f77fe4")
 	)
 	(junction
 		(at 157.48 152.4)
@@ -7420,6 +7304,18 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "782c1d55-89a6-436a-9ec7-b6c37543cba1")
+	)
+	(junction
+		(at 186.69 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7a4b5620-e0bc-4b38-b31f-a015c4b682c8")
+	)
+	(junction
+		(at 220.98 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7c571429-a8e5-4f70-9fc9-b2da3e74281e")
 	)
 	(junction
 		(at 26.67 179.07)
@@ -7440,22 +7336,10 @@
 		(uuid "8cc9e52f-4528-46b1-9f4e-55ec6f16fc48")
 	)
 	(junction
-		(at 190.5 31.75)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8f94727f-2d9b-48b9-8726-23fb512829e6")
-	)
-	(junction
 		(at 275.59 31.75)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "909d2c00-f4d7-4509-99d2-9bd2678a9816")
-	)
-	(junction
-		(at 240.03 31.75)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "91b41995-da91-4538-a3c3-72a497703bdb")
 	)
 	(junction
 		(at 240.03 41.91)
@@ -7464,10 +7348,22 @@
 		(uuid "96196515-11e7-4cb7-9186-6359d1572830")
 	)
 	(junction
-		(at 256.54 31.75)
+		(at 274.32 31.75)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "9c913e36-6785-436d-a01a-9a3ed8e8575a")
+		(uuid "98732fcf-a0e7-49db-b387-2b1d5b38e11f")
+	)
+	(junction
+		(at 248.92 31.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9afb8131-4af9-4736-b8fd-584d1e98fa75")
+	)
+	(junction
+		(at 154.94 170.18)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a17abae3-a1aa-4388-b416-1a9eee4d6aca")
 	)
 	(junction
 		(at 224.79 86.36)
@@ -7482,28 +7378,28 @@
 		(uuid "a4c1b218-71a9-49b5-9753-03c1d566461b")
 	)
 	(junction
-		(at 243.84 31.75)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a607dfda-bed7-44bb-9153-7f1768648a07")
-	)
-	(junction
 		(at 100.33 148.59)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "acaa2761-c12a-40f1-9c63-26a3542c7ab1")
 	)
 	(junction
-		(at 237.49 41.91)
+		(at 220.98 31.75)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "ba9e169c-1ccb-4a27-8d44-257b9c2d5051")
+		(uuid "b7f409fc-60c2-4577-a72d-346872d17963")
 	)
 	(junction
-		(at 231.14 31.75)
+		(at 229.87 31.75)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "c93b6f0a-980d-43a7-8217-d62ede80097f")
+		(uuid "c6417408-3d37-4339-bc84-4e0392a27c4e")
+	)
+	(junction
+		(at 236.22 31.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c7affd31-aaf0-40ac-b971-09a00d5dcbb6")
 	)
 	(junction
 		(at 74.93 31.75)
@@ -7518,64 +7414,40 @@
 		(uuid "d13df9c4-c37a-48e2-ba43-d9d1dbc2a5f7")
 	)
 	(junction
-		(at 228.6 41.91)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d1f37e83-ae1d-4caa-9f90-d2d5ec8c640e")
-	)
-	(junction
-		(at 157.48 165.1)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d29a0915-47d2-4435-9720-d78fefca63c3")
-	)
-	(junction
 		(at 26.67 162.56)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d4749815-341c-46dc-9dfe-1d83e861c0a7")
 	)
 	(junction
-		(at 190.5 41.91)
+		(at 149.86 180.34)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "d883e124-6e01-4231-bcf2-86daa77595e0")
+		(uuid "d5e4e5f4-949e-4e49-a7cd-a8ff5aa481ce")
 	)
 	(junction
-		(at 154.94 170.18)
+		(at 152.4 175.26)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "e0d83af7-53ec-43a0-8707-295f940c8192")
+		(uuid "de385af1-c81e-4ca2-b8f1-774bd99dfe7d")
 	)
 	(junction
-		(at 265.43 41.91)
+		(at 186.69 31.75)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "e15f7ea3-bb1f-4837-9c3f-9690da5f911a")
+		(uuid "e2a9fc17-7a8a-4239-8f03-66c8f6ffede3")
+	)
+	(junction
+		(at 236.22 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e31b1c16-a023-4086-a79e-a9fbf62d7e2b")
 	)
 	(junction
 		(at 110.49 66.04)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f21d8fba-cefe-4969-845c-42cc3d685b8d")
-	)
-	(junction
-		(at 231.14 41.91)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f22767be-9610-495d-a823-6691babe3baa")
-	)
-	(junction
-		(at 237.49 31.75)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f599ab31-4728-4263-94f1-8834fe18aff2")
-	)
-	(junction
-		(at 152.4 175.26)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f81228f3-5396-4132-b3ab-d7ace806b65d")
 	)
 	(junction
 		(at 100.33 184.15)
@@ -7677,16 +7549,6 @@
 	)
 	(wire
 		(pts
-			(xy 228.6 31.75) (xy 231.14 31.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "00a3a485-aa89-4b52-81d7-70218c97ac4f")
-	)
-	(wire
-		(pts
 			(xy 109.22 31.75) (xy 109.22 33.02)
 		)
 		(stroke
@@ -7694,6 +7556,16 @@
 			(type default)
 		)
 		(uuid "02ed04a8-cf31-4a0a-b29f-ab49fef3eb96")
+	)
+	(wire
+		(pts
+			(xy 262.89 116.84) (xy 262.89 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "033325e8-34df-4e0b-8b7e-2f03d5ba1296")
 	)
 	(wire
 		(pts
@@ -7707,7 +7579,7 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 68.58) (xy 162.56 67.31)
+			(xy 163.83 68.58) (xy 163.83 64.77)
 		)
 		(stroke
 			(width 0)
@@ -7724,6 +7596,16 @@
 			(type default)
 		)
 		(uuid "080aee43-c32c-45b0-9e17-4f353dadd672")
+	)
+	(wire
+		(pts
+			(xy 160.02 172.72) (xy 160.02 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0942acf3-8358-4e52-966c-2a802b64105e")
 	)
 	(wire
 		(pts
@@ -7747,7 +7629,7 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 43.18) (xy 190.5 41.91)
+			(xy 186.69 43.18) (xy 186.69 41.91)
 		)
 		(stroke
 			(width 0)
@@ -7757,13 +7639,53 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 62.23) (xy 161.29 62.23)
+			(xy 160.02 177.8) (xy 163.83 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0c5ecd57-f9c1-491b-8284-83836d701f5e")
+	)
+	(wire
+		(pts
+			(xy 152.4 76.2) (xy 152.4 74.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0d084295-1db2-47a5-a1e0-da92af6f306d")
+	)
+	(wire
+		(pts
+			(xy 163.83 59.69) (xy 162.56 59.69)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "10dc24f1-bd8e-4bfd-b8ec-68c8d9f3ba84")
+	)
+	(wire
+		(pts
+			(xy 152.4 68.58) (xy 152.4 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11a48ae6-9906-423e-a979-02414008f29c")
+	)
+	(wire
+		(pts
+			(xy 242.57 41.91) (xy 248.92 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "12a282c1-b28d-4467-8256-3acd46698843")
 	)
 	(wire
 		(pts
@@ -7797,6 +7719,16 @@
 	)
 	(wire
 		(pts
+			(xy 229.87 41.91) (xy 236.22 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "13a6836b-2dce-4e14-82e7-33027bf51921")
+	)
+	(wire
+		(pts
 			(xy 214.63 143.51) (xy 210.82 143.51)
 		)
 		(stroke
@@ -7804,6 +7736,16 @@
 			(type default)
 		)
 		(uuid "1449ab2b-cdff-4a33-85b2-61967cb19b6c")
+	)
+	(wire
+		(pts
+			(xy 255.27 31.75) (xy 256.54 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1453fef0-4ea9-496f-9919-001879eea968")
 	)
 	(wire
 		(pts
@@ -7817,17 +7759,17 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 31.75) (xy 240.03 31.75)
+			(xy 160.02 167.64) (xy 160.02 172.72)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "165cfe5c-90d7-42be-9bce-a60d91a1c121")
+		(uuid "1889cbc3-9013-4f5a-8560-3d52365c2de4")
 	)
 	(wire
 		(pts
-			(xy 161.29 64.77) (xy 162.56 64.77)
+			(xy 162.56 62.23) (xy 163.83 62.23)
 		)
 		(stroke
 			(width 0)
@@ -7847,6 +7789,16 @@
 	)
 	(wire
 		(pts
+			(xy 220.98 31.75) (xy 220.98 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1a18cd9f-4a9f-4003-a9ea-be7e3b90b085")
+	)
+	(wire
+		(pts
 			(xy 222.25 97.79) (xy 222.25 86.36)
 		)
 		(stroke
@@ -7857,17 +7809,7 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 41.91) (xy 240.03 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1cb98e82-df59-45f4-b543-bd43f0335538")
-	)
-	(wire
-		(pts
-			(xy 228.6 29.21) (xy 228.6 31.75)
+			(xy 229.87 29.21) (xy 229.87 31.75)
 		)
 		(stroke
 			(width 0)
@@ -7887,7 +7829,7 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 138.43) (xy 260.35 139.7)
+			(xy 262.89 124.46) (xy 262.89 125.73)
 		)
 		(stroke
 			(width 0)
@@ -7897,7 +7839,17 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 41.91) (xy 237.49 40.64)
+			(xy 229.87 31.75) (xy 236.22 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1ffb5598-6446-4bed-b24c-513955754d50")
+	)
+	(wire
+		(pts
+			(xy 236.22 41.91) (xy 236.22 40.64)
 		)
 		(stroke
 			(width 0)
@@ -7924,16 +7876,6 @@
 			(type default)
 		)
 		(uuid "22be6137-02ea-4b4b-a738-eb4cae2ac2e4")
-	)
-	(wire
-		(pts
-			(xy 231.14 31.75) (xy 237.49 31.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "22ec8c6d-03e0-4390-a629-b1eb89f8252b")
 	)
 	(wire
 		(pts
@@ -7967,7 +7909,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 172.72) (xy 160.02 167.64)
+			(xy 160.02 156.21) (xy 160.02 167.64)
 		)
 		(stroke
 			(width 0)
@@ -7977,13 +7919,13 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 167.64) (xy 160.02 167.64)
+			(xy 152.4 175.26) (xy 163.83 175.26)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "2811b970-0c8c-41b1-b4dd-21e11ae508d1")
+		(uuid "2ae3590c-cadd-4dab-91a0-616fb427774b")
 	)
 	(wire
 		(pts
@@ -8014,6 +7956,16 @@
 			(type default)
 		)
 		(uuid "2b4e857d-a921-4e72-906d-70fb0f9b7c89")
+	)
+	(wire
+		(pts
+			(xy 154.94 170.18) (xy 163.83 170.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2c0d40a7-bda6-4463-b6ad-29fc1e0996f4")
 	)
 	(wire
 		(pts
@@ -8087,16 +8039,6 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 170.18) (xy 161.29 170.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "31d718bc-5bc5-4950-acc2-acc3826e5e1a")
-	)
-	(wire
-		(pts
 			(xy 110.49 63.5) (xy 110.49 66.04)
 		)
 		(stroke
@@ -8117,7 +8059,7 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 41.91) (xy 228.6 41.91)
+			(xy 218.44 41.91) (xy 220.98 41.91)
 		)
 		(stroke
 			(width 0)
@@ -8157,7 +8099,7 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 31.75) (xy 190.5 30.48)
+			(xy 186.69 31.75) (xy 186.69 30.48)
 		)
 		(stroke
 			(width 0)
@@ -8177,13 +8119,13 @@
 	)
 	(wire
 		(pts
-			(xy 250.19 41.91) (xy 256.54 41.91)
+			(xy 242.57 31.75) (xy 248.92 31.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3f08e52b-2d27-4182-838e-7bc93c771d9a")
+		(uuid "40328798-7ab5-4274-a5b4-b0ec57716554")
 	)
 	(wire
 		(pts
@@ -8197,33 +8139,13 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 41.91) (xy 231.14 40.64)
+			(xy 229.87 41.91) (xy 229.87 40.64)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "438886d1-f6b8-43ab-aded-3ed112e1bfdf")
-	)
-	(wire
-		(pts
-			(xy 160.02 177.8) (xy 160.02 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "45c313d5-6a03-428c-9b46-c51b250024dd")
-	)
-	(wire
-		(pts
-			(xy 149.86 180.34) (xy 161.29 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "47200dc8-7b20-4d03-942c-86558deba845")
 	)
 	(wire
 		(pts
@@ -8257,13 +8179,23 @@
 	)
 	(wire
 		(pts
-			(xy 275.59 31.75) (xy 273.05 31.75)
+			(xy 275.59 31.75) (xy 274.32 31.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "4a7b8757-c0b3-4837-ae90-db0211e5fdf4")
+	)
+	(wire
+		(pts
+			(xy 160.02 172.72) (xy 163.83 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4bd555ef-35f7-4e2a-8411-9e0299f1b208")
 	)
 	(wire
 		(pts
@@ -8367,16 +8299,6 @@
 	)
 	(wire
 		(pts
-			(xy 279.4 31.75) (xy 275.59 31.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "543c7c55-a1a7-4427-821a-c8f22f002a0b")
-	)
-	(wire
-		(pts
 			(xy 97.79 181.61) (xy 104.14 181.61)
 		)
 		(stroke
@@ -8384,6 +8306,16 @@
 			(type default)
 		)
 		(uuid "5466a80b-4dcd-45da-9b29-25142fa1c7cd")
+	)
+	(wire
+		(pts
+			(xy 149.86 180.34) (xy 163.83 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "54a89091-9b84-4d5c-8935-bfc5cd5e2d1e")
 	)
 	(wire
 		(pts
@@ -8437,23 +8369,13 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 177.8) (xy 160.02 177.8)
+			(xy 236.22 31.75) (xy 242.57 31.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "5b053d0b-f8fe-49cd-a42b-e8d831b440b1")
-	)
-	(wire
-		(pts
-			(xy 152.4 175.26) (xy 161.29 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5b31f31b-5290-45ac-95ae-de324e0178ba")
+		(uuid "5b0a0a92-faef-42b9-9ecf-661445e30761")
 	)
 	(wire
 		(pts
@@ -8527,16 +8449,6 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 172.72) (xy 160.02 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "64560d21-c5f5-4423-acda-a9cb3f2fa0d7")
-	)
-	(wire
-		(pts
 			(xy 107.95 179.07) (xy 106.68 179.07)
 		)
 		(stroke
@@ -8547,7 +8459,7 @@
 	)
 	(wire
 		(pts
-			(xy 240.03 41.91) (xy 243.84 41.91)
+			(xy 240.03 41.91) (xy 242.57 41.91)
 		)
 		(stroke
 			(width 0)
@@ -8557,7 +8469,7 @@
 	)
 	(wire
 		(pts
-			(xy 243.84 33.02) (xy 243.84 31.75)
+			(xy 242.57 33.02) (xy 242.57 31.75)
 		)
 		(stroke
 			(width 0)
@@ -8567,13 +8479,23 @@
 	)
 	(wire
 		(pts
-			(xy 250.19 40.64) (xy 250.19 41.91)
+			(xy 248.92 40.64) (xy 248.92 41.91)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "6959bdd6-066a-4fe5-8238-b197d0909c25")
+	)
+	(wire
+		(pts
+			(xy 220.98 31.75) (xy 229.87 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6c21bb85-4026-4b9b-8262-da2dcaf49d21")
 	)
 	(wire
 		(pts
@@ -8614,16 +8536,6 @@
 			(type default)
 		)
 		(uuid "7114ee7f-e160-470a-ad92-3858313e1a5f")
-	)
-	(wire
-		(pts
-			(xy 190.5 41.91) (xy 196.85 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "71dea37c-7e75-48f6-8605-e478023ee63a")
 	)
 	(wire
 		(pts
@@ -8697,6 +8609,16 @@
 	)
 	(wire
 		(pts
+			(xy 248.92 41.91) (xy 255.27 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7adbd4a8-b3af-47f2-b4b4-13671e8b6292")
+	)
+	(wire
+		(pts
 			(xy 256.54 48.26) (xy 256.54 50.8)
 		)
 		(stroke
@@ -8727,7 +8649,7 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 33.02) (xy 237.49 31.75)
+			(xy 236.22 33.02) (xy 236.22 31.75)
 		)
 		(stroke
 			(width 0)
@@ -8747,7 +8669,7 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 82.55) (xy 162.56 82.55)
+			(xy 165.1 91.44) (xy 163.83 91.44)
 		)
 		(stroke
 			(width 0)
@@ -8767,7 +8689,7 @@
 	)
 	(wire
 		(pts
-			(xy 275.59 41.91) (xy 275.59 40.64)
+			(xy 274.32 41.91) (xy 274.32 40.64)
 		)
 		(stroke
 			(width 0)
@@ -8797,7 +8719,7 @@
 	)
 	(wire
 		(pts
-			(xy 240.03 30.48) (xy 240.03 31.75)
+			(xy 236.22 30.48) (xy 236.22 31.75)
 		)
 		(stroke
 			(width 0)
@@ -8824,16 +8746,6 @@
 			(type default)
 		)
 		(uuid "85f7b270-849a-4609-b972-796ee072ad05")
-	)
-	(wire
-		(pts
-			(xy 160.02 167.64) (xy 160.02 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "861c03f2-98c6-4cf8-8d20-274b9ccbcfcb")
 	)
 	(wire
 		(pts
@@ -8867,6 +8779,16 @@
 	)
 	(wire
 		(pts
+			(xy 262.89 114.3) (xy 264.16 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "876ecc78-c17c-46d8-83da-c2d908c6fb2f")
+	)
+	(wire
+		(pts
 			(xy 200.66 93.98) (xy 200.66 95.25)
 		)
 		(stroke
@@ -8897,27 +8819,17 @@
 	)
 	(wire
 		(pts
-			(xy 243.84 31.75) (xy 250.19 31.75)
+			(xy 186.69 41.91) (xy 187.96 41.91)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "8975c3c4-295f-4ab8-aa98-0ae075eded1b")
+		(uuid "8d0b2058-5442-4d1c-bf48-c14c9ddef8e6")
 	)
 	(wire
 		(pts
-			(xy 243.84 41.91) (xy 250.19 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8a8ba64a-822f-4b30-b1a4-5b5386536ad0")
-	)
-	(wire
-		(pts
-			(xy 161.29 68.58) (xy 162.56 68.58)
+			(xy 165.1 68.58) (xy 163.83 68.58)
 		)
 		(stroke
 			(width 0)
@@ -8927,23 +8839,13 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 33.02) (xy 231.14 31.75)
+			(xy 229.87 33.02) (xy 229.87 31.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "8ec17dc5-8633-46e4-9420-87f40e7f2ac4")
-	)
-	(wire
-		(pts
-			(xy 240.03 31.75) (xy 243.84 31.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8f116b59-533f-4fb7-bc23-a2d1251d6a10")
 	)
 	(wire
 		(pts
@@ -8987,7 +8889,7 @@
 	)
 	(wire
 		(pts
-			(xy 228.6 41.91) (xy 228.6 44.45)
+			(xy 229.87 41.91) (xy 229.87 44.45)
 		)
 		(stroke
 			(width 0)
@@ -9067,6 +8969,16 @@
 	)
 	(wire
 		(pts
+			(xy 275.59 31.75) (xy 279.4 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a4e9511-2f1c-45fc-b998-d1a91692cb13")
+	)
+	(wire
+		(pts
 			(xy 31.75 36.83) (xy 31.75 35.56)
 		)
 		(stroke
@@ -9084,16 +8996,6 @@
 			(type default)
 		)
 		(uuid "9c1bf8d5-67d6-4e17-9371-a59d919730e5")
-	)
-	(wire
-		(pts
-			(xy 231.14 41.91) (xy 237.49 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9c83eddb-b531-408c-8cc0-ff3498107dbb")
 	)
 	(wire
 		(pts
@@ -9147,16 +9049,6 @@
 	)
 	(wire
 		(pts
-			(xy 250.19 31.75) (xy 256.54 31.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a56f7b44-d7bb-4f4c-911f-b1f458905108")
-	)
-	(wire
-		(pts
 			(xy 72.39 35.56) (xy 76.2 35.56)
 		)
 		(stroke
@@ -9164,6 +9056,16 @@
 			(type default)
 		)
 		(uuid "a68297ce-aeaf-4d19-bdb7-413402580515")
+	)
+	(wire
+		(pts
+			(xy 255.27 41.91) (xy 264.16 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a7b642a7-d28e-466f-ab16-21ec2b3aca52")
 	)
 	(wire
 		(pts
@@ -9187,6 +9089,16 @@
 	)
 	(wire
 		(pts
+			(xy 160.02 182.88) (xy 160.02 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a9a11c3e-f3ad-4882-9eb8-eac66ed11f9f")
+	)
+	(wire
+		(pts
 			(xy 78.74 30.48) (xy 78.74 31.75)
 		)
 		(stroke
@@ -9204,6 +9116,26 @@
 			(type default)
 		)
 		(uuid "aaf0d4e2-c1a2-4f4d-8b9c-f87a399c7db2")
+	)
+	(wire
+		(pts
+			(xy 236.22 41.91) (xy 240.03 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aba96ae6-ed95-4274-b43e-2b5c44367d4a")
+	)
+	(wire
+		(pts
+			(xy 274.32 31.75) (xy 271.78 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ac4cb4ef-8344-42e7-b417-b643d756510f")
 	)
 	(wire
 		(pts
@@ -9234,16 +9166,6 @@
 			(type default)
 		)
 		(uuid "ae745737-c7b3-4e4a-aaeb-5bdeab441256")
-	)
-	(wire
-		(pts
-			(xy 256.54 41.91) (xy 265.43 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "afc49fce-45c4-428e-a0d1-4cbc0ba51512")
 	)
 	(wire
 		(pts
@@ -9287,17 +9209,7 @@
 	)
 	(wire
 		(pts
-			(xy 157.48 165.1) (xy 161.29 165.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b5285326-f53b-4abc-acfd-fe869f58e8b9")
-	)
-	(wire
-		(pts
-			(xy 190.5 33.02) (xy 190.5 31.75)
+			(xy 186.69 33.02) (xy 186.69 31.75)
 		)
 		(stroke
 			(width 0)
@@ -9387,6 +9299,16 @@
 	)
 	(wire
 		(pts
+			(xy 186.69 31.75) (xy 187.96 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd2f4f0d-fcbe-4867-b6dd-6eeed05d89f8")
+	)
+	(wire
+		(pts
 			(xy 74.93 29.21) (xy 74.93 31.75)
 		)
 		(stroke
@@ -9394,6 +9316,16 @@
 			(type default)
 		)
 		(uuid "c00aa80d-f2d5-48a3-bb5a-e0b3dac31d9f")
+	)
+	(wire
+		(pts
+			(xy 248.92 31.75) (xy 255.27 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c03bac68-f900-4ab0-92f7-b67602936e4c")
 	)
 	(wire
 		(pts
@@ -9417,7 +9349,7 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 82.55) (xy 162.56 81.28)
+			(xy 163.83 91.44) (xy 163.83 87.63)
 		)
 		(stroke
 			(width 0)
@@ -9467,16 +9399,6 @@
 	)
 	(wire
 		(pts
-			(xy 228.6 41.91) (xy 231.14 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ccdbf56b-29c6-400c-b558-1e0429256a6c")
-	)
-	(wire
-		(pts
 			(xy 31.75 59.69) (xy 31.75 58.42)
 		)
 		(stroke
@@ -9497,16 +9419,6 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 162.56) (xy 160.02 156.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ce7c7edc-7d6a-45e2-92bb-5d3dc1d460cb")
-	)
-	(wire
-		(pts
 			(xy 101.6 29.21) (xy 101.6 31.75)
 		)
 		(stroke
@@ -9517,7 +9429,7 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 76.2) (xy 161.29 76.2)
+			(xy 163.83 82.55) (xy 162.56 82.55)
 		)
 		(stroke
 			(width 0)
@@ -9537,6 +9449,16 @@
 	)
 	(wire
 		(pts
+			(xy 220.98 41.91) (xy 229.87 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d1d039de-8b19-471b-b2bb-f5230f10173f")
+	)
+	(wire
+		(pts
 			(xy 100.33 179.07) (xy 100.33 184.15)
 		)
 		(stroke
@@ -9547,17 +9469,7 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 162.56) (xy 160.02 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d47e784c-8181-487e-9112-9c450a8ba36a")
-	)
-	(wire
-		(pts
-			(xy 161.29 78.74) (xy 162.56 78.74)
+			(xy 162.56 85.09) (xy 163.83 85.09)
 		)
 		(stroke
 			(width 0)
@@ -9567,13 +9479,23 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 31.75) (xy 228.6 31.75)
+			(xy 218.44 31.75) (xy 220.98 31.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "d954a4a9-06c4-4bdd-a0c6-4c87b75e5b01")
+	)
+	(wire
+		(pts
+			(xy 220.98 40.64) (xy 220.98 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d980d859-23e6-4d62-9d58-b14b9f9ded08")
 	)
 	(wire
 		(pts
@@ -9607,16 +9529,6 @@
 	)
 	(wire
 		(pts
-			(xy 196.85 31.75) (xy 190.5 31.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "db4d46dd-7d6b-4101-a0f7-95a921d0997c")
-	)
-	(wire
-		(pts
 			(xy 201.93 135.89) (xy 203.2 135.89)
 		)
 		(stroke
@@ -9627,7 +9539,7 @@
 	)
 	(wire
 		(pts
-			(xy 256.54 41.91) (xy 256.54 40.64)
+			(xy 255.27 41.91) (xy 255.27 40.64)
 		)
 		(stroke
 			(width 0)
@@ -9727,13 +9639,13 @@
 	)
 	(wire
 		(pts
-			(xy 256.54 31.75) (xy 257.81 31.75)
+			(xy 264.16 41.91) (xy 274.32 41.91)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e273d68b-d1e0-4c92-85d2-925197dda51d")
+		(uuid "e2c8fc7d-076f-437b-a8cd-3dde3f57def6")
 	)
 	(wire
 		(pts
@@ -9747,7 +9659,7 @@
 	)
 	(wire
 		(pts
-			(xy 243.84 41.91) (xy 243.84 40.64)
+			(xy 242.57 41.91) (xy 242.57 40.64)
 		)
 		(stroke
 			(width 0)
@@ -9757,7 +9669,7 @@
 	)
 	(wire
 		(pts
-			(xy 256.54 31.75) (xy 256.54 33.02)
+			(xy 255.27 31.75) (xy 255.27 33.02)
 		)
 		(stroke
 			(width 0)
@@ -9774,16 +9686,6 @@
 			(type default)
 		)
 		(uuid "e639e4de-49a5-414f-ae35-021504b4d4ca")
-	)
-	(wire
-		(pts
-			(xy 255.27 113.03) (xy 260.35 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e6b77bf1-3366-427e-a360-431ba1b48a0b")
 	)
 	(wire
 		(pts
@@ -9807,7 +9709,7 @@
 	)
 	(wire
 		(pts
-			(xy 265.43 41.91) (xy 265.43 39.37)
+			(xy 264.16 41.91) (xy 264.16 39.37)
 		)
 		(stroke
 			(width 0)
@@ -9857,23 +9759,23 @@
 	)
 	(wire
 		(pts
-			(xy 250.19 123.19) (xy 252.73 123.19)
+			(xy 160.02 167.64) (xy 163.83 167.64)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ebf5b8c1-43dd-47b4-aa14-894446ddf331")
+		(uuid "ed8a8dc8-f907-406d-8a74-39d92b4a342e")
 	)
 	(wire
 		(pts
-			(xy 265.43 41.91) (xy 275.59 41.91)
+			(xy 275.59 30.48) (xy 275.59 31.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "efcaf8a2-87f4-4da6-8221-1cfd29431e4b")
+		(uuid "ef28024a-dec8-4f45-bc4b-6501937a50a6")
 	)
 	(wire
 		(pts
@@ -9887,7 +9789,17 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 40.64) (xy 190.5 41.91)
+			(xy 163.83 182.88) (xy 160.02 182.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f0743a47-6921-497f-9716-e1085a117ef0")
+	)
+	(wire
+		(pts
+			(xy 186.69 40.64) (xy 186.69 41.91)
 		)
 		(stroke
 			(width 0)
@@ -9927,7 +9839,7 @@
 	)
 	(wire
 		(pts
-			(xy 250.19 33.02) (xy 250.19 31.75)
+			(xy 248.92 33.02) (xy 248.92 31.75)
 		)
 		(stroke
 			(width 0)
@@ -9947,7 +9859,7 @@
 	)
 	(wire
 		(pts
-			(xy 275.59 31.75) (xy 275.59 33.02)
+			(xy 274.32 31.75) (xy 274.32 33.02)
 		)
 		(stroke
 			(width 0)
@@ -9957,13 +9869,13 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 113.03) (xy 260.35 115.57)
+			(xy 157.48 165.1) (xy 163.83 165.1)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f865e503-4919-4cdc-8ff8-c442823f02ab")
+		(uuid "fa6cbb56-5bab-4d4c-be76-7bbe6cb0491e")
 	)
 	(wire
 		(pts
@@ -10055,16 +9967,6 @@
 		)
 		(uuid "1ffd47c2-ef6e-41a9-96c3-26dacef30eba")
 	)
-	(label "RS485_VCC"
-		(at 243.84 50.8 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "2564c2c3-c50b-4aed-a667-a2c51e0d48d1")
-	)
 	(label "MOT_1_ESTOP_A"
 		(at 147.32 165.1 180)
 		(effects
@@ -10146,12 +10048,12 @@
 		(uuid "68735ec4-be26-4d70-91ba-d71606b1610e")
 	)
 	(label "SERVO_0"
-		(at 161.29 68.58 180)
+		(at 165.1 68.58 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "6a04ee52-e4ff-4143-98ad-8b180536a087")
 	)
@@ -10196,12 +10098,12 @@
 		(uuid "791475b2-f16e-4101-9aac-083654eeb866")
 	)
 	(label "SERVO_1"
-		(at 161.29 82.55 180)
+		(at 165.1 91.44 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "7bb77a75-053c-4efc-9313-894023bdf09b")
 	)
@@ -10537,9 +10439,9 @@
 			)
 		)
 	)
-	(global_label "RS485_B"
+	(global_label "RS485_A"
 		(shape input)
-		(at 255.27 113.03 180)
+		(at 264.16 109.22 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10547,9 +10449,9 @@
 			)
 			(justify right)
 		)
-		(uuid "335d4880-ac3a-433d-8c82-6e54351cdb10")
+		(uuid "528df6bd-ddde-4d2a-aaad-079a8a0d75cf")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 243.9392 113.03 0)
+			(at 253.0106 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10559,9 +10461,9 @@
 			)
 		)
 	)
-	(global_label "RS485_A"
+	(global_label "RS485_B"
 		(shape input)
-		(at 250.19 123.19 180)
+		(at 264.16 111.76 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10569,9 +10471,9 @@
 			)
 			(justify right)
 		)
-		(uuid "d69a9595-6372-430a-acb3-00b4aebe093b")
+		(uuid "7e86f177-8d0e-43ba-8d75-be6554df8372")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 239.0406 123.19 0)
+			(at 252.8292 111.76 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10612,7 +10514,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0602640e-5575-4555-9587-be0ca8d551ec")
-		(property "Reference" "R9"
+		(property "Reference" "R15"
 			(at 251.206 75.946 90)
 			(effects
 				(font
@@ -10664,7 +10566,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R9")
+					(reference "R15")
 					(unit 1)
 				)
 			)
@@ -10679,7 +10581,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "069f9836-ee7d-4ea2-8152-199170cf823d")
-		(property "Reference" "#PWR057"
+		(property "Reference" "#PWR034"
 			(at 111.76 116.84 0)
 			(effects
 				(font
@@ -10729,7 +10631,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR057")
+					(reference "#PWR034")
 					(unit 1)
 				)
 			)
@@ -10744,7 +10646,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "06aa2c65-03fa-4d3b-941e-c64456f4126b")
-		(property "Reference" "R5"
+		(property "Reference" "R4"
 			(at 102.616 177.292 90)
 			(effects
 				(font
@@ -10796,7 +10698,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R5")
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -10812,7 +10714,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "074f9d53-94eb-4305-8ce4-639f0d5b9a3e")
-		(property "Reference" "C12"
+		(property "Reference" "C5"
 			(at 72.8345 180.4035 90)
 			(effects
 				(font
@@ -10866,7 +10768,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C12")
+					(reference "C5")
 					(unit 1)
 				)
 			)
@@ -10882,7 +10784,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0802300f-058f-4785-adb9-164c6e4a2115")
-		(property "Reference" "#PWR011"
+		(property "Reference" "#PWR017"
 			(at 74.93 33.02 0)
 			(effects
 				(font
@@ -10933,24 +10835,24 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR011")
+					(reference "#PWR017")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
-		(at 243.84 36.83 0)
-		(mirror y)
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 269.24 111.76 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "0ab7e0b6-bd1f-4db4-b011-6442ed52e59a")
-		(property "Reference" "C16"
-			(at 243.586 34.798 0)
+		(fields_autoplaced yes)
+		(uuid "08a4ff19-4339-4fc2-8246-d4a227966d58")
+		(property "Reference" "J11"
+			(at 271.78 110.4899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10958,8 +10860,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0.1uF"
-			(at 243.586 39.116 0)
+		(property "Value" "RS485"
+			(at 271.78 113.0299 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10967,8 +10869,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm"
-			(at 242.8748 40.64 0)
+		(property "Footprint" "Connector_JST:JST_PH_B3B-PH-K_1x03_P2.00mm_Vertical"
+			(at 269.24 111.76 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10977,7 +10879,80 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 243.84 36.83 0)
+			(at 269.24 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 269.24 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "b4141391-fcd0-4178-a770-5ad7d2e1d6c2")
+		)
+		(pin "1"
+			(uuid "8386cf95-ae0c-4883-9aa2-7207f03b3a91")
+		)
+		(pin "3"
+			(uuid "e1b37a27-65ee-452c-a621-dccba849913f")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "J11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 242.57 36.83 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0ab7e0b6-bd1f-4db4-b011-6442ed52e59a")
+		(property "Reference" "C16"
+			(at 242.316 34.798 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0.1uF"
+			(at 242.316 39.116 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm"
+			(at 241.6048 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 242.57 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10986,7 +10961,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 243.84 36.83 0)
+			(at 242.57 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11011,7 +10986,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 256.54 36.83 0)
+		(at 255.27 36.83 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -11019,8 +10994,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0b28f1b2-cdd1-4f9e-9aa7-8126c0948112")
-		(property "Reference" "C9"
-			(at 256.286 34.798 0)
+		(property "Reference" "C18"
+			(at 255.016 34.798 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11029,7 +11004,7 @@
 			)
 		)
 		(property "Value" "1uF"
-			(at 255.778 39.37 0)
+			(at 254.508 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11038,7 +11013,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm"
-			(at 255.5748 40.64 0)
+			(at 254.3048 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11047,7 +11022,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 256.54 36.83 0)
+			(at 255.27 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11056,7 +11031,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 256.54 36.83 0)
+			(at 255.27 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11073,7 +11048,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C9")
+					(reference "C18")
 					(unit 1)
 				)
 			)
@@ -11089,7 +11064,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0b5a1b8b-098c-432f-9fcd-09f7e19ae8d5")
-		(property "Reference" "R13"
+		(property "Reference" "R9"
 			(at 194.056 58.674 90)
 			(effects
 				(font
@@ -11141,7 +11116,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R13")
+					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -11157,7 +11132,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0d648a5b-dbe7-4da2-b5a6-8070e67b9fe7")
-		(property "Reference" "#PWR044"
+		(property "Reference" "#PWR09"
 			(at 38.1 173.99 0)
 			(effects
 				(font
@@ -11208,72 +11183,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR044")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 168.91 134.62 0)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "0e21fe99-21b0-4b4b-8c3d-673bcb2a17d0")
-		(property "Reference" "H4"
-			(at 171.45 133.3499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MountingHole"
-			(at 171.45 135.8899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
-			(at 168.91 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 168.91 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 168.91 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project "Octal_Brushed_Controller"
-				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "H4")
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)
@@ -11288,7 +11198,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0ea4164b-3c59-467f-b35b-1540a43d00a1")
-		(property "Reference" "U3"
+		(property "Reference" "U4"
 			(at 205.486 89.154 0)
 			(effects
 				(font
@@ -11306,7 +11216,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DIP:DIP-8_W7.62mm"
+		(property "Footprint" "Package_DIP:SMDIP-8_W9.53mm"
 			(at 210.82 110.49 0)
 			(effects
 				(font
@@ -11360,7 +11270,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "U3")
+					(reference "U4")
 					(unit 1)
 				)
 			)
@@ -11376,7 +11286,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1338c749-7860-41c4-97c2-f4c54023dcb1")
-		(property "Reference" "#PWR024"
+		(property "Reference" "#PWR022"
 			(at 76.2 187.96 0)
 			(effects
 				(font
@@ -11427,7 +11337,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR024")
+					(reference "#PWR022")
 					(unit 1)
 				)
 			)
@@ -11443,7 +11353,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1369b9a2-4f3b-4c0a-b224-aa24aa47a123")
-		(property "Reference" "#PWR047"
+		(property "Reference" "#PWR053"
 			(at 203.2 81.28 0)
 			(effects
 				(font
@@ -11494,7 +11404,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR047")
+					(reference "#PWR053")
 					(unit 1)
 				)
 			)
@@ -11509,7 +11419,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1545149a-4887-40b6-9f4d-a6d76ec84085")
-		(property "Reference" "C8"
+		(property "Reference" "C10"
 			(at 118.364 69.85 0)
 			(effects
 				(font
@@ -11561,7 +11471,76 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C8")
+					(reference "C10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized_Small")
+		(at 152.4 72.39 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "156b5f50-5d21-445a-a5e5-2ae013976a91")
+		(property "Reference" "C11"
+			(at 152.654 70.358 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10uF-T"
+			(at 152.4 74.422 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_Tantal_D5.5mm_P2.50mm"
+			(at 152.4 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor, small symbol"
+			(at 152.4 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "db4e9c04-5634-4847-b63a-fdfefdd247d1")
+		)
+		(pin "2"
+			(uuid "80f19608-0d3b-4da1-a7d6-8b2be9135c2f")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "C11")
 					(unit 1)
 				)
 			)
@@ -11576,7 +11555,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "15ebdf6d-2dca-4b74-8cc7-99881e516d62")
-		(property "Reference" "J6"
+		(property "Reference" "J3"
 			(at 34.036 168.91 0)
 			(effects
 				(font
@@ -11646,7 +11625,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J6")
+					(reference "J3")
 					(unit 1)
 				)
 			)
@@ -11654,7 +11633,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
-		(at 167.64 64.77 0)
+		(at 168.91 62.23 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11662,8 +11641,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "17a0b2b9-4bd9-417c-a6c9-7956574204f4")
-		(property "Reference" "J1"
-			(at 170.18 63.4999 0)
+		(property "Reference" "J9"
+			(at 171.45 60.9599 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11672,7 +11651,7 @@
 			)
 		)
 		(property "Value" "Servo1"
-			(at 170.18 66.0399 0)
+			(at 171.45 63.4999 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11680,8 +11659,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 167.64 64.77 0)
+		(property "Footprint" "Connector_JST:JST_PH_B3B-PH-K_1x03_P2.00mm_Vertical"
+			(at 168.91 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11690,7 +11669,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 167.64 64.77 0)
+			(at 168.91 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11699,7 +11678,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 167.64 64.77 0)
+			(at 168.91 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11719,7 +11698,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J1")
+					(reference "J9")
 					(unit 1)
 				)
 			)
@@ -11734,7 +11713,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "17a0ee92-4a32-4752-87a2-b88639157b77")
-		(property "Reference" "TP8"
+		(property "Reference" "TP3"
 			(at 117.348 24.892 0)
 			(effects
 				(font
@@ -11753,7 +11732,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
 			(at 123.19 30.48 0)
 			(effects
 				(font
@@ -11786,7 +11765,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "TP8")
+					(reference "TP3")
 					(unit 1)
 				)
 			)
@@ -11802,7 +11781,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "181a9cb7-2de4-4282-b68c-fbc631ad6155")
-		(property "Reference" "H2"
+		(property "Reference" "H3"
 			(at 160.02 128.2699 0)
 			(effects
 				(font
@@ -11851,7 +11830,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "H2")
+					(reference "H3")
 					(unit 1)
 				)
 			)
@@ -11859,7 +11838,7 @@
 	)
 	(symbol
 		(lib_id "PCM_SparkFun-PowerSymbol:GND")
-		(at 161.29 64.77 270)
+		(at 162.56 62.23 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11867,8 +11846,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1da714d9-e8b7-4f83-b2d5-9f39483c6fd7")
-		(property "Reference" "#PWR015"
-			(at 154.94 64.77 0)
+		(property "Reference" "#PWR045"
+			(at 156.21 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11877,7 +11856,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 157.48 64.77 0)
+			(at 158.75 62.23 0)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -11886,7 +11865,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 161.29 64.77 0)
+			(at 162.56 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11895,7 +11874,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 161.29 64.77 0)
+			(at 162.56 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11904,7 +11883,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 152.4 64.77 0)
+			(at 153.67 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11918,7 +11897,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR015")
+					(reference "#PWR045")
 					(unit 1)
 				)
 			)
@@ -11926,7 +11905,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 275.59 36.83 0)
+		(at 274.32 36.83 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -11934,8 +11913,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1e45b0c0-a6e2-4a64-bd43-a424c6ef4653")
-		(property "Reference" "C11"
-			(at 275.336 34.798 0)
+		(property "Reference" "C19"
+			(at 274.066 34.798 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11944,7 +11923,7 @@
 			)
 		)
 		(property "Value" "1uF"
-			(at 274.828 39.37 0)
+			(at 273.558 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11953,7 +11932,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm"
-			(at 274.6248 40.64 0)
+			(at 273.3548 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11962,7 +11941,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 275.59 36.83 0)
+			(at 274.32 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11971,7 +11950,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 275.59 36.83 0)
+			(at 274.32 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11988,7 +11967,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C11")
+					(reference "C19")
 					(unit 1)
 				)
 			)
@@ -12004,7 +11983,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1e4f4d9c-bb13-42ec-8772-3951cbfee11f")
-		(property "Reference" "U2"
+		(property "Reference" "U3"
 			(at 212.344 56.134 0)
 			(effects
 				(font
@@ -12022,7 +12001,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DIP:DIP-8_W7.62mm"
+		(property "Footprint" "Package_DIP:SMDIP-8_W9.53mm"
 			(at 207.01 77.47 0)
 			(effects
 				(font
@@ -12076,7 +12055,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "U2")
+					(reference "U3")
 					(unit 1)
 				)
 			)
@@ -12092,7 +12071,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1f283eee-17cf-43ae-bc2f-554d293acbad")
-		(property "Reference" "C2"
+		(property "Reference" "C1"
 			(at 29.21 55.8862 0)
 			(effects
 				(font
@@ -12146,7 +12125,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C2")
+					(reference "C1")
 					(unit 1)
 				)
 			)
@@ -12162,7 +12141,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "20110f35-3d2e-4a07-ada1-bc7a8c477704")
-		(property "Reference" "C13"
+		(property "Reference" "C9"
 			(at 107.95 105.4099 0)
 			(effects
 				(font
@@ -12216,7 +12195,74 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C13")
+					(reference "C9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_SparkFun-PowerSymbol:GND")
+		(at 152.4 76.2 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "21b4084c-bb04-4261-9dac-7e71a4e6144e")
+		(property "Reference" "#PWR041"
+			(at 152.4 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 152.4 80.01 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 152.4 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8fcc90d4-fd20-4b88-b87f-a4cffb9862a0")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "#PWR041")
 					(unit 1)
 				)
 			)
@@ -12231,7 +12277,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "22e14935-30d7-48f8-8702-2469c9b7f26b")
-		(property "Reference" "#PWR065"
+		(property "Reference" "#PWR015"
 			(at 62.23 179.07 0)
 			(effects
 				(font
@@ -12282,7 +12328,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR065")
+					(reference "#PWR015")
 					(unit 1)
 				)
 			)
@@ -12298,7 +12344,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2494896c-11cb-4383-b47a-63e0472bf88e")
-		(property "Reference" "#PWR043"
+		(property "Reference" "#PWR010"
 			(at 48.26 179.07 0)
 			(effects
 				(font
@@ -12349,7 +12395,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR043")
+					(reference "#PWR010")
 					(unit 1)
 				)
 			)
@@ -12364,7 +12410,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "25831d45-a4bc-49d3-a65f-b360a14efbbe")
-		(property "Reference" "J7"
+		(property "Reference" "J5"
 			(at 115.316 176.53 0)
 			(effects
 				(font
@@ -12424,7 +12470,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J7")
+					(reference "J5")
 					(unit 1)
 				)
 			)
@@ -12439,7 +12485,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2618731b-a1f7-411d-acdf-8fef3bba1796")
-		(property "Reference" "#PWR051"
+		(property "Reference" "#PWR057"
 			(at 214.63 151.13 0)
 			(effects
 				(font
@@ -12489,7 +12535,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR051")
+					(reference "#PWR057")
 					(unit 1)
 				)
 			)
@@ -12505,7 +12551,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "26d47941-eba7-4e0c-b436-fa9224bd21b8")
-		(property "Reference" "R16"
+		(property "Reference" "R10"
 			(at 199.136 98.806 90)
 			(effects
 				(font
@@ -12557,7 +12603,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R16")
+					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -12573,7 +12619,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "28448cab-2130-4b08-9047-b9c15ae179a8")
-		(property "Reference" "#PWR079"
+		(property "Reference" "#PWR042"
 			(at 157.48 154.94 0)
 			(effects
 				(font
@@ -12624,7 +12670,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR079")
+					(reference "#PWR042")
 					(unit 1)
 				)
 			)
@@ -12640,7 +12686,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "29577ad1-ff0d-4d36-ba59-ad9e97e4f329")
-		(property "Reference" "#PWR054"
+		(property "Reference" "#PWR050"
 			(at 200.66 97.79 0)
 			(effects
 				(font
@@ -12691,7 +12737,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR054")
+					(reference "#PWR050")
 					(unit 1)
 				)
 			)
@@ -12707,7 +12753,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2bd1f6b0-7e05-41cb-9616-7bf4dd42c5d8")
-		(property "Reference" "#PWR027"
+		(property "Reference" "#PWR038"
 			(at 134.62 121.92 0)
 			(effects
 				(font
@@ -12757,7 +12803,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR027")
+					(reference "#PWR038")
 					(unit 1)
 				)
 			)
@@ -12792,7 +12838,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
 			(at 234.95 43.18 0)
 			(effects
 				(font
@@ -12833,15 +12879,15 @@
 	)
 	(symbol
 		(lib_id "Joe_Mohos_Symbols:GND_ISO")
-		(at 260.35 139.7 0)
+		(at 262.89 125.73 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "2d651d4c-f486-4085-89a4-6b65cf06cd1a")
-		(property "Reference" "#PWR045"
-			(at 260.35 146.05 0)
+		(property "Reference" "#PWR064"
+			(at 262.89 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12850,7 +12896,7 @@
 			)
 		)
 		(property "Value" "GND_ISO"
-			(at 260.35 143.51 0)
+			(at 262.89 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12858,7 +12904,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 260.35 139.7 0)
+			(at 262.89 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12867,7 +12913,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 260.35 139.7 0)
+			(at 262.89 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12876,7 +12922,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 260.35 139.7 0)
+			(at 262.89 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12890,7 +12936,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR045")
+					(reference "#PWR064")
 					(unit 1)
 				)
 			)
@@ -12906,7 +12952,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2fa5e9ef-e174-4020-9cf2-376e63a73629")
-		(property "Reference" "#PWR083"
+		(property "Reference" "#PWR035"
 			(at 118.11 45.72 0)
 			(effects
 				(font
@@ -12957,7 +13003,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR083")
+					(reference "#PWR035")
 					(unit 1)
 				)
 			)
@@ -12965,7 +13011,7 @@
 	)
 	(symbol
 		(lib_id "PCM_SparkFun-PowerSymbol:GND")
-		(at 161.29 78.74 270)
+		(at 162.56 85.09 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12973,8 +13019,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "33800c38-24a5-4fe9-8eb3-0b841f63cf54")
-		(property "Reference" "#PWR028"
-			(at 154.94 78.74 0)
+		(property "Reference" "#PWR047"
+			(at 156.21 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12983,7 +13029,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 157.48 78.74 0)
+			(at 158.75 85.09 0)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -12992,7 +13038,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 161.29 78.74 0)
+			(at 162.56 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13001,7 +13047,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 161.29 78.74 0)
+			(at 162.56 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13010,7 +13056,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 152.4 78.74 0)
+			(at 153.67 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13024,7 +13070,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR028")
+					(reference "#PWR047")
 					(unit 1)
 				)
 			)
@@ -13032,7 +13078,7 @@
 	)
 	(symbol
 		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 260.35 134.62 90)
+		(at 262.89 120.65 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
@@ -13040,7 +13086,7 @@
 		(dnp no)
 		(uuid "34038ea6-4fe8-4f6d-9556-02b94a88e54e")
 		(property "Reference" "JP1"
-			(at 258.318 134.62 0)
+			(at 260.858 120.65 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13048,7 +13094,7 @@
 			)
 		)
 		(property "Value" "Shield"
-			(at 256.54 134.62 0)
+			(at 259.08 120.65 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13056,8 +13102,8 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" ""
-			(at 260.35 134.62 0)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm"
+			(at 262.89 120.65 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13066,7 +13112,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 260.35 134.62 0)
+			(at 262.89 120.65 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13075,7 +13121,7 @@
 			)
 		)
 		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 260.35 134.62 0)
+			(at 262.89 120.65 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13107,7 +13153,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "34995268-4001-4769-85d4-632dbd8d6f4d")
-		(property "Reference" "R3"
+		(property "Reference" "R5"
 			(at 149.098 158.242 90)
 			(effects
 				(font
@@ -13159,7 +13205,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R3")
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -13174,7 +13220,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "373f862c-3d5b-4deb-abbc-ab959481cd17")
-		(property "Reference" "R11"
+		(property "Reference" "R16"
 			(at 251.206 83.566 90)
 			(effects
 				(font
@@ -13226,7 +13272,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R11")
+					(reference "R16")
 					(unit 1)
 				)
 			)
@@ -13242,7 +13288,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3b277ca1-745c-4373-b78d-8dda7b270d75")
-		(property "Reference" "#PWR05"
+		(property "Reference" "#PWR036"
 			(at 134.62 64.77 0)
 			(effects
 				(font
@@ -13293,7 +13339,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR05")
+					(reference "#PWR036")
 					(unit 1)
 				)
 			)
@@ -13309,7 +13355,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3c109469-8a6c-438a-9527-adf920561215")
-		(property "Reference" "#PWR033"
+		(property "Reference" "#PWR043"
 			(at 167.64 156.21 0)
 			(effects
 				(font
@@ -13360,7 +13406,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR033")
+					(reference "#PWR043")
 					(unit 1)
 				)
 			)
@@ -13376,7 +13422,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3ccb2e1e-3ce5-4a10-9403-1e1ee8b34489")
-		(property "Reference" "#PWR021"
+		(property "Reference" "#PWR019"
 			(at 76.2 158.75 0)
 			(effects
 				(font
@@ -13427,24 +13473,24 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR021")
+					(reference "#PWR019")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "PCM_SparkFun-PowerSymbol:GND")
-		(at 190.5 43.18 0)
+		(lib_id "PCM_SparkFun-PowerSymbol:5V")
+		(at 152.4 68.58 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "427b9d15-7dd2-4f71-b535-a262fad94d6f")
-		(property "Reference" "#PWR02"
-			(at 190.5 49.53 0)
+		(uuid "407cc4cc-9618-4afa-878a-44df7463a74c")
+		(property "Reference" "#PWR040"
+			(at 152.4 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13452,8 +13498,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "GND"
-			(at 190.5 46.99 0)
+		(property "Value" "5V"
+			(at 152.4 64.77 0)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -13462,7 +13508,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 190.5 43.18 0)
+			(at 152.4 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13471,7 +13517,74 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 190.5 43.18 0)
+			(at 152.4 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"5V\""
+			(at 152.4 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "fca290cf-a771-4bc2-bfab-da7f6b1a7d14")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "#PWR040")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_SparkFun-PowerSymbol:GND")
+		(at 186.69 43.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "427b9d15-7dd2-4f71-b535-a262fad94d6f")
+		(property "Reference" "#PWR049"
+			(at 186.69 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 186.69 46.99 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 186.69 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 186.69 43.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13480,7 +13593,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 190.5 52.07 0)
+			(at 186.69 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13494,7 +13607,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR02")
+					(reference "#PWR049")
 					(unit 1)
 				)
 			)
@@ -13509,7 +13622,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4519aecc-6b51-4877-8a63-dccd0cfe19db")
-		(property "Reference" "R6"
+		(property "Reference" "R8"
 			(at 156.718 158.242 90)
 			(effects
 				(font
@@ -13561,7 +13674,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R6")
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -13576,7 +13689,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "46457a00-2a23-4b91-aea9-2bf4b0109b58")
-		(property "Reference" "#PWR06"
+		(property "Reference" "#PWR01"
 			(at 22.86 166.37 0)
 			(effects
 				(font
@@ -13627,80 +13740,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR06")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Audio:XLR3")
-		(at 260.35 123.19 270)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "48a1b35b-d666-4fc8-a5d7-ca42429bb318")
-		(property "Reference" "J3"
-			(at 263.652 128.27 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "XLR3"
-			(at 263.652 130.302 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 260.35 123.19 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 260.35 123.19 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "XLR Connector, Male or Female, 3 Pins"
-			(at 260.35 123.19 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "9e83d119-b858-4c30-8b63-cf71f2df30fb")
-		)
-		(pin "1"
-			(uuid "2db7e3ca-299a-4abf-87bb-9451ed79c5bd")
-		)
-		(pin "2"
-			(uuid "0d834c93-d298-4642-8933-5da0fbc86b16")
-		)
-		(instances
-			(project ""
-				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J3")
+					(reference "#PWR01")
 					(unit 1)
 				)
 			)
@@ -13714,18 +13754,17 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "495336b1-f171-44f5-8c25-44caa8028e96")
-		(property "Reference" "U8"
-			(at 62.23 21.59 0)
+		(property "Reference" "U1"
+			(at 55.88 25.654 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "~"
-			(at 62.23 24.13 0)
+		(property "Value" "DCDC 5V"
+			(at 65.786 25.654 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13774,7 +13813,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "U8")
+					(reference "U1")
 					(unit 1)
 				)
 			)
@@ -13790,7 +13829,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4e42b943-df04-40ef-8b2a-19ce93ad4eb5")
-		(property "Reference" "C4"
+		(property "Reference" "C7"
 			(at 104.14 68.5799 0)
 			(effects
 				(font
@@ -13844,7 +13883,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C4")
+					(reference "C7")
 					(unit 1)
 				)
 			)
@@ -13860,7 +13899,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4ecc2fff-911d-46be-bd78-04af41bbe352")
-		(property "Reference" "#PWR032"
+		(property "Reference" "#PWR052"
 			(at 201.93 57.15 0)
 			(effects
 				(font
@@ -13911,7 +13950,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR032")
+					(reference "#PWR052")
 					(unit 1)
 				)
 			)
@@ -13926,7 +13965,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "552810b9-15cc-4a96-86e1-303f17106e15")
-		(property "Reference" "#PWR046"
+		(property "Reference" "#PWR054"
 			(at 214.63 90.17 0)
 			(effects
 				(font
@@ -13976,7 +14015,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR046")
+					(reference "#PWR054")
 					(unit 1)
 				)
 			)
@@ -13991,7 +14030,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "574c8f70-4931-49c7-a90b-bb82687eb607")
-		(property "Reference" "R10"
+		(property "Reference" "R17"
 			(at 251.206 91.186 90)
 			(effects
 				(font
@@ -14043,7 +14082,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R10")
+					(reference "R17")
 					(unit 1)
 				)
 			)
@@ -14051,15 +14090,15 @@
 	)
 	(symbol
 		(lib_id "Device:C_Polarized")
-		(at 190.5 36.83 0)
+		(at 186.69 36.83 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "5873ae67-5f0b-4448-828e-18b4302de019")
-		(property "Reference" "C3"
-			(at 194.564 36.83 0)
+		(property "Reference" "C12"
+			(at 182.626 35.814 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14067,7 +14106,7 @@
 			)
 		)
 		(property "Value" "4.7uF"
-			(at 195.326 39.116 0)
+			(at 182.88 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14075,7 +14114,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm"
-			(at 191.4652 40.64 0)
+			(at 187.6552 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14084,7 +14123,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 190.5 36.83 0)
+			(at 186.69 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14093,7 +14132,7 @@
 			)
 		)
 		(property "Description" "Polarized capacitor"
-			(at 190.5 36.83 0)
+			(at 186.69 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14110,7 +14149,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C3")
+					(reference "C12")
 					(unit 1)
 				)
 			)
@@ -14126,7 +14165,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5adf0f72-a85b-49bc-9036-c787ee5429dd")
-		(property "Reference" "#PWR012"
+		(property "Reference" "#PWR011"
 			(at 49.53 57.15 0)
 			(effects
 				(font
@@ -14177,7 +14216,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR012")
+					(reference "#PWR011")
 					(unit 1)
 				)
 			)
@@ -14193,7 +14232,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "61b4bf07-d9e8-48d1-8e20-0f3c0bb29e8c")
-		(property "Reference" "H5"
+		(property "Reference" "H1"
 			(at 160.02 118.1099 0)
 			(effects
 				(font
@@ -14242,7 +14281,74 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "H5")
+					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 220.98 36.83 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "65f849e9-dae9-49c8-b676-9e18fbfc3e01")
+		(property "Reference" "C13"
+			(at 216.916 35.814 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "4.7uF"
+			(at 217.17 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm"
+			(at 221.9452 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 220.98 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 220.98 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "9f4e88d0-ab61-49c5-a678-cb612c28d314")
+		)
+		(pin "1"
+			(uuid "2100069e-b292-493b-8c7b-72f225c19fa3")
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "C13")
 					(unit 1)
 				)
 			)
@@ -14257,7 +14363,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "68698abe-5616-4bf7-9aee-21eeac66fa4c")
-		(property "Reference" "U1"
+		(property "Reference" "U6"
 			(at 227.584 75.184 0)
 			(effects
 				(font
@@ -14329,7 +14435,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "U1")
+					(reference "U6")
 					(unit 1)
 				)
 			)
@@ -14345,7 +14451,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "69283fa5-50d4-495a-9a2d-c0c2063dcab4")
-		(property "Reference" "#PWR022"
+		(property "Reference" "#PWR020"
 			(at 76.2 166.37 0)
 			(effects
 				(font
@@ -14396,72 +14502,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR022")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 168.91 129.54 0)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6a50402f-cae7-46b9-a181-d69f96f226ba")
-		(property "Reference" "H7"
-			(at 171.45 128.2699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MountingHole"
-			(at 171.45 130.8099 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
-			(at 168.91 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 168.91 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 168.91 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project "Octal_Brushed_Controller"
-				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "H7")
+					(reference "#PWR020")
 					(unit 1)
 				)
 			)
@@ -14469,16 +14510,15 @@
 	)
 	(symbol
 		(lib_id "Connector:Screw_Terminal_01x08")
-		(at 166.37 172.72 0)
-		(mirror x)
+		(at 168.91 172.72 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "6c7ccd7a-fe0f-443a-8203-351e0bc35587")
-		(property "Reference" "J15"
-			(at 168.91 180.086 90)
+		(property "Reference" "J8"
+			(at 171.45 165.354 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14486,7 +14526,7 @@
 			)
 		)
 		(property "Value" "Screw_Terminal_01x08"
-			(at 172.72 171.45 90)
+			(at 175.26 173.99 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14495,7 +14535,7 @@
 			)
 		)
 		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MPT-0,5-8-2.54_1x08_P2.54mm_Horizontal"
-			(at 166.37 172.72 0)
+			(at 168.91 172.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14504,7 +14544,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 166.37 172.72 0)
+			(at 168.91 172.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14513,7 +14553,7 @@
 			)
 		)
 		(property "Description" "Generic screw terminal, single row, 01x08, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 166.37 172.72 0)
+			(at 168.91 172.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14548,7 +14588,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J15")
+					(reference "J8")
 					(unit 1)
 				)
 			)
@@ -14556,7 +14596,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 250.19 36.83 0)
+		(at 248.92 36.83 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -14565,7 +14605,7 @@
 		(dnp no)
 		(uuid "6f21e258-5b2a-4587-950d-e5994a10475b")
 		(property "Reference" "C17"
-			(at 249.936 34.798 0)
+			(at 248.666 34.798 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14574,7 +14614,7 @@
 			)
 		)
 		(property "Value" "0.1uF"
-			(at 249.936 39.116 0)
+			(at 248.666 39.116 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14583,7 +14623,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm"
-			(at 249.2248 40.64 0)
+			(at 247.9548 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14592,7 +14632,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 250.19 36.83 0)
+			(at 248.92 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14601,7 +14641,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 250.19 36.83 0)
+			(at 248.92 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14634,7 +14674,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7537f711-22db-4104-8fc8-6ef0ea2ac5a7")
-		(property "Reference" "#PWR014"
+		(property "Reference" "#PWR05"
 			(at 31.75 64.77 0)
 			(effects
 				(font
@@ -14685,7 +14725,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR014")
+					(reference "#PWR05")
 					(unit 1)
 				)
 			)
@@ -14760,7 +14800,7 @@
 	)
 	(symbol
 		(lib_id "Regulator_Linear:MCP1700x-330xxTO")
-		(at 265.43 31.75 0)
+		(at 264.16 31.75 0)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -14768,8 +14808,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "75a54ff1-9782-4e92-8610-4fd60d42361f")
-		(property "Reference" "U6"
-			(at 265.43 28.448 0)
+		(property "Reference" "U7"
+			(at 264.16 28.448 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14777,7 +14817,7 @@
 			)
 		)
 		(property "Value" "MCP1700-3302ETO"
-			(at 265.684 26.162 0)
+			(at 259.588 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14785,7 +14825,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 265.43 26.67 0)
+			(at 264.16 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14795,7 +14835,7 @@
 			)
 		)
 		(property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/20001826D.pdf"
-			(at 265.43 31.75 0)
+			(at 264.16 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14804,7 +14844,7 @@
 			)
 		)
 		(property "Description" "250mA Low Quiscent Current LDO, 3.3V output, TO-92"
-			(at 265.43 31.75 0)
+			(at 264.16 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14824,7 +14864,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "U6")
+					(reference "U7")
 					(unit 1)
 				)
 			)
@@ -14832,7 +14872,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 237.49 36.83 0)
+		(at 236.22 36.83 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -14841,7 +14881,7 @@
 		(dnp no)
 		(uuid "7689b6f8-3aed-49a8-9090-f821fbf8fb73")
 		(property "Reference" "C15"
-			(at 237.236 34.798 0)
+			(at 235.966 34.798 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14850,7 +14890,7 @@
 			)
 		)
 		(property "Value" "0.1uF"
-			(at 237.236 39.116 0)
+			(at 235.966 39.116 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14859,7 +14899,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm"
-			(at 236.5248 40.64 0)
+			(at 235.2548 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14868,7 +14908,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 237.49 36.83 0)
+			(at 236.22 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14877,7 +14917,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 237.49 36.83 0)
+			(at 236.22 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15092,7 +15132,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "793691b4-36dc-4904-83f9-2617d3fe5e0d")
-		(property "Reference" "#PWR013"
+		(property "Reference" "#PWR012"
 			(at 54.61 135.89 0)
 			(effects
 				(font
@@ -15143,7 +15183,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR013")
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)
@@ -15151,7 +15191,7 @@
 	)
 	(symbol
 		(lib_id "PCM_SparkFun-PowerSymbol:5V")
-		(at 161.29 76.2 0)
+		(at 162.56 82.55 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -15159,8 +15199,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "795b5ca0-2d29-4f9e-a78e-8b0c566ac459")
-		(property "Reference" "#PWR016"
-			(at 161.29 80.01 0)
+		(property "Reference" "#PWR046"
+			(at 162.56 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15169,7 +15209,7 @@
 			)
 		)
 		(property "Value" "5V"
-			(at 161.29 72.39 0)
+			(at 162.56 78.74 0)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -15178,7 +15218,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 161.29 76.2 0)
+			(at 162.56 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15187,7 +15227,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 161.29 76.2 0)
+			(at 162.56 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15196,7 +15236,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"5V\""
-			(at 161.29 82.55 0)
+			(at 162.56 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15210,7 +15250,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR016")
+					(reference "#PWR046")
 					(unit 1)
 				)
 			)
@@ -15226,7 +15266,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7c3eabaa-418b-4e43-858e-06cfede78726")
-		(property "Reference" "#PWR034"
+		(property "Reference" "#PWR023"
 			(at 90.17 45.72 0)
 			(effects
 				(font
@@ -15277,7 +15317,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR034")
+					(reference "#PWR023")
 					(unit 1)
 				)
 			)
@@ -15292,7 +15332,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7c97d7d8-3c88-4d00-89e5-86da687bcb1c")
-		(property "Reference" "R8"
+		(property "Reference" "R7"
 			(at 154.178 158.242 90)
 			(effects
 				(font
@@ -15344,7 +15384,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R8")
+					(reference "R7")
 					(unit 1)
 				)
 			)
@@ -15360,7 +15400,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7cb3612d-de7e-4664-a915-90c0ac486406")
-		(property "Reference" "H1"
+		(property "Reference" "H4"
 			(at 160.02 133.3499 0)
 			(effects
 				(font
@@ -15409,7 +15449,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "H1")
+					(reference "H4")
 					(unit 1)
 				)
 			)
@@ -15425,7 +15465,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "80cb66fe-04a7-4474-b3c1-cf28fcd8bb32")
-		(property "Reference" "#PWR063"
+		(property "Reference" "#PWR014"
 			(at 62.23 168.91 0)
 			(effects
 				(font
@@ -15476,7 +15516,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR063")
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -15491,7 +15531,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "831a34f4-380b-4197-8c76-cabbd4bb7635")
-		(property "Reference" "#PWR042"
+		(property "Reference" "#PWR02"
 			(at 22.86 182.88 0)
 			(effects
 				(font
@@ -15542,7 +15582,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR042")
+					(reference "#PWR02")
 					(unit 1)
 				)
 			)
@@ -15558,7 +15598,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8a6c4dd2-76ba-4a93-896d-a6e54627a712")
-		(property "Reference" "#PWR053"
+		(property "Reference" "#PWR032"
 			(at 110.49 81.28 0)
 			(effects
 				(font
@@ -15608,7 +15648,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR053")
+					(reference "#PWR032")
 					(unit 1)
 				)
 			)
@@ -15624,7 +15664,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8b14d88d-fb04-4320-b2bb-f9653e808031")
-		(property "Reference" "#PWR026"
+		(property "Reference" "#PWR037"
 			(at 134.62 105.41 0)
 			(effects
 				(font
@@ -15675,7 +15715,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR026")
+					(reference "#PWR037")
 					(unit 1)
 				)
 			)
@@ -15690,7 +15730,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "8bc1e5e7-03d5-486d-828f-23f08e0be004")
-		(property "Reference" "#PWR029"
+		(property "Reference" "#PWR063"
 			(at 252.73 101.6 0)
 			(effects
 				(font
@@ -15740,7 +15780,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR029")
+					(reference "#PWR063")
 					(unit 1)
 				)
 			)
@@ -15756,7 +15796,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8c451e08-f171-45a1-a29e-9c078e8ba25f")
-		(property "Reference" "#PWR08"
+		(property "Reference" "#PWR04"
 			(at 31.75 43.18 0)
 			(effects
 				(font
@@ -15807,7 +15847,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR08")
+					(reference "#PWR04")
 					(unit 1)
 				)
 			)
@@ -15822,7 +15862,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "8ff4364f-62bc-4db3-a990-16b57a962293")
-		(property "Reference" "#PWR031"
+		(property "Reference" "#PWR058"
 			(at 220.98 62.23 0)
 			(effects
 				(font
@@ -15872,7 +15912,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR031")
+					(reference "#PWR058")
 					(unit 1)
 				)
 			)
@@ -15880,7 +15920,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
-		(at 167.64 78.74 0)
+		(at 168.91 85.09 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -15888,8 +15928,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "90cf0c36-66cd-4daf-908b-6d78a64946ac")
-		(property "Reference" "J8"
-			(at 170.18 77.4699 0)
+		(property "Reference" "J10"
+			(at 171.45 83.8199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15898,7 +15938,7 @@
 			)
 		)
 		(property "Value" "Servo2"
-			(at 170.18 80.0099 0)
+			(at 171.45 86.3599 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15906,8 +15946,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 167.64 78.74 0)
+		(property "Footprint" "Connector_JST:JST_PH_B3B-PH-K_1x03_P2.00mm_Vertical"
+			(at 168.91 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15916,7 +15956,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 167.64 78.74 0)
+			(at 168.91 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15925,7 +15965,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 167.64 78.74 0)
+			(at 168.91 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15945,7 +15985,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J8")
+					(reference "J10")
 					(unit 1)
 				)
 			)
@@ -15961,7 +16001,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "930d0615-29bb-4a8e-a86e-dc8717bc8ddb")
-		(property "Reference" "#PWR018"
+		(property "Reference" "#PWR024"
 			(at 100.33 152.4 0)
 			(effects
 				(font
@@ -16012,7 +16052,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR018")
+					(reference "#PWR024")
 					(unit 1)
 				)
 			)
@@ -16028,7 +16068,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "97082c25-04e2-4b63-a6d7-b42122042aa2")
-		(property "Reference" "J14"
+		(property "Reference" "J1"
 			(at 20.32 25.4 0)
 			(effects
 				(font
@@ -16080,7 +16120,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J14")
+					(reference "J1")
 					(unit 1)
 				)
 			)
@@ -16088,7 +16128,7 @@
 	)
 	(symbol
 		(lib_id "PCM_SparkFun-PowerSymbol:5V")
-		(at 190.5 30.48 0)
+		(at 186.69 30.48 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -16096,8 +16136,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9c0d36cc-e991-46d9-b6ee-e5f2f001a362")
-		(property "Reference" "#PWR01"
-			(at 190.5 34.29 0)
+		(property "Reference" "#PWR048"
+			(at 186.69 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16106,7 +16146,7 @@
 			)
 		)
 		(property "Value" "5V"
-			(at 190.5 26.67 0)
+			(at 186.69 26.67 0)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -16115,7 +16155,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 190.5 30.48 0)
+			(at 186.69 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16124,7 +16164,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 190.5 30.48 0)
+			(at 186.69 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16133,7 +16173,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"5V\""
-			(at 190.5 36.83 0)
+			(at 186.69 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16147,7 +16187,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR01")
+					(reference "#PWR048")
 					(unit 1)
 				)
 			)
@@ -16155,15 +16195,15 @@
 	)
 	(symbol
 		(lib_id "Joe_Mohos_Symbols:+5V_ISO")
-		(at 228.6 29.21 0)
+		(at 229.87 29.21 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "9ec76a85-0e33-4696-8c53-f6d434a584cb")
-		(property "Reference" "#PWR056"
-			(at 228.6 33.02 0)
+		(property "Reference" "#PWR059"
+			(at 229.87 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16172,7 +16212,7 @@
 			)
 		)
 		(property "Value" "+5V_ISO"
-			(at 228.346 25.146 0)
+			(at 229.616 25.146 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16180,7 +16220,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 228.6 29.21 0)
+			(at 229.87 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16189,7 +16229,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 228.6 29.21 0)
+			(at 229.87 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16198,7 +16238,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 228.6 29.21 0)
+			(at 229.87 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16212,7 +16252,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR056")
+					(reference "#PWR059")
 					(unit 1)
 				)
 			)
@@ -16227,7 +16267,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "9f212974-a769-4f3f-9843-84a92d972b41")
-		(property "Reference" "C7"
+		(property "Reference" "C8"
 			(at 110.236 33.274 0)
 			(effects
 				(font
@@ -16281,7 +16321,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C7")
+					(reference "C8")
 					(unit 1)
 				)
 			)
@@ -16297,7 +16337,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9fc0b77e-25b3-4e67-a678-4cca84b8d8d6")
-		(property "Reference" "TP1"
+		(property "Reference" "TP6"
 			(at 259.08 44.9579 0)
 			(effects
 				(font
@@ -16306,7 +16346,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "DMX_RX"
+		(property "Value" "~"
 			(at 259.08 46.2279 0)
 			(effects
 				(font
@@ -16316,7 +16356,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
 			(at 261.62 48.26 0)
 			(effects
 				(font
@@ -16349,7 +16389,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "TP1")
+					(reference "TP6")
 					(unit 1)
 				)
 			)
@@ -16364,7 +16404,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a1685b01-1022-4a90-8c47-5aea8e9d1873")
-		(property "Reference" "#PWR048"
+		(property "Reference" "#PWR056"
 			(at 214.63 125.73 0)
 			(effects
 				(font
@@ -16414,7 +16454,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR048")
+					(reference "#PWR056")
 					(unit 1)
 				)
 			)
@@ -16429,7 +16469,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a2c54857-b42b-4552-bd05-9fb3fefe6418")
-		(property "Reference" "TP7"
+		(property "Reference" "TP2"
 			(at 107.188 24.892 0)
 			(effects
 				(font
@@ -16448,7 +16488,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
 			(at 113.03 30.48 0)
 			(effects
 				(font
@@ -16481,7 +16521,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "TP7")
+					(reference "TP2")
 					(unit 1)
 				)
 			)
@@ -16497,7 +16537,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a6c0ea17-bd24-4582-8a16-02bf4a175b2c")
-		(property "Reference" "#PWR082"
+		(property "Reference" "#PWR03"
 			(at 27.94 22.86 0)
 			(effects
 				(font
@@ -16548,7 +16588,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR082")
+					(reference "#PWR03")
 					(unit 1)
 				)
 			)
@@ -16564,7 +16604,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a6e39f9f-a2dc-4337-96e2-b8cb9b06b90d")
-		(property "Reference" "#PWR037"
+		(property "Reference" "#PWR026"
 			(at 101.6 33.02 0)
 			(effects
 				(font
@@ -16615,7 +16655,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR037")
+					(reference "#PWR026")
 					(unit 1)
 				)
 			)
@@ -16631,7 +16671,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a7da58bd-2661-4182-9a95-9f7eff980be1")
-		(property "Reference" "C1"
+		(property "Reference" "C2"
 			(at 58.8645 161.3535 90)
 			(effects
 				(font
@@ -16685,7 +16725,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C1")
+					(reference "C2")
 					(unit 1)
 				)
 			)
@@ -16700,7 +16740,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ad6fa24d-c8de-4d02-bf0f-e40da3026b49")
-		(property "Reference" "#PWR064"
+		(property "Reference" "#PWR013"
 			(at 62.23 161.29 0)
 			(effects
 				(font
@@ -16751,7 +16791,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR064")
+					(reference "#PWR013")
 					(unit 1)
 				)
 			)
@@ -16767,7 +16807,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ade22f3e-f0b2-42bc-9c48-51cfb1bd6b1a")
-		(property "Reference" "R17"
+		(property "Reference" "R11"
 			(at 199.136 134.366 90)
 			(effects
 				(font
@@ -16819,72 +16859,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 168.91 124.46 0)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ae4a9fc5-0743-4e28-9bcd-b5079ebaab62")
-		(property "Reference" "H6"
-			(at 171.45 123.1899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MountingHole"
-			(at 171.45 125.7299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
-			(at 168.91 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 168.91 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 168.91 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project "Octal_Brushed_Controller"
-				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "H6")
+					(reference "R11")
 					(unit 1)
 				)
 			)
@@ -16899,7 +16874,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b2f397f6-841a-4f43-80a9-62a408215551")
-		(property "Reference" "U4"
+		(property "Reference" "U5"
 			(at 205.486 124.714 0)
 			(effects
 				(font
@@ -16917,7 +16892,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DIP:DIP-8_W7.62mm"
+		(property "Footprint" "Package_DIP:SMDIP-8_W9.53mm"
 			(at 210.82 146.05 0)
 			(effects
 				(font
@@ -16971,7 +16946,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "U4")
+					(reference "U5")
 					(unit 1)
 				)
 			)
@@ -16986,7 +16961,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b71fe56f-d75a-4abe-b3e7-853ad1e1eba1")
-		(property "Reference" "R4"
+		(property "Reference" "R2"
 			(at 98.806 177.546 90)
 			(effects
 				(font
@@ -17038,7 +17013,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R4")
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -17053,7 +17028,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b94247bf-0d96-4ab1-99c3-486ce3f2ebcb")
-		(property "Reference" "R2"
+		(property "Reference" "R3"
 			(at 102.616 154.432 90)
 			(effects
 				(font
@@ -17105,7 +17080,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R2")
+					(reference "R3")
 					(unit 1)
 				)
 			)
@@ -17121,7 +17096,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ba0c6b49-c03f-4cf7-8478-da240cd2ea23")
-		(property "Reference" "#PWR036"
+		(property "Reference" "#PWR030"
 			(at 109.22 45.72 0)
 			(effects
 				(font
@@ -17172,7 +17147,73 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR036")
+					(reference "#PWR030")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Joe_Mohos_Symbols:+3.3V_ISO")
+		(at 275.59 30.48 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ba139967-0b7e-41cb-86b6-505cce1c6625")
+		(property "Reference" "#PWR065"
+			(at 275.59 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V_ISO"
+			(at 275.59 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 275.59 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 275.59 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 275.59 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "66f89f13-0c0f-457e-b218-8ac41b4cc970")
+		)
+		(instances
+			(project ""
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(reference "#PWR065")
 					(unit 1)
 				)
 			)
@@ -17187,7 +17228,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "bd850d28-9d9b-4347-b625-7f0cb2a3ea07")
-		(property "Reference" "J9"
+		(property "Reference" "J6"
 			(at 141.986 100.33 0)
 			(effects
 				(font
@@ -17205,7 +17246,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_PH_B5B-PH-K_1x05_P2.00mm_Vertical"
 			(at 143.51 107.95 0)
 			(effects
 				(font
@@ -17250,7 +17291,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J9")
+					(reference "J6")
 					(unit 1)
 				)
 			)
@@ -17265,7 +17306,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "be61232b-61f8-4eb3-9126-c70bdf87211a")
-		(property "Reference" "#PWR025"
+		(property "Reference" "#PWR055"
 			(at 214.63 115.57 0)
 			(effects
 				(font
@@ -17315,7 +17356,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR025")
+					(reference "#PWR055")
 					(unit 1)
 				)
 			)
@@ -17330,7 +17371,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "be7bca13-4a5d-4417-8af2-3df0a20e7073")
-		(property "Reference" "#PWR049"
+		(property "Reference" "#PWR061"
 			(at 234.95 110.49 0)
 			(effects
 				(font
@@ -17380,7 +17421,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR049")
+					(reference "#PWR061")
 					(unit 1)
 				)
 			)
@@ -17456,7 +17497,7 @@
 	)
 	(symbol
 		(lib_id "RFB-0505S:RFB-0505S")
-		(at 212.09 36.83 0)
+		(at 203.2 36.83 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -17465,7 +17506,7 @@
 		(fields_autoplaced yes)
 		(uuid "bf2d5d13-5666-49a3-92c5-62f22b6bd141")
 		(property "Reference" "PS1"
-			(at 212.09 24.13 0)
+			(at 203.2 24.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17473,7 +17514,7 @@
 			)
 		)
 		(property "Value" "RFB-0505S"
-			(at 212.09 26.67 0)
+			(at 203.2 26.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17481,7 +17522,7 @@
 			)
 		)
 		(property "Footprint" "RFB-0505S:CONV_RFB-0505S"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17491,7 +17532,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17500,7 +17541,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17509,7 +17550,7 @@
 			)
 		)
 		(property "MF" "Recom Power"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17519,7 +17560,7 @@
 			)
 		)
 		(property "MAXIMUM_PACKAGE_HEIGHT" "10.2mm"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17529,7 +17570,7 @@
 			)
 		)
 		(property "Package" "SIP-6 Recom Power"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17539,7 +17580,7 @@
 			)
 		)
 		(property "Price" "None"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17549,7 +17590,7 @@
 			)
 		)
 		(property "Check_prices" "https://www.snapeda.com/parts/RFB-0505S/Recom+Power/view-part/?ref=eda"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17559,7 +17600,7 @@
 			)
 		)
 		(property "STANDARD" "Manufacturer Recommendations"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17569,7 +17610,7 @@
 			)
 		)
 		(property "PARTREV" "1"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17579,7 +17620,7 @@
 			)
 		)
 		(property "SnapEDA_Link" "https://www.snapeda.com/parts/RFB-0505S/Recom+Power/view-part/?ref=snap"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17589,7 +17630,7 @@
 			)
 		)
 		(property "MP" "RFB-0505S"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17599,7 +17640,7 @@
 			)
 		)
 		(property "Description_1" "1W DC/DC-Converter 'ECONOLINE' SIP7 1kV unreg"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17609,7 +17650,7 @@
 			)
 		)
 		(property "Availability" "In Stock"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17619,7 +17660,7 @@
 			)
 		)
 		(property "MANUFACTURER" "Recom"
-			(at 212.09 36.83 0)
+			(at 203.2 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17659,7 +17700,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c46c9f82-f984-444d-9e0e-762b9a67ca3b")
-		(property "Reference" "#PWR03"
+		(property "Reference" "#PWR028"
 			(at 106.68 170.18 0)
 			(effects
 				(font
@@ -17710,7 +17751,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR03")
+					(reference "#PWR028")
 					(unit 1)
 				)
 			)
@@ -17726,7 +17767,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c5068c1a-dc46-4c86-8df4-4e1e72abbea7")
-		(property "Reference" "R12"
+		(property "Reference" "R14"
 			(at 223.774 78.486 90)
 			(effects
 				(font
@@ -17778,7 +17819,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R12")
+					(reference "R14")
 					(unit 1)
 				)
 			)
@@ -17794,7 +17835,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c51cf2c6-1405-4a5a-8d8e-1fb0646195dd")
-		(property "Reference" "C10"
+		(property "Reference" "C4"
 			(at 72.8345 158.8135 90)
 			(effects
 				(font
@@ -17848,7 +17889,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C10")
+					(reference "C4")
 					(unit 1)
 				)
 			)
@@ -17863,7 +17904,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c5dacd58-9824-4da1-8df8-f61f36e602f7")
-		(property "Reference" "J4"
+		(property "Reference" "J2"
 			(at 34.036 152.654 0)
 			(effects
 				(font
@@ -17933,7 +17974,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J4")
+					(reference "J2")
 					(unit 1)
 				)
 			)
@@ -17949,7 +17990,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c69b6989-3741-4fc5-85f6-98992c48adf9")
-		(property "Reference" "R14"
+		(property "Reference" "R12"
 			(at 218.186 84.836 90)
 			(effects
 				(font
@@ -18001,7 +18042,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R14")
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -18009,15 +18050,15 @@
 	)
 	(symbol
 		(lib_id "Joe_Mohos_Symbols:GND_ISO")
-		(at 228.6 44.45 0)
+		(at 229.87 44.45 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "c6af0bb8-c46c-48e4-8e60-460fa9bb7a3b")
-		(property "Reference" "#PWR050"
-			(at 228.6 50.8 0)
+		(property "Reference" "#PWR060"
+			(at 229.87 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18026,7 +18067,7 @@
 			)
 		)
 		(property "Value" "GND_ISO"
-			(at 228.6 48.26 0)
+			(at 229.87 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18034,7 +18075,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 228.6 44.45 0)
+			(at 229.87 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18043,7 +18084,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 228.6 44.45 0)
+			(at 229.87 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18052,7 +18093,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 228.6 44.45 0)
+			(at 229.87 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18066,7 +18107,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR050")
+					(reference "#PWR060")
 					(unit 1)
 				)
 			)
@@ -18082,7 +18123,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c6e9c275-8a13-49a3-8135-86c83ef5cbbd")
-		(property "Reference" "#PWR052"
+		(property "Reference" "#PWR033"
 			(at 111.76 106.68 0)
 			(effects
 				(font
@@ -18133,7 +18174,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR052")
+					(reference "#PWR033")
 					(unit 1)
 				)
 			)
@@ -18148,7 +18189,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ca99ba51-4831-4b45-b77e-40fb448a3f19")
-		(property "Reference" "R7"
+		(property "Reference" "R6"
 			(at 151.638 158.242 90)
 			(effects
 				(font
@@ -18200,72 +18241,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 168.91 119.38 0)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "cd5accb0-554c-4139-88d6-50dcc9c559e6")
-		(property "Reference" "H3"
-			(at 171.45 118.1099 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MountingHole"
-			(at 171.45 120.6499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
-			(at 168.91 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 168.91 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 168.91 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project "Octal_Brushed_Controller"
-				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "H3")
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -18281,7 +18257,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cf2dcc78-e762-499f-84b1-b809f7027061")
-		(property "Reference" "#PWR019"
+		(property "Reference" "#PWR025"
 			(at 100.33 175.26 0)
 			(effects
 				(font
@@ -18332,7 +18308,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR019")
+					(reference "#PWR025")
 					(unit 1)
 				)
 			)
@@ -18348,7 +18324,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cfceee9d-9df3-4b8d-9f72-7b0f3d9c6eda")
-		(property "Reference" "#PWR023"
+		(property "Reference" "#PWR021"
 			(at 76.2 180.34 0)
 			(effects
 				(font
@@ -18399,7 +18375,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR023")
+					(reference "#PWR021")
 					(unit 1)
 				)
 			)
@@ -18407,7 +18383,7 @@
 	)
 	(symbol
 		(lib_id "PCM_SparkFun-PowerSymbol:5V")
-		(at 161.29 62.23 0)
+		(at 162.56 59.69 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -18415,8 +18391,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d25e2805-6d7d-4d41-8e4c-ba81777c5b45")
-		(property "Reference" "#PWR04"
-			(at 161.29 66.04 0)
+		(property "Reference" "#PWR044"
+			(at 162.56 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18425,7 +18401,7 @@
 			)
 		)
 		(property "Value" "5V"
-			(at 161.29 58.42 0)
+			(at 162.56 55.88 0)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -18434,7 +18410,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 161.29 62.23 0)
+			(at 162.56 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18443,7 +18419,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 161.29 62.23 0)
+			(at 162.56 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18452,7 +18428,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"5V\""
-			(at 161.29 68.58 0)
+			(at 162.56 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18466,7 +18442,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR04")
+					(reference "#PWR044")
 					(unit 1)
 				)
 			)
@@ -18482,7 +18458,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d417aeef-33b4-453d-8712-8d0cf3296a8a")
-		(property "Reference" "#PWR066"
+		(property "Reference" "#PWR016"
 			(at 62.23 186.69 0)
 			(effects
 				(font
@@ -18533,7 +18509,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR066")
+					(reference "#PWR016")
 					(unit 1)
 				)
 			)
@@ -18549,7 +18525,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d6e93bee-41f0-4c83-b207-77b4cde2e3dd")
-		(property "Reference" "#PWR035"
+		(property "Reference" "#PWR027"
 			(at 101.6 45.72 0)
 			(effects
 				(font
@@ -18600,7 +18576,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR035")
+					(reference "#PWR027")
 					(unit 1)
 				)
 			)
@@ -18616,7 +18592,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d7dfff79-fe72-4322-aba1-b606ba6dfcb8")
-		(property "Reference" "R15"
+		(property "Reference" "R13"
 			(at 219.456 120.396 90)
 			(effects
 				(font
@@ -18668,7 +18644,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "R15")
+					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -18676,7 +18652,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 231.14 36.83 0)
+		(at 229.87 36.83 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -18685,7 +18661,7 @@
 		(dnp no)
 		(uuid "d8f592d1-b5cc-44f7-a091-488ec5723bb5")
 		(property "Reference" "C14"
-			(at 230.886 34.798 0)
+			(at 229.616 34.798 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18694,7 +18670,7 @@
 			)
 		)
 		(property "Value" "0.1uF"
-			(at 230.886 39.116 0)
+			(at 229.616 39.116 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18703,7 +18679,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm"
-			(at 230.1748 40.64 0)
+			(at 228.9048 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18712,7 +18688,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 231.14 36.83 0)
+			(at 229.87 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18721,7 +18697,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 231.14 36.83 0)
+			(at 229.87 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18753,7 +18729,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "dc33d73c-1a80-4a16-889d-d5c6a6f620f5")
-		(property "Reference" "C5"
+		(property "Reference" "C6"
 			(at 101.854 33.528 0)
 			(effects
 				(font
@@ -18807,7 +18783,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C5")
+					(reference "C6")
 					(unit 1)
 				)
 			)
@@ -18823,7 +18799,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e33f2fa9-f20a-4db2-a5ed-c3b6ba92a8f1")
-		(property "Reference" "#PWR010"
+		(property "Reference" "#PWR018"
 			(at 76.2 45.72 0)
 			(effects
 				(font
@@ -18874,7 +18850,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR010")
+					(reference "#PWR018")
 					(unit 1)
 				)
 			)
@@ -18889,7 +18865,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e3ac08a8-ce0d-4826-a662-d294cffa6360")
-		(property "Reference" "J2"
+		(property "Reference" "J4"
 			(at 115.316 153.67 0)
 			(effects
 				(font
@@ -18949,7 +18925,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J2")
+					(reference "J4")
 					(unit 1)
 				)
 			)
@@ -18965,7 +18941,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e479e30e-8f38-456a-9576-b56b79be7ca9")
-		(property "Reference" "#PWR07"
+		(property "Reference" "#PWR08"
 			(at 48.26 162.56 0)
 			(effects
 				(font
@@ -19016,7 +18992,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR07")
+					(reference "#PWR08")
 					(unit 1)
 				)
 			)
@@ -19032,7 +19008,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e568b44e-c414-420c-b9b0-1e34938f11dc")
-		(property "Reference" "#PWR059"
+		(property "Reference" "#PWR031"
 			(at 110.49 67.31 0)
 			(effects
 				(font
@@ -19083,7 +19059,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR059")
+					(reference "#PWR031")
 					(unit 1)
 				)
 			)
@@ -19099,7 +19075,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e637c29a-01b3-4a7c-90e3-bde5b92ee34f")
-		(property "Reference" "#PWR020"
+		(property "Reference" "#PWR029"
 			(at 106.68 193.04 0)
 			(effects
 				(font
@@ -19150,7 +19126,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR020")
+					(reference "#PWR029")
 					(unit 1)
 				)
 			)
@@ -19166,7 +19142,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e6d30594-fa94-4a2b-9c75-d37ffc36b070")
-		(property "Reference" "#PWR055"
+		(property "Reference" "#PWR051"
 			(at 200.66 133.35 0)
 			(effects
 				(font
@@ -19217,7 +19193,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR055")
+					(reference "#PWR051")
 					(unit 1)
 				)
 			)
@@ -19233,7 +19209,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ea43f0e4-2afd-46e5-80d3-dc68836b1a85")
-		(property "Reference" "#PWR09"
+		(property "Reference" "#PWR06"
 			(at 36.83 34.29 0)
 			(effects
 				(font
@@ -19284,7 +19260,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR09")
+					(reference "#PWR06")
 					(unit 1)
 				)
 			)
@@ -19299,7 +19275,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ec97c5da-86ba-43eb-a883-2a9ef793cbba")
-		(property "Reference" "U5"
+		(property "Reference" "U2"
 			(at 90.17 26.67 0)
 			(effects
 				(font
@@ -19354,7 +19330,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "U5")
+					(reference "U2")
 					(unit 1)
 				)
 			)
@@ -19434,7 +19410,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ed696edc-0d75-4893-a431-17a293d118cb")
-		(property "Reference" "TP6"
+		(property "Reference" "TP1"
 			(at 77.978 24.892 0)
 			(effects
 				(font
@@ -19453,7 +19429,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
 			(at 83.82 30.48 0)
 			(effects
 				(font
@@ -19486,7 +19462,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "TP6")
+					(reference "TP1")
 					(unit 1)
 				)
 			)
@@ -19502,7 +19478,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ee4337f4-78a0-4806-9ab7-ec8571bfb519")
-		(property "Reference" "#PWR017"
+		(property "Reference" "#PWR039"
 			(at 135.89 85.09 0)
 			(effects
 				(font
@@ -19553,7 +19529,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR017")
+					(reference "#PWR039")
 					(unit 1)
 				)
 			)
@@ -19569,7 +19545,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f32f7257-89b7-4716-bec1-912386d4e4c0")
-		(property "Reference" "C6"
+		(property "Reference" "C3"
 			(at 58.8645 179.1335 90)
 			(effects
 				(font
@@ -19623,7 +19599,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "C6")
+					(reference "C3")
 					(unit 1)
 				)
 			)
@@ -19639,7 +19615,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f430620b-b7a9-41f6-90e3-32f448e02b50")
-		(property "Reference" "H8"
+		(property "Reference" "H2"
 			(at 160.02 123.1899 0)
 			(effects
 				(font
@@ -19688,7 +19664,7 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "H8")
+					(reference "H2")
 					(unit 1)
 				)
 			)
@@ -19703,7 +19679,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f5e0ea7e-eeb2-4c36-81b1-b7552705f731")
-		(property "Reference" "J5"
+		(property "Reference" "J7"
 			(at 143.51 59.69 0)
 			(effects
 				(font
@@ -19721,7 +19697,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_PH_B7B-PH-K_1x07_P2.00mm_Vertical"
 			(at 144.78 69.85 0)
 			(effects
 				(font
@@ -19772,7 +19748,7 @@
 		(instances
 			(project ""
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "J5")
+					(reference "J7")
 					(unit 1)
 				)
 			)
@@ -19780,16 +19756,15 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 240.03 30.48 0)
+		(at 236.22 30.48 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "f6571205-8f57-4077-ac4d-d054fda663bd")
-		(property "Reference" "TP3"
-			(at 242.57 27.1779 0)
+		(property "Reference" "TP4"
+			(at 234.696 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19798,7 +19773,7 @@
 			)
 		)
 		(property "Value" "DMX_RX"
-			(at 242.57 28.4479 0)
+			(at 238.76 28.4479 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19807,8 +19782,8 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
-			(at 245.11 30.48 0)
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+			(at 241.3 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19817,7 +19792,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 245.11 30.48 0)
+			(at 241.3 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19826,7 +19801,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 240.03 30.48 0)
+			(at 236.22 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19840,7 +19815,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "TP3")
+					(reference "TP4")
 					(unit 1)
 				)
 			)
@@ -19855,7 +19830,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fa50a2c0-739a-4f9b-9756-3dff5f8f5d11")
-		(property "Reference" "#PWR030"
+		(property "Reference" "#PWR062"
 			(at 252.73 76.2 0)
 			(effects
 				(font
@@ -19905,7 +19880,7 @@
 		(instances
 			(project "Wiper_Servo_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR030")
+					(reference "#PWR062")
 					(unit 1)
 				)
 			)
@@ -19921,7 +19896,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fc595eac-7945-40c8-b6b4-b5a734ab0e53")
-		(property "Reference" "#PWR041"
+		(property "Reference" "#PWR07"
 			(at 38.1 157.48 0)
 			(effects
 				(font
@@ -19972,8 +19947,50 @@
 		(instances
 			(project "Octal_Brushed_Controller"
 				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
-					(reference "#PWR041")
+					(reference "#PWR07")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet
+		(at 305.435 12.7)
+		(size 258.445 184.15)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "ff8778f7-1218-499a-9801-e85c0fa619c8")
+		(property "Sheetname" "Cable_Diagrams"
+			(at 305.435 11.9884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "cable_diagrams.kicad_sch"
+			(at 305.435 197.4346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Wiper_Servo_Controller"
+				(path "/c73d14d4-f7f1-48a4-9455-181a42a7e3a5"
+					(page "2")
 				)
 			)
 		)

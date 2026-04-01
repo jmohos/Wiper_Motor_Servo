@@ -12,7 +12,7 @@
 //    Endstops      : 2 per motor, active-low, internal pull-up
 //      Motor 0: End-A=GPIO8,  End-B=GPIO9
 //      Motor 1: End-A=GPIO10, End-B=GPIO11
-//    DMX512        : UART0, RS485 transceiver
+//    AnimCom RS485 : UART0, RS485 transceiver
 //      DE=GPIO15, TX=GPIO16, RX=GPIO17
 //    Local UI      : Rotary encoder + button
 //      ENC_CLK=GPIO12, ENC_DT=GPIO13, ENC_SW=GPIO14
@@ -60,17 +60,21 @@
 #define ENDSTOP_M1_B_PIN   11
 
 // ---------------------------------------------------------------------------
-// DMX512 serial interface (UART0, RS485 transceiver)
-//   DE  = GPIO15  Direction enable: HIGH = transmit, LOW = receive
-//   TX  = GPIO16  UART0 TX — DMX output (to RS485 driver DI)
-//   RX  = GPIO17  UART0 RX — DMX input  (from RS485 driver RO)
+// AnimCom RS485 serial interface (UART0, RS485 transceiver)
+//   DE  = GPIO15  Direction enable: driven LOW (receive only, unidirectional)
+//   TX  = GPIO16  UART0 TX — not actively used (protocol is receive-only)
+//   RX  = GPIO17  UART0 RX — AnimCom frames from Animation Controller
 //
-//   Baud rate: 250000, 8N2 (standard DMX512)
+//   Baud rate: 115200, 8N1 (AnimCom standard)
 //   Use Serial1 (UART0) in the arduino-pico core.
 // ---------------------------------------------------------------------------
-#define DMX_DE_PIN   15   // RS485 direction enable (HIGH=TX, LOW=RX)
-#define DMX_TX_PIN   16   // UART0 TX
-#define DMX_RX_PIN   17   // UART0 RX
+#define RS485_DE_PIN  15   // RS485 direction enable (driven LOW = receive)
+#define RS485_TX_PIN  16   // UART0 TX (declared but unused)
+#define RS485_RX_PIN  17   // UART0 RX
+#define RS485_BAUD   115200
+
+// Node identity — change to a unique station ID (0x03-0x09) for each unit.
+#define NODE_ID      0x03
 
 // ---------------------------------------------------------------------------
 // Local UI — rotary encoder with pushbutton
@@ -123,3 +127,4 @@
 // ---------------------------------------------------------------------------
 #define I2C_SDA_PIN  26   // deprecated — do not use
 #define I2C_SCL_PIN  27   // deprecated — do not use
+

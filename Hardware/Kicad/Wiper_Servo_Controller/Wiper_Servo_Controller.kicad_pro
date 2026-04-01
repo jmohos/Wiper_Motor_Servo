@@ -38,8 +38,8 @@
         "other_text_upright": false,
         "pads": {
           "drill": 1.1,
-          "height": 2.0,
-          "width": 1.905
+          "height": 2.2,
+          "width": 2.2
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -481,7 +481,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "Octal_Brushed_Controller.kicad_pro",
+    "filename": "Wiper_Servo_Controller.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -507,21 +507,35 @@
       {
         "name": "PWR_3V3",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 1,
+        "priority": 3,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.5
+      },
+      {
+        "name": "PWR_3V_ISO",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.5
       },
       {
         "name": "PWR_5V",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 2,
+        "priority": 4,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.8
+      },
+      {
+        "name": "PWR_5V_ISO",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 1,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.8
       },
       {
         "name": "SIGNAL",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 0,
+        "priority": 2,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.25
       },
@@ -529,7 +543,7 @@
         "clearance": 0.25,
         "name": "VIN",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 3,
+        "priority": 5,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 2.0
       }
@@ -551,6 +565,14 @@
       {
         "netclass": "PWR_3V3",
         "pattern": "3.3V"
+      },
+      {
+        "netclass": "PWR_5V_ISO",
+        "pattern": "+5V_ISO"
+      },
+      {
+        "netclass": "PWR_3V_ISO",
+        "pattern": "+3.3V_ISO"
       }
     ]
   },
@@ -562,7 +584,7 @@
       "plot": "Gerbers/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "C:/Users/jmoho/Downloads/Wiper_Servo_Controller.step",
       "svg": "",
       "vrml": ""
     },
@@ -670,7 +692,7 @@
     },
     "net_format_name": "",
     "page_layout_descr_file": "",
-    "plot_directory": "",
+    "plot_directory": "./",
     "space_save_all_events": true,
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
@@ -685,6 +707,10 @@
     [
       "c73d14d4-f7f1-48a4-9455-181a42a7e3a5",
       "Root"
+    ],
+    [
+      "ff8778f7-1218-499a-9801-e85c0fa619c8",
+      "Cable_Diagrams"
     ]
   ],
   "text_variables": {}

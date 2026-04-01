@@ -1,0 +1,34 @@
+Drill report for Wiper_Servo_Controller.kicad_pcb
+Created on 2026-03-27T19:37:17-0700
+
+Copper Layer Stackup:
+    =============================================================
+    L1 :  F.Cu                      front
+    L2 :  In1.Cu                    in1
+    L3 :  In2.Cu                    in2
+    L4 :  In3.Cu                    in3
+    L5 :  In4.Cu                    in4
+    L6 :  B.Cu                      back
+
+
+Drill file 'Wiper_Servo_Controller-PTH.drl' contains
+    plated through holes:
+    =============================================================
+    T1  0.300mm  0.0118"  (108 holes)
+    T2  0.700mm  0.0276"  (6 holes)
+    T3  0.750mm  0.0295"  (32 holes)
+    T4  0.800mm  0.0315"  (72 holes)
+    T5  1.000mm  0.0394"  (62 holes)
+    T6  1.100mm  0.0433"  (11 holes)
+    T7  1.300mm  0.0512"  (4 holes)
+    T8  2.500mm  0.0984"  (2 holes)
+
+    Total plated holes count 297
+
+
+Drill file 'Wiper_Servo_Controller-NPTH.drl' contains
+    unplated through holes:
+    =============================================================
+    T1  3.200mm  0.1260"  (4 holes)
+
+    Total unplated holes count 4

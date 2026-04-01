@@ -20,7 +20,7 @@
 // Write registers
 // ---------------------------------------------------------------------------
 
-// 0x00 : Motor speed — uint8_t, DMX-style encoding:
+// 0x00 : Motor speed — uint8_t, motor-byte encoding:
 //           0   = full reverse
 //          127  = coast / idle  (MCP_SPEED_IDLE)
 //          255  = full forward
@@ -82,3 +82,4 @@
 // Motor count
 // ---------------------------------------------------------------------------
 #define MCP_NUM_MOTORS         1
+

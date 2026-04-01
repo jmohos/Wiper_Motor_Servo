@@ -68,6 +68,15 @@
 #include "Settings.h"
 #include <Servo.h>
 #include "Display.h"
+#include "AnimComSlave.h"
+
+// AnimCom RS485 slave
+static AnimComSlave g_animcom;
+
+// AnimCom global control state — written by callbacks, read by controlLoop().
+static volatile uint8_t g_animState      = ANIMCOM_STATE_STOP;
+static volatile uint8_t g_animPattern    = 0;
+static volatile uint8_t g_animSpeedScale = 100;
 
 // RC servo instances — attached in setup(); driven by controlLoop() ramp.
 static Servo g_servo[NUM_SERVOS];
@@ -107,6 +116,52 @@ static volatile float       g_pidOutput   [NUM_MOTORS] = {0.0f,                0
 static volatile float       g_posError    [NUM_MOTORS] = {0.0f,                0.0f};
 static volatile float       g_measPosAbs  [NUM_MOTORS] = {0.0f,                0.0f};  // accumulated multi-turn (deg)
 
+static void applyAnimRunPattern(uint32_t nowMs)
+{
+    if (g_animState != ANIMCOM_STATE_RUN_AUTO) {
+        return;
+    }
+    if (g_animSpeedScale == 0) {
+        return;
+    }
+
+    const float speedFactor = (float)g_animSpeedScale / 100.0f;
+    const float theta = ((float)nowMs * speedFactor) * (2.0f * PI / 6000.0f);
+    const float sin0 = sinf(theta);
+    const float sin1 = sinf(theta + (PI * 0.5f));
+
+    switch (g_animPattern) {
+    case 2:
+        g_mode[0] = POSITION;
+        g_mode[1] = POSITION;
+        g_targetPos[0] = 90.0f + 70.0f * sin0;
+        g_targetPos[1] = 180.0f + 120.0f * sin1;
+        g_servoTarget[0] = constrain(90.0f + 45.0f * sin1, 0.0f, 180.0f);
+        g_servoTarget[1] = constrain(90.0f - 45.0f * sin0, 0.0f, 180.0f);
+        break;
+
+    case 3:
+        g_mode[0] = VELOCITY;
+        g_mode[1] = POSITION;
+        g_targetVel[0] = (sin0 >= 0.0f) ? 240.0f : -240.0f;
+        g_targetPos[1] = 180.0f + 140.0f * sin0;
+        g_servoTarget[0] = constrain(90.0f + 60.0f * sin1, 0.0f, 180.0f);
+        g_servoTarget[1] = constrain(90.0f + 75.0f * sin0, 0.0f, 180.0f);
+        break;
+
+    case 0:
+    case 1:
+    default:
+        g_mode[0] = VELOCITY;
+        g_mode[1] = VELOCITY;
+        g_targetVel[0] = 180.0f * sin0;
+        g_targetVel[1] = 120.0f * sin1;
+        g_servoTarget[0] = constrain(90.0f + 60.0f * sin0, 0.0f, 180.0f);
+        g_servoTarget[1] = constrain(90.0f + 60.0f * sin1, 0.0f, 180.0f);
+        break;
+    }
+}
+
 // ---------------------------------------------------------------------------
 // PID controllers — Core 0 only, not volatile
 // ---------------------------------------------------------------------------
@@ -120,6 +175,105 @@ static PIDController g_posPid[NUM_MOTORS] = {
     PIDController(3.0f, 0.0f, 0.0f, -POS_VEL_LIMIT, POS_VEL_LIMIT),
     PIDController(3.0f, 0.0f, 0.0f, -POS_VEL_LIMIT, POS_VEL_LIMIT)
 };
+
+// ---------------------------------------------------------------------------
+// AnimCom callback implementations
+// ---------------------------------------------------------------------------
+
+static void onAnimControlState(uint8_t state, uint8_t pattern, uint8_t speed_scale)
+{
+    g_animState      = state;
+    g_animPattern    = pattern;
+    g_animSpeedScale = speed_scale;
+
+    if (state == ANIMCOM_STATE_STOP) {
+        for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+            g_mode[m] = MANUAL;
+            g_velPid[m].reset();
+            g_posPid[m].reset();
+            MotorPWM::setMotor(m, MCP_SPEED_IDLE);
+        }
+        // Coast RC servos to center
+        for (uint8_t s = 0; s < NUM_SERVOS; s++) g_servoTarget[s] = 90.0f;
+        I2CSlave::lastCmdMs = millis();
+    }
+}
+
+static void onAnimManualSingle(uint8_t ch, uint8_t cmd_type, int32_t value)
+{
+    I2CSlave::lastCmdMs = millis();
+
+    if (ch < NUM_MOTORS) {
+        // DC closed-loop motor
+        switch (cmd_type) {
+
+        case ANIMCOM_CMD_SPEED_PERCENT: {
+            // value low byte is signed percent -100..+100
+            int8_t pct = (int8_t)(value & 0xFF);
+            float  vel = (float)pct * 3.6f;   // rough: 100% ≈ 360 deg/s
+            g_targetVel[ch] = vel;
+            if (g_mode[ch] != VELOCITY) g_velPid[ch].reset();
+            g_mode[ch] = VELOCITY;
+            break;
+        }
+        case ANIMCOM_CMD_SPEED_DEG_PER_SEC: {
+            int16_t dps = (int16_t)(value & 0xFFFF);
+            g_targetVel[ch] = (float)dps;
+            if (g_mode[ch] != VELOCITY) g_velPid[ch].reset();
+            g_mode[ch] = VELOCITY;
+            break;
+        }
+        case ANIMCOM_CMD_POSITION_DEG: {
+            int16_t deg = (int16_t)(value & 0xFFFF);
+            g_targetPos[ch] = (float)deg;
+            if (g_mode[ch] != POSITION) {
+                g_velPid[ch].reset();
+                g_posPid[ch].reset();
+                g_commandedPos[ch] = (float)g_measPosAbs[ch];
+            }
+            g_mode[ch] = POSITION;
+            break;
+        }
+        default:
+            break;
+        }
+
+    } else if (ch < NUM_MOTORS + NUM_SERVOS) {
+        // RC servo (channel 2 or 3)
+        uint8_t si = ch - NUM_MOTORS;   // servo index 0 or 1
+        if (cmd_type == ANIMCOM_CMD_SPEED_PERCENT) {
+            int8_t pct = (int8_t)(value & 0xFF);
+            float deg = 90.0f + (float)pct * 0.9f;
+            g_servoTarget[si] = constrain(deg, 0.0f, 180.0f);
+        } else if (cmd_type == ANIMCOM_CMD_POSITION_DEG) {
+            int16_t deg = (int16_t)(value & 0xFFFF);
+            g_servoTarget[si] = constrain((float)deg, 0.0f, 180.0f);
+        }
+    }
+}
+
+static void onAnimTriggerEffect(uint8_t effect_type, uint8_t effect_id, uint16_t effect_param)
+{
+    // Audio playback trigger — placeholder for future DFPlayer or I2S audio module.
+    if (effect_type == ANIMCOM_EFFECT_AUDIO_PLAY) {
+        Serial.printf("[AnimCom] AUDIO_PLAY  track=%d  param=%d\n", effect_id, effect_param);
+    }
+}
+
+static void onAnimWatchdog()
+{
+    // Watchdog fired — coast all motors and center servos.
+    for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+        g_mode[m] = MANUAL;
+        g_velPid[m].reset();
+        g_posPid[m].reset();
+        MotorPWM::setMotor(m, MCP_SPEED_IDLE);
+    }
+    for (uint8_t s = 0; s < NUM_SERVOS; s++) g_servoTarget[s] = 90.0f;
+    g_animState = ANIMCOM_STATE_STOP;
+    g_animPattern = 0;
+    g_animSpeedScale = 100;
+}
 
 // ---------------------------------------------------------------------------
 // Settings helpers — NVM stores independent settings per motor.
@@ -261,6 +415,14 @@ void setup() {
     applySettings();
     I2CSlave::lastCmdMs = millis();
 
+    // AnimCom RS485 slave
+    AnimComCallbacks acCb = {};
+    acCb.onControlState  = onAnimControlState;
+    acCb.onManualSingle  = onAnimManualSingle;
+    acCb.onTriggerEffect = onAnimTriggerEffect;
+    acCb.onWatchdog      = onAnimWatchdog;
+    g_animcom.begin(acCb);
+
     Serial.println("[INFO] Dual wiper motor controller ready");
     if (!mag0Found) Serial.println("[WARN] Motor 0 AS5600 not found — check wiring");
     if (!mag1Found) Serial.println("[WARN] Motor 1 AS5600 not found — check wiring");
@@ -319,6 +481,8 @@ static void controlLoop(uint32_t now) {
     if (now - lastMs < 20) return;
     float dt = (now - lastMs) * 0.001f;
     lastMs = now;
+
+    applyAnimRunPattern(now);
 
     AS5600* encoders[NUM_MOTORS] = { &g_enc0, &g_enc1 };
 
@@ -871,6 +1035,8 @@ static void handleConsoleInput() {
 // ---------------------------------------------------------------------------
 void loop() {
     uint32_t now = millis();
+    g_animcom.poll();
     handleConsoleInput();
     controlLoop(now);
 }
+
