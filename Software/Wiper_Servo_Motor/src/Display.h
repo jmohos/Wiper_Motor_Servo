@@ -1,40 +1,54 @@
 #pragma once
 // =============================================================================
-//  Display.h — ST7789V2 240×280 status display
+//  Display.h — ST7735S 128×160 colour TFT display driver
 //
-//  Layout (portrait, 240 wide × 280 tall):
-//    y=  0 – 17  : Header bar  "WIPER MOTOR CTRL"
-//    y= 18 – 19  : Divider
-//    y= 20 – 89  : Motor 1 (AS5600 closed-loop)
-//    y= 90 – 91  : Divider
-//    y= 92 –161  : Motor 2 (AS5600 closed-loop)
-//    y=162 –163  : Divider
-//    y=164 –207  : Servo 1
-//    y=208 –209  : Divider
-//    y=210 –253  : Servo 2
-//                  (26 px spare at bottom)
+//  Layout — MENU SCREEN (shown while g_inMenu == true):
+//    y=  0 –  15 : Header "WIPER MOTOR CTRL"
+//    y= 16 –  55 : Item 0 — DISABLED  (red)
+//    y= 56 –  95 : Item 1 — MANUAL    (green)
+//    y= 96 – 135 : Item 2 — ANIMCOM   (cyan)
+//    y=136 – 159 : Hint bar "Enc:scroll  Btn:enter"
 //
-//  Each motor section shows:
-//    - Colored mode bar  (YELLOW=manual, GREEN=velocity, CYAN=position)
-//    - Primary value in scale-2 text (measured velocity, absolute position,
-//      or raw duty depending on mode)
-//    - Three scale-1 detail lines whose content varies by mode
-//
-//  Each servo section shows:
-//    - Magenta "SN  SERVO" bar
-//    - Commanded angle in scale-2 text
+//  Layout — STATUS SCREEN (shown while in an AppState):
+//    y=  0 –  15 : Header bar — mode name + "< MENU" hint
+//    y= 16 –  59 : Motor 0 section (44 px)
+//                    mode-colour bar (12 px)
+//                    primary value × scale-2 (16 px)
+//                    detail line 1  × scale-1 (8 px)
+//                    detail line 2  × scale-1 (8 px)
+//    y= 60 –  61 : Divider
+//    y= 62 – 105 : Motor 1 section (44 px, same layout)
+//    y=106 – 107 : Divider
+//    y=108 – 119 : Servo 0 bar (12 px)
+//    y=120 – 127 : Servo 0 value
+//    y=128 – 139 : Servo 1 bar (12 px)
+//    y=140 – 147 : Servo 1 value
+//    y=148 – 159 : Status/hint bar (12 px)
 //
 //  Usage:
-//    Call Display::begin() once in Core 0 setup() after SPI/hardware init.
-//    Call Display::update(state) from Core 1 at whatever rate is desired.
-//    The display SPI is used exclusively from Core 1 after begin().
+//    Call Display::begin() once in setup() after hardware init.
+//    From Core 1:
+//      Display::drawMenu(selectedIdx)         — while in top-level navigation
+//      Display::update(appState, displayState) — while inside a mode
 // =============================================================================
 
 #include <Arduino.h>
 #include "Config.h"
 
-// Snapshot of all data the display needs for one frame.
+// ---------------------------------------------------------------------------
+// Top-level application states — shared with main.cpp.
+// ---------------------------------------------------------------------------
+enum AppState : uint8_t {
+    STATE_DISABLED = 0,   // Motors coasting, read-only status display
+    STATE_MANUAL   = 1,   // Local control via console commands / encoder
+    STATE_ANIMCOM  = 2,   // RS485 AnimCom slave mode
+    NUM_APP_STATES = 3
+};
+
+// ---------------------------------------------------------------------------
+// Snapshot of all data needed for one display frame.
 // Populated by Core 1 from volatile globals in main.cpp.
+// ---------------------------------------------------------------------------
 struct DisplayState {
     // Closed-loop motors — index 0 = M1, index 1 = M2
     uint8_t mode[NUM_MOTORS];          // 0=MANUAL  1=VELOCITY  2=POSITION
@@ -44,24 +58,45 @@ struct DisplayState {
     float   commandedVel[NUM_MOTORS];  // ramped velocity command (deg/s)
     float   targetPos[NUM_MOTORS];     // position setpoint (abs deg)
     float   posError[NUM_MOTORS];      // position error (deg)
-    int16_t duty[NUM_MOTORS];          // applied PWM duty (±4999)
+    int16_t duty[NUM_MOTORS];          // applied PWM duty (±PWM_WRAP)
 
     // RC servos — index 0 = S1, index 1 = S2
-    int servoActual[NUM_SERVOS];       // current ramped output angle (0–180°)
-    int servoTarget[NUM_SERVOS];       // commanded target angle (0–180°)
+    int     servoActual[NUM_SERVOS];   // current ramped output angle (0–180°)
+    int     servoTarget[NUM_SERVOS];   // commanded target angle (0–180°)
+
+    // AnimCom RS485 state (for ANIMCOM mode status bar)
+    uint8_t animState;       // 0=STOP  1=MANUAL  2=RUN_AUTO
+    uint8_t animPattern;     // active pattern index
+    uint8_t animSpeedScale;  // speed scale 0–100 %
 };
 
+// ---------------------------------------------------------------------------
+// Display driver
+// ---------------------------------------------------------------------------
 class Display {
 public:
-    // Call once from Core 0 setup() — initialises SPI and paints the skeleton.
+    // Initialise SPI and the TFT controller.  Call once from setup().
     static void begin();
 
-    // Call from Core 1 loop — updates only the data regions (no full redraw).
-    static void update(const DisplayState& s);
+    // Draw the top-level mode-selection menu.
+    //   selectedIdx : 0 = DISABLED, 1 = MANUAL, 2 = ANIMCOM
+    // Call from Core 1 while the user is navigating the menu.
+    static void drawMenu(uint8_t selectedIdx);
+
+    // Draw (or refresh) the status screen for the active AppState.
+    // Call from Core 1 at whatever rate is desired (5 Hz recommended).
+    static void update(AppState state, const DisplayState& ds);
 
 private:
-    static void drawMotorSection(uint8_t m, uint16_t ybase, const DisplayState& s);
-    static void drawServoSection(uint8_t idx, uint16_t ybase, const DisplayState& s);
-    // Clear a row then print left-aligned text in scale sz.
-    static void txtAt(int16_t x, int16_t y, uint8_t sz, uint16_t fg, const char* str);
+    static void _drawMotorSection(uint8_t m, uint16_t ybase, const DisplayState& ds);
+    static void _drawServoRow(uint8_t idx, uint16_t ybar, const DisplayState& ds);
+    static void _drawStatusBar(AppState state, const DisplayState& ds);
+
+    // Print padded text with opaque background (eliminates clear-then-draw flicker).
+    static void _txtAt(int16_t x, int16_t y, uint8_t sz, uint16_t fg, const char* str);
+
+    // Fill a full-width band and print a small left-aligned label inside it.
+    static void _colorBar(uint16_t y, uint16_t h, uint16_t bg, const char* label);
+
+    static bool _ready;    // true after begin() completes
 };

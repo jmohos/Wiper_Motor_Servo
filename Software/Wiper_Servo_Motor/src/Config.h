@@ -92,6 +92,10 @@
 #define DISP_CS_PIN     21   // Chip select (active-low)
 #define DISP_RST_PIN    22   // Reset (active-low; tie HIGH if unused)
 
+// SPI clock for the display.  Lower this if the display is unresponsive or
+// shows corruption — long/unshielded wires may require 1–4 MHz.
+#define DISP_SPI_FREQ   8000000UL   // 8 MHz
+
 // ---------------------------------------------------------------------------
 // Safety watchdog
 // If no valid command is received within this window the motors are coasted.

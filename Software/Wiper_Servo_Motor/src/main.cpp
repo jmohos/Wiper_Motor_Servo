@@ -78,6 +78,18 @@ static volatile uint8_t g_animState      = ANIMCOM_STATE_STOP;
 static volatile uint8_t g_animPattern    = 0;
 static volatile uint8_t g_animSpeedScale = 100;
 
+// ---------------------------------------------------------------------------
+// Top-level UI state machine
+//   g_inMenu   — true while the user is navigating the mode-selection menu
+//   g_menuSel  — currently highlighted menu item (0–NUM_APP_STATES-1)
+//   g_appState — the active AppState when not in the menu
+// Both Core 0 (writes via encoder ISR consumer) and Core 1 (reads for display)
+// access these.  They are uint8_t / bool so reads/writes are atomic on RP2040.
+// ---------------------------------------------------------------------------
+static volatile bool     g_inMenu   = true;
+static volatile uint8_t  g_menuSel  = 0;
+static volatile AppState g_appState = STATE_DISABLED;
+
 // RC servo instances — attached in setup(); driven by controlLoop() ramp.
 static Servo g_servo[NUM_SERVOS];
 // Per-servo ramp state — written by Core 0 controlLoop(), read by Core 1 display.
@@ -182,9 +194,12 @@ static PIDController g_posPid[NUM_MOTORS] = {
 
 static void onAnimControlState(uint8_t state, uint8_t pattern, uint8_t speed_scale)
 {
+    // Always track RS485 state for display; only act on motors in ANIMCOM mode.
     g_animState      = state;
     g_animPattern    = pattern;
     g_animSpeedScale = speed_scale;
+
+    if (g_appState != STATE_ANIMCOM) return;
 
     if (state == ANIMCOM_STATE_STOP) {
         for (uint8_t m = 0; m < NUM_MOTORS; m++) {
@@ -201,6 +216,7 @@ static void onAnimControlState(uint8_t state, uint8_t pattern, uint8_t speed_sca
 
 static void onAnimManualSingle(uint8_t ch, uint8_t cmd_type, int32_t value)
 {
+    if (g_appState != STATE_ANIMCOM) return;
     I2CSlave::lastCmdMs = millis();
 
     if (ch < NUM_MOTORS) {
@@ -262,6 +278,7 @@ static void onAnimTriggerEffect(uint8_t effect_type, uint8_t effect_id, uint16_t
 
 static void onAnimWatchdog()
 {
+    if (g_appState != STATE_ANIMCOM) return;
     // Watchdog fired — coast all motors and center servos.
     for (uint8_t m = 0; m < NUM_MOTORS; m++) {
         g_mode[m] = MANUAL;
@@ -315,30 +332,25 @@ static void captureSettings() {
 }
 
 // ---------------------------------------------------------------------------
-// Core 1 — status print (2 Hz)
+// Core 1 — status print (2 Hz) + display refresh (5 Hz).
 // All Serial output lives here so it cannot stall the Core 0 control loop.
+// Display SPI is used exclusively from Core 1 after Display::begin().
 // ---------------------------------------------------------------------------
 void setup1() {}
 
 void loop1() {
-    static uint32_t lastPrintMs = 0;
+    static uint32_t lastSerialMs = 0;
+    static uint32_t lastDispMs   = 0;
     uint32_t now = millis();
-    if (now - lastPrintMs >= 500) {
-        lastPrintMs = now;
 
-        // Build display state from the same volatile snapshot.
-        DisplayState ds;
-        for (uint8_t si = 0; si < NUM_SERVOS; si++) {
-            ds.servoActual[si] = (int)roundf(g_servoActual[si]);
-            ds.servoTarget[si] = (int)roundf(g_servoTarget[si]);
-        }
-
+    // ---- Serial status @ 2 Hz ----------------------------------------
+    if (now - lastSerialMs >= 500) {
+        lastSerialMs = now;
         for (uint8_t m = 0; m < NUM_MOTORS; m++) {
-            // Snapshot all volatiles for a consistent frame.
             ControlMode mode    = g_mode[m];
             float       measVel = g_measVel[m];
-            float       measPos = g_measPos[m];       // modular 0-360
-            float       absPos  = g_measPosAbs[m];    // multi-turn accumulator
+            float       measPos = g_measPos[m];
+            float       absPos  = g_measPosAbs[m];
             float       tgtVel  = g_targetVel[m];
             float       cmdVel  = g_commandedVel[m];
             float       tgtPos  = g_targetPos[m];
@@ -348,18 +360,7 @@ void loop1() {
             float       posErr  = g_posError[m];
             int16_t     duty    = MotorPWM::rawDuty[m];
 
-            // Populate display state for this motor.
-            ds.mode[m]         = (uint8_t)mode;
-            ds.measVel[m]      = measVel;
-            ds.measPosAbs[m]   = absPos;
-            ds.targetVel[m]    = tgtVel;
-            ds.commandedVel[m] = cmdVel;
-            ds.targetPos[m]    = tgtPos;
-            ds.posError[m]     = posErr;
-            ds.duty[m]         = duty;
-
             Serial.print("M"); Serial.print(m);
-
             if (mode == POSITION) {
                 Serial.print(" POS");
                 Serial.print("  Abs:");  Serial.print(absPos,  1); Serial.print("deg");
@@ -381,10 +382,40 @@ void loop1() {
             Serial.print("  PID:"); Serial.print(pidOut, 1);
             Serial.print("  Duty:"); Serial.println(duty);
         }
-        Display::update(ds);
     }
 
-    delay(100);
+    // ---- Display refresh @ 5 Hz --------------------------------------
+    if (now - lastDispMs >= 200) {
+        lastDispMs = now;
+
+        if (g_inMenu) {
+            Display::drawMenu(g_menuSel);
+        } else {
+            // Build display state snapshot from Core-0 volatiles.
+            DisplayState ds;
+            for (uint8_t si = 0; si < NUM_SERVOS; si++) {
+                ds.servoActual[si] = (int)roundf(g_servoActual[si]);
+                ds.servoTarget[si] = (int)roundf(g_servoTarget[si]);
+            }
+            for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+                ds.mode[m]         = (uint8_t)g_mode[m];
+                ds.measVel[m]      = g_measVel[m];
+                ds.measPosAbs[m]   = g_measPosAbs[m];
+                ds.targetVel[m]    = g_targetVel[m];
+                ds.commandedVel[m] = g_commandedVel[m];
+                ds.targetPos[m]    = g_targetPos[m];
+                ds.posError[m]     = g_posError[m];
+                ds.duty[m]         = MotorPWM::rawDuty[m];
+            }
+            ds.animState      = g_animState;
+            ds.animPattern    = g_animPattern;
+            ds.animSpeedScale = g_animSpeedScale;
+
+            Display::update(g_appState, ds);
+        }
+    }
+
+    delay(20);
 }
 
 // ---------------------------------------------------------------------------
@@ -545,6 +576,20 @@ static void controlLoop(uint32_t now) {
                 g_posPid[0].reset();
                 g_mode[0] = newMode;
             }
+        }
+
+        // --- DISABLED: coast motor, skip PID entirely -----------------
+        // Only enforce when the user has explicitly entered DISABLED (not while
+        // browsing the menu, so console commands still work during menu nav).
+        if (g_appState == STATE_DISABLED && !g_inMenu) {
+            if (g_mode[m] != MANUAL) {
+                g_mode[m] = MANUAL;
+                g_velPid[m].reset();
+                g_posPid[m].reset();
+            }
+            MotorPWM::setMotor(m, MCP_SPEED_IDLE);
+            g_pidOutput[m] = 0.0f;
+            continue;
         }
 
         // --- Reset PIDs on mode transition ----------------------------
@@ -1037,6 +1082,51 @@ void loop() {
     uint32_t now = millis();
     g_animcom.poll();
     handleConsoleInput();
+
+    // ---- Top-level UI navigation (rotary encoder + pushbutton) ----
+    int16_t encDelta = LocalUI::encoderDelta();
+    bool    btnPress = LocalUI::buttonPressed();
+
+    if (g_inMenu) {
+        // Scroll through menu items with the encoder.
+        if (encDelta != 0) {
+            int8_t sel = (int8_t)g_menuSel + (encDelta > 0 ? 1 : -1);
+            if (sel < 0)                      sel = (int8_t)NUM_APP_STATES - 1;
+            if (sel >= (int8_t)NUM_APP_STATES) sel = 0;
+            g_menuSel = (uint8_t)sel;
+        }
+        // Button press enters the highlighted mode.
+        if (btnPress) {
+            AppState entering = (AppState)g_menuSel;
+            g_appState = entering;
+            g_inMenu   = false;
+            // On entering DISABLED, immediately coast all motors.
+            if (entering == STATE_DISABLED) {
+                for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+                    g_mode[m] = MANUAL;
+                    g_velPid[m].reset();
+                    g_posPid[m].reset();
+                    MotorPWM::setMotor(m, MCP_SPEED_IDLE);
+                }
+                for (uint8_t s = 0; s < NUM_SERVOS; s++) g_servoTarget[s] = 90.0f;
+                g_animState = ANIMCOM_STATE_STOP;
+            }
+        }
+    } else {
+        // Inside a mode — button press returns to the menu.
+        if (btnPress) {
+            // Coast all motors as a safety measure when returning to menu.
+            for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+                g_mode[m] = MANUAL;
+                g_velPid[m].reset();
+                g_posPid[m].reset();
+                MotorPWM::setMotor(m, MCP_SPEED_IDLE);
+            }
+            g_animState = ANIMCOM_STATE_STOP;
+            g_inMenu    = true;
+        }
+    }
+
     controlLoop(now);
 }
 

@@ -42,7 +42,12 @@ public:
 private:
     static volatile int16_t _encCount;
     static volatile bool    _btnPressed;
-    static volatile uint8_t _lastEncState;
+
+    // Encoder full-quadrature-cycle detector.
+    // _encHistory holds the last 4 pin states as 2-bit pairs (oldest in MSB).
+    // A step is only counted when the full sequence returns to the detent
+    // (both pins HIGH = state 3), naturally suppressing electrical bounce.
+    static volatile uint8_t  _encHistory;
 
     // Interrupt service routines (static so compatible with attachInterrupt)
     static void _encISR();
