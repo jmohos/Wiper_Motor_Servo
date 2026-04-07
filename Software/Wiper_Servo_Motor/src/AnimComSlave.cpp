@@ -17,7 +17,7 @@ void AnimComSlave::begin(const AnimComCallbacks& cb)
     _watchdogFired = false;
 
     Serial.printf("[AnimCom] RS485 slave ready  station=0x%02X  baud=%lu\n",
-                  NODE_ID,
+                  _nodeId,
                   (unsigned long)RS485_BAUD);
 }
 
@@ -62,7 +62,7 @@ void AnimComSlave::_processByte(uint8_t b)
         break;
 
     case PS_STATION_ID:
-        if (b == NODE_ID || b == ANIMCOM_STATION_BCAST) {
+        if (b == _nodeId || b == ANIMCOM_STATION_BCAST) {
             _frame.station_id = b;
             _ps = PS_SEQ;
         } else {

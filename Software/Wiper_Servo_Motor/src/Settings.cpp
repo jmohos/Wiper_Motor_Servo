@@ -30,26 +30,27 @@ void Settings::save() {
 void Settings::defaults() {
     s.magic    = NVM_MAGIC;
     s.version  = NVM_VERSION;
+    s.nodeId   = NODE_ID;
     s._pad[0]  = 0;
     s._pad[1]  = 0;
-    s._pad[2]  = 0;
 
     for (uint8_t m = 0; m < NUM_MOTORS; m++) {
         NvmSettings::MotorSettings& ms = s.motor[m];
+        ms.posPathMode = 1;            // POS_PATH_CONSTRAINED
+        ms.uiType      = UI_VELOCITY;  // encoder controls velocity in MANUAL mode
         ms._mpad[0]    = 0;
         ms._mpad[1]    = 0;
-        ms._mpad[2]    = 0;
 
         ms.velKp       = 0.6f;
         ms.velKi       = 0.4f;
         ms.velKd       = 0.0f;
         ms.velAccel    = 200.0f;
+        ms.velLimit    = 360.0f;       // max speed cap (deg/s)
 
         ms.posKp       = 3.0f;
         ms.posKi       = 0.0f;
         ms.posKd       = 0.0f;
         ms.traverseVel = 90.0f;
-        ms.posPathMode = 1;       // POS_PATH_CONSTRAINED
         ms.posMin      = 0.0f;
         ms.posMax      = 355.0f;
 

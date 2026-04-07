@@ -42,7 +42,25 @@ enum AppState : uint8_t {
     STATE_DISABLED = 0,   // Motors coasting, read-only status display
     STATE_MANUAL   = 1,   // Local control via console commands / encoder
     STATE_ANIMCOM  = 2,   // RS485 AnimCom slave mode
-    NUM_APP_STATES = 3
+    STATE_CONFIG   = 3,   // Controller configuration screen
+    NUM_APP_STATES = 4
+};
+
+// ---------------------------------------------------------------------------
+// Config screen data — flat snapshot of all editable settings.
+// Populated by Core 1 from RAM settings; drawn by drawConfig().
+// ---------------------------------------------------------------------------
+
+// Number of config items in the scrollable list (matches main.cpp CFG_* enum).
+static constexpr uint8_t NUM_CFG_ITEMS = 8;
+
+struct ConfigDisplayState {
+    uint8_t selectedItem;           // 0 – NUM_CFG_ITEMS-1
+    bool    editMode;               // true while encoder adjusts selected item
+    uint8_t nodeId;                 // RS485 station ID (0x01–0xFE)
+    uint8_t mType[NUM_MOTORS];      // UiMotorType: 0=PWM%  1=VEL  2=POS
+    float   velLimit[NUM_MOTORS];   // velocity cap (deg/s)
+    float   travVel[NUM_MOTORS];    // traverse velocity (deg/s)
 };
 
 // ---------------------------------------------------------------------------
@@ -86,6 +104,10 @@ public:
     // Draw (or refresh) the status screen for the active AppState.
     // Call from Core 1 at whatever rate is desired (5 Hz recommended).
     static void update(AppState state, const DisplayState& ds);
+
+    // Draw the configuration screen.
+    // Call from Core 1 while g_appState == STATE_CONFIG.
+    static void drawConfig(const ConfigDisplayState& cfg);
 
 private:
     static void _drawMotorSection(uint8_t m, uint16_t ybase, const DisplayState& ds);

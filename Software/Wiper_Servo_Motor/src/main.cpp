@@ -74,9 +74,15 @@
 static AnimComSlave g_animcom;
 
 // AnimCom global control state — written by callbacks, read by controlLoop().
-static volatile uint8_t g_animState      = ANIMCOM_STATE_STOP;
-static volatile uint8_t g_animPattern    = 0;
-static volatile uint8_t g_animSpeedScale = 100;
+static volatile uint8_t  g_animState      = ANIMCOM_STATE_STOP;
+static volatile uint8_t  g_animPattern    = 0;
+static volatile uint8_t  g_animSpeedScale = 100;
+
+// Timestamp of the last MANUAL_SINGLE command per motor channel.
+// Used to detect ManualHold (keepalives arrive but no channel commands).
+// Initialised to 0; controlLoop() coasts the motor if the gap exceeds the threshold.
+static constexpr uint32_t MANUAL_CMD_TIMEOUT_MS = 400;  // ~2 missed frames at typical rate
+static volatile uint32_t  g_lastManualCmdMs[NUM_MOTORS] = {0, 0};
 
 // ---------------------------------------------------------------------------
 // Top-level UI state machine
@@ -89,6 +95,26 @@ static volatile uint8_t g_animSpeedScale = 100;
 static volatile bool     g_inMenu   = true;
 static volatile uint8_t  g_menuSel  = 0;
 static volatile AppState g_appState = STATE_DISABLED;
+
+// Config screen navigation — Core 0 writes, Core 1 reads for display.
+// CFG_* indices mirror kLabels[] in Display.cpp; keep in sync.
+enum CfgItem : uint8_t {
+    CFG_NODE_ID    = 0,
+    CFG_M0_TYPE    = 1,
+    CFG_M0_VELLIM  = 2,
+    CFG_M0_TRAVVEL = 3,
+    CFG_M1_TYPE    = 4,
+    CFG_M1_VELLIM  = 5,
+    CFG_M1_TRAVVEL = 6,
+    CFG_SAVE       = 7,
+};
+static volatile uint8_t g_cfgSel  = 0;      // selected config item
+static volatile bool    g_cfgEdit = false;   // true while encoder is editing
+
+// MANUAL mode motor selection.
+// 0xFF = no motor selected (button returns to menu in this state).
+// 0/1 = M0/M1 selected; encoder adjusts its parameter per its uiType.
+static volatile uint8_t g_manualSel = 0xFF;
 
 // RC servo instances — attached in setup(); driven by controlLoop() ramp.
 static Servo g_servo[NUM_SERVOS];
@@ -220,6 +246,7 @@ static void onAnimManualSingle(uint8_t ch, uint8_t cmd_type, int32_t value)
     I2CSlave::lastCmdMs = millis();
 
     if (ch < NUM_MOTORS) {
+        g_lastManualCmdMs[ch] = millis();
         // DC closed-loop motor
         switch (cmd_type) {
 
@@ -293,9 +320,25 @@ static void onAnimWatchdog()
 }
 
 // ---------------------------------------------------------------------------
+// Motor safety helper — coast all motors and clear animcom state.
+// ---------------------------------------------------------------------------
+static void coastAll() {
+    for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+        g_mode[m] = MANUAL;
+        g_velPid[m].reset();
+        g_posPid[m].reset();
+        MotorPWM::setMotor(m, MCP_SPEED_IDLE);
+    }
+    g_animState = ANIMCOM_STATE_STOP;
+}
+
+// ---------------------------------------------------------------------------
 // Settings helpers — NVM stores independent settings per motor.
 // ---------------------------------------------------------------------------
 static void applySettings() {
+    // Apply RS485 node ID to the AnimCom slave parser.
+    g_animcom.setNodeId(Settings::s.nodeId);
+
     for (uint8_t m = 0; m < NUM_MOTORS; m++) {
         const NvmSettings::MotorSettings& ms = Settings::s.motor[m];
         g_velPid[m].kp   = ms.velKp;
@@ -310,6 +353,7 @@ static void applySettings() {
         g_posMin[m]      = ms.posMin;
         g_posMax[m]      = ms.posMax;
         g_zeroOffset[m]  = ms.zeroOffset;
+        // velLimit is read directly from Settings::s.motor[m].velLimit at run time.
     }
 }
 
@@ -390,6 +434,17 @@ void loop1() {
 
         if (g_inMenu) {
             Display::drawMenu(g_menuSel);
+        } else if (g_appState == STATE_CONFIG) {
+            ConfigDisplayState cfg;
+            cfg.selectedItem  = g_cfgSel;
+            cfg.editMode      = g_cfgEdit;
+            cfg.nodeId        = Settings::s.nodeId;
+            for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+                cfg.mType[m]    = Settings::s.motor[m].uiType;
+                cfg.velLimit[m] = Settings::s.motor[m].velLimit;
+                cfg.travVel[m]  = Settings::s.motor[m].traverseVel;
+            }
+            Display::drawConfig(cfg);
         } else {
             // Build display state snapshot from Core-0 volatiles.
             DisplayState ds;
@@ -453,6 +508,7 @@ void setup() {
     acCb.onTriggerEffect = onAnimTriggerEffect;
     acCb.onWatchdog      = onAnimWatchdog;
     g_animcom.begin(acCb);
+    g_animcom.setNodeId(Settings::s.nodeId);   // apply NVM node ID
 
     Serial.println("[INFO] Dual wiper motor controller ready");
     if (!mag0Found) Serial.println("[WARN] Motor 0 AS5600 not found — check wiring");
@@ -576,6 +632,24 @@ static void controlLoop(uint32_t now) {
                 g_posPid[0].reset();
                 g_mode[0] = newMode;
             }
+        }
+
+        // --- ANIMCOM MANUAL hold: coast if no channel command recently ---
+        // Both ManualRun and ManualHold send ANIMCOM_STATE_MANUAL keepalives.
+        // ManualHold stops sending MANUAL_SINGLE frames, so per-motor timestamps
+        // go stale.  Coast the motor until commands resume.
+        if (g_appState == STATE_ANIMCOM &&
+            g_animState == ANIMCOM_STATE_MANUAL &&
+            g_lastManualCmdMs[m] != 0 &&
+            (now - g_lastManualCmdMs[m]) > MANUAL_CMD_TIMEOUT_MS) {
+            if (g_mode[m] != MANUAL) {
+                g_mode[m] = MANUAL;
+                g_velPid[m].reset();
+                g_posPid[m].reset();
+            }
+            MotorPWM::setMotor(m, MCP_SPEED_IDLE);
+            g_pidOutput[m] = 0.0f;
+            continue;
         }
 
         // --- DISABLED: coast motor, skip PID entirely -----------------
@@ -1049,11 +1123,87 @@ static void processCommand(const String& raw) {
         Serial.print(" deg  ramp "); Serial.print(g_servoRampRate[idx], 1); Serial.println(" deg/s");
         return;
 
+    // ---- config — print all UI configuration params -------------------
+    } else if (cmd.equalsIgnoreCase("config")) {
+        Serial.printf("[CFG] nodeId=0x%02X\n", Settings::s.nodeId);
+        static const char* kTypeNames[] = { "PWM%", "VELOCITY", "POSITION" };
+        for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+            const NvmSettings::MotorSettings& ms = Settings::s.motor[m];
+            uint8_t t = ms.uiType < 3 ? ms.uiType : 0;
+            Serial.printf("[CFG] M%d type=%s  velLimit=%.1f deg/s  traverseVel=%.1f deg/s\n",
+                          m, kTypeNames[t], ms.velLimit, ms.traverseVel);
+        }
+        return;
+
+    // ---- nodeid [val] — get/set RS485 station ID ----------------------
+    } else if (cmd.startsWith("nodeid") || cmd.startsWith("NODEID")) {
+        String args = cmd.substring(6);
+        args.trim();
+        if (args.length() == 0) {
+            Serial.printf("[CFG] nodeId=0x%02X\n", Settings::s.nodeId);
+        } else {
+            uint8_t id = (uint8_t)strtoul(args.c_str(), nullptr, 0);
+            if (id < 1 || id > 0xFE) {
+                Serial.println("[ERR] nodeid: valid range 0x01–0xFE");
+            } else {
+                Settings::s.nodeId = id;
+                g_animcom.setNodeId(id);
+                Serial.printf("[CFG] nodeId=0x%02X (type 'save' to persist)\n", id);
+            }
+        }
+        return;
+
+    // ---- mtype <m> [0|1|2] — get/set motor UI type --------------------
+    } else if (cmd.startsWith("mtype ") || cmd.startsWith("MTYPE ")) {
+        uint8_t m; String rest;
+        if (!parseMotorIdx("mtype", cmd.substring(6), m, rest)) return;
+        static const char* kTypeNames2[] = { "PWM%", "VELOCITY", "POSITION" };
+        if (rest.length() == 0) {
+            uint8_t t = Settings::s.motor[m].uiType;
+            Serial.printf("[CFG] M%d type=%s (%d)\n", m, kTypeNames2[t < 3 ? t : 0], t);
+        } else {
+            uint8_t t = (uint8_t)rest.toInt();
+            if (t > 2) { Serial.println("[ERR] mtype: 0=PWM%  1=VELOCITY  2=POSITION"); return; }
+            Settings::s.motor[m].uiType = t;
+            Serial.printf("[CFG] M%d type=%s (type 'save' to persist)\n", m, kTypeNames2[t]);
+        }
+        return;
+
+    // ---- mvellim <m> [val] — get/set motor velocity limit (deg/s) -----
+    } else if (cmd.startsWith("mvellim ") || cmd.startsWith("MVELLIM ")) {
+        uint8_t m; String rest;
+        if (!parseMotorIdx("mvellim", cmd.substring(8), m, rest)) return;
+        if (rest.length() == 0) {
+            Serial.printf("[CFG] M%d velLimit=%.1f deg/s\n", m, Settings::s.motor[m].velLimit);
+        } else {
+            float v = rest.toFloat();
+            if (v < 10.0f || v > 720.0f) { Serial.println("[ERR] mvellim: range 10–720 deg/s"); return; }
+            Settings::s.motor[m].velLimit = v;
+            Serial.printf("[CFG] M%d velLimit=%.1f deg/s (type 'save' to persist)\n", m, v);
+        }
+        return;
+
+    // ---- mtravvel <m> [val] — get/set position traverse velocity -------
+    } else if (cmd.startsWith("mtravvel ") || cmd.startsWith("MTRAVVEL ")) {
+        uint8_t m; String rest;
+        if (!parseMotorIdx("mtravvel", cmd.substring(9), m, rest)) return;
+        if (rest.length() == 0) {
+            Serial.printf("[CFG] M%d traverseVel=%.1f deg/s\n", m, Settings::s.motor[m].traverseVel);
+        } else {
+            float v = rest.toFloat();
+            if (v < 10.0f || v > 720.0f) { Serial.println("[ERR] mtravvel: range 10–720 deg/s"); return; }
+            Settings::s.motor[m].traverseVel = v;
+            g_traverseVel[m] = v;
+            Serial.printf("[CFG] M%d traverseVel=%.1f deg/s (type 'save' to persist)\n", m, v);
+        }
+        return;
+
     // ---- Unknown command ---------------------------------------------
     } else {
         Serial.print("[ERR] Unknown: "); Serial.println(cmd);
         Serial.println("[ERR] Motor cmds (need index m): v va p pv pmode plim r stop gains kp ki kd pkp pki pkd zero");
-        Serial.println("[ERR] Global cmds: freeze resume save load defaults");
+        Serial.println("[ERR] Global cmds: freeze resume save load defaults config");
+        Serial.println("[ERR] Config cmds: nodeid [id]  mtype <m> [0|1|2]  mvellim <m> [val]  mtravvel <m> [val]");
         Serial.println("[ERR] Servo cmds: servo <idx> <angle 0-180>");
     }
 }
@@ -1087,43 +1237,162 @@ void loop() {
     int16_t encDelta = LocalUI::encoderDelta();
     bool    btnPress = LocalUI::buttonPressed();
 
+
     if (g_inMenu) {
-        // Scroll through menu items with the encoder.
+        // Encoder scrolls through menu items.
         if (encDelta != 0) {
             int8_t sel = (int8_t)g_menuSel + (encDelta > 0 ? 1 : -1);
-            if (sel < 0)                      sel = (int8_t)NUM_APP_STATES - 1;
+            if (sel < 0)                       sel = (int8_t)NUM_APP_STATES - 1;
             if (sel >= (int8_t)NUM_APP_STATES) sel = 0;
             g_menuSel = (uint8_t)sel;
         }
-        // Button press enters the highlighted mode.
+        // Button enters the highlighted mode.
         if (btnPress) {
             AppState entering = (AppState)g_menuSel;
             g_appState = entering;
             g_inMenu   = false;
-            // On entering DISABLED, immediately coast all motors.
+            g_manualSel = 0xFF;
+            g_cfgSel    = 0;
+            g_cfgEdit   = false;
+            if (entering == STATE_ANIMCOM) {
+                // Clear timestamps so the hold-timeout doesn't fire before
+                // the first MANUAL_SINGLE frame arrives.
+                for (uint8_t m = 0; m < NUM_MOTORS; m++) g_lastManualCmdMs[m] = 0;
+            }
             if (entering == STATE_DISABLED) {
-                for (uint8_t m = 0; m < NUM_MOTORS; m++) {
-                    g_mode[m] = MANUAL;
-                    g_velPid[m].reset();
-                    g_posPid[m].reset();
-                    MotorPWM::setMotor(m, MCP_SPEED_IDLE);
-                }
+                coastAll();
                 for (uint8_t s = 0; s < NUM_SERVOS; s++) g_servoTarget[s] = 90.0f;
-                g_animState = ANIMCOM_STATE_STOP;
             }
         }
-    } else {
-        // Inside a mode — button press returns to the menu.
-        if (btnPress) {
-            // Coast all motors as a safety measure when returning to menu.
-            for (uint8_t m = 0; m < NUM_MOTORS; m++) {
-                g_mode[m] = MANUAL;
-                g_velPid[m].reset();
-                g_posPid[m].reset();
-                MotorPWM::setMotor(m, MCP_SPEED_IDLE);
+
+    } else if (g_appState == STATE_CONFIG) {
+        // ---- Config screen navigation -----------------------------------
+        if (encDelta != 0) {
+            int8_t d = (encDelta > 0) ? 1 : -1;
+            if (!g_cfgEdit) {
+                // Scroll items.
+                int8_t sel = (int8_t)g_cfgSel + d;
+                if (sel < 0)                     sel = (int8_t)NUM_CFG_ITEMS - 1;
+                if (sel >= (int8_t)NUM_CFG_ITEMS) sel = 0;
+                g_cfgSel = (uint8_t)sel;
+            } else {
+                // Adjust selected item value.
+                switch ((CfgItem)g_cfgSel) {
+                    case CFG_NODE_ID: {
+                        int16_t v = (int16_t)Settings::s.nodeId + d;
+                        if (v < 1)    v = 0xFE;
+                        if (v > 0xFE) v = 1;
+                        Settings::s.nodeId = (uint8_t)v;
+                        g_animcom.setNodeId(Settings::s.nodeId);
+                        break;
+                    }
+                    case CFG_M0_TYPE: {
+                        int8_t v = (int8_t)Settings::s.motor[0].uiType + d;
+                        if (v < 0) v = 2;  if (v > 2) v = 0;
+                        Settings::s.motor[0].uiType = (uint8_t)v;
+                        break;
+                    }
+                    case CFG_M0_VELLIM: {
+                        float v = Settings::s.motor[0].velLimit + d * 5.0f;
+                        Settings::s.motor[0].velLimit = constrain(v, 10.0f, 720.0f);
+                        break;
+                    }
+                    case CFG_M0_TRAVVEL: {
+                        float v = Settings::s.motor[0].traverseVel + d * 5.0f;
+                        Settings::s.motor[0].traverseVel = constrain(v, 10.0f, 720.0f);
+                        g_traverseVel[0] = Settings::s.motor[0].traverseVel;
+                        break;
+                    }
+                    case CFG_M1_TYPE: {
+                        int8_t v = (int8_t)Settings::s.motor[1].uiType + d;
+                        if (v < 0) v = 2;  if (v > 2) v = 0;
+                        Settings::s.motor[1].uiType = (uint8_t)v;
+                        break;
+                    }
+                    case CFG_M1_VELLIM: {
+                        float v = Settings::s.motor[1].velLimit + d * 5.0f;
+                        Settings::s.motor[1].velLimit = constrain(v, 10.0f, 720.0f);
+                        break;
+                    }
+                    case CFG_M1_TRAVVEL: {
+                        float v = Settings::s.motor[1].traverseVel + d * 5.0f;
+                        Settings::s.motor[1].traverseVel = constrain(v, 10.0f, 720.0f);
+                        g_traverseVel[1] = Settings::s.motor[1].traverseVel;
+                        break;
+                    }
+                    default: break;
+                }
             }
-            g_animState = ANIMCOM_STATE_STOP;
-            g_inMenu    = true;
+        }
+        if (btnPress) {
+            if ((CfgItem)g_cfgSel == CFG_SAVE) {
+                // Save to flash then return to menu.
+                captureSettings();
+                Settings::save();
+                Serial.printf("[NVM] Config saved — nodeId=0x%02X\n", Settings::s.nodeId);
+                coastAll();
+                g_inMenu = true;
+            } else if (g_cfgEdit) {
+                g_cfgEdit = false;   // confirm edit, return to scroll
+            } else {
+                g_cfgEdit = true;    // enter edit mode for this item
+            }
+        }
+
+    } else if (g_appState == STATE_MANUAL) {
+        // ---- MANUAL mode — encoder adjusts selected motor ---------------
+        if (btnPress) {
+            if (g_manualSel == 0xFF) {
+                g_manualSel = 0;   // select M0
+            } else if (g_manualSel == 0) {
+                g_manualSel = 1;   // select M1
+            } else {
+                // Deselect — return to menu.
+                coastAll();
+                g_inMenu = true;
+            }
+        }
+        if (encDelta != 0 && g_manualSel != 0xFF) {
+            uint8_t m = g_manualSel;
+            int8_t  d = (encDelta > 0) ? 1 : -1;
+            switch ((UiMotorType)Settings::s.motor[m].uiType) {
+                case UI_PWM_PERCENT: {
+                    // Map duty ±PWM_WRAP to ±100%, step 1%.
+                    int16_t step  = (int16_t)(PWM_WRAP / 100);
+                    int32_t duty  = (int32_t)MotorPWM::rawDuty[m] + d * step;
+                    duty = constrain(duty, -(int32_t)PWM_WRAP, (int32_t)PWM_WRAP);
+                    g_mode[m] = MANUAL;
+                    MotorPWM::setMotorDuty(m, (int16_t)duty);
+                    break;
+                }
+                case UI_VELOCITY: {
+                    float limit = Settings::s.motor[m].velLimit;
+                    float vel   = g_targetVel[m] + d * 5.0f;
+                    vel = constrain(vel, -limit, limit);
+                    g_targetVel[m] = vel;
+                    if (g_mode[m] != VELOCITY) g_velPid[m].reset();
+                    g_mode[m] = VELOCITY;
+                    break;
+                }
+                case UI_POSITION: {
+                    float pos = g_targetPos[m] + d * 5.0f;
+                    if (g_mode[m] != POSITION) {
+                        g_velPid[m].reset();
+                        g_posPid[m].reset();
+                        g_commandedPos[m] = (float)g_measPosAbs[m];
+                    }
+                    g_targetPos[m] = pos;
+                    g_mode[m] = POSITION;
+                    break;
+                }
+            }
+        }
+
+    } else {
+        // ---- All other modes — button returns to menu -------------------
+        if (btnPress) {
+            coastAll();
+            g_inMenu = true;
         }
     }
 

@@ -1,6 +1,6 @@
 #pragma once
 // =============================================================================
-//  Settings.h — Non-volatile storage for PID gains and calibration
+//  Settings.h — Non-volatile storage for PID gains, calibration, and UI config
 //
 //  Uses the RP2040 EEPROM emulation (flash-backed) provided by the
 //  Earle Philhower arduino-pico core.
@@ -13,9 +13,9 @@
 //    Restore  : Type "load" to discard RAM changes and reload from flash.
 //    Reset    : Type "defaults" to apply factory defaults (then "save" to keep).
 //
-//  NvmSettings layout (v2):
-//    Header (8 bytes) + MotorSettings[NUM_MOTORS] (48 bytes each)
-//    Total for 2 motors: 104 bytes — well within the 256-byte allocation.
+//  NvmSettings layout (v3):
+//    Header (8 bytes) + MotorSettings[NUM_MOTORS] (52 bytes each)
+//    Total for 2 motors: 8 + 104 = 112 bytes — within the 256-byte allocation.
 // =============================================================================
 
 #include <Arduino.h>
@@ -24,27 +24,37 @@
 // Bump NVM_VERSION whenever the NvmSettings struct layout changes.
 // Mismatched version causes load() to reject stale data and apply defaults.
 static constexpr uint32_t NVM_MAGIC   = 0x57504944u;  // "WPID"
-static constexpr uint8_t  NVM_VERSION = 2;             // bumped: per-motor storage
+static constexpr uint8_t  NVM_VERSION = 3;             // bumped: nodeId + uiType + velLimit
 static constexpr int      NVM_ADDR    = 0;
 static constexpr int      NVM_SIZE    = 256;           // bytes allocated in flash
+
+// Motor UI type — controls how the encoder adjusts the motor in MANUAL mode.
+enum UiMotorType : uint8_t {
+    UI_PWM_PERCENT = 0,  // encoder changes raw duty (±1% steps)
+    UI_VELOCITY    = 1,  // encoder changes velocity setpoint (deg/s steps)
+    UI_POSITION    = 2,  // encoder changes position setpoint (deg steps)
+};
 
 struct NvmSettings {
     uint32_t magic;
     uint8_t  version;
-    uint8_t  _pad[3];   // align MotorSettings array to 4-byte boundary
+    uint8_t  nodeId;      // RS485 station ID (0x01–0xFE)
+    uint8_t  _pad[2];     // align MotorSettings array to 4-byte boundary
 
     // Per-motor settings block — one entry per motor.
     struct MotorSettings {
         uint8_t  posPathMode;   // 0=shortest arc, 1=constrained
-        uint8_t  _mpad[3];      // align floats to 4-byte boundary
+        uint8_t  uiType;        // UiMotorType — encoder mode in MANUAL
+        uint8_t  _mpad[2];      // align floats to 4-byte boundary
 
         // Velocity PID
         float velKp, velKi, velKd;
         float velAccel;         // setpoint ramp rate (deg/s²)
+        float velLimit;         // absolute velocity cap (deg/s) — VELOCITY and POSITION modes
 
         // Position PID
         float posKp, posKi, posKd;
-        float traverseVel;      // position profile ramp rate (deg/s)
+        float traverseVel;      // position profile traverse speed (deg/s)
         float posMin, posMax;   // constrained travel limits (deg)
 
         // Calibration

@@ -1,4 +1,5 @@
 #include "Display.h"
+#include "AnimComProtocol.h"
 #include <Adafruit_ST7735.h>
 #include <Adafruit_GFX.h>
 #include <SPI.h>
@@ -51,10 +52,8 @@ static constexpr uint8_t MO_LINE2_Y = 36;   // scale-1 detail line 2
 
 // --- Menu screen ---
 static constexpr uint16_t MENU_HDR_H  = 16;
-static constexpr uint16_t MENU_ITEM_H = 40;   // 3 items × 40 = 120 px
+static constexpr uint16_t MENU_ITEM_H = 36;   // 4 items × 36 = 144 px → 16+144 = 160
 static constexpr uint16_t MENU_ITEM_Y = 16;   // first item starts here
-static constexpr uint16_t MENU_HINT_Y = 136;  // 16 + 3×40 = 136
-static constexpr uint16_t MENU_HINT_H = 24;   // to y=160
 
 // ---------------------------------------------------------------------------
 // TFT instance — hardware SPI0 (SCK=GPIO18, MOSI=GPIO19)
@@ -173,10 +172,10 @@ void Display::_drawStatusBar(AppState state, const DisplayState& ds) {
         case STATE_ANIMCOM:
             barCol = C_ANIMCOM;
             switch (ds.animState) {
-                case 1:  snprintf(buf, sizeof(buf), "RS485:MANUAL  BTN:MENU"); break;
-                case 2:  snprintf(buf, sizeof(buf), "RS485:P%d@%d%%  BTN:MENU",
-                                  ds.animPattern, ds.animSpeedScale); break;
-                default: snprintf(buf, sizeof(buf), "RS485:IDLE  BTN:MENU");  break;
+                case ANIMCOM_STATE_RUN_AUTO: snprintf(buf, sizeof(buf), "RS485:P%d@%d%%  BTN:MENU",
+                                                     ds.animPattern, ds.animSpeedScale); break;
+                case ANIMCOM_STATE_MANUAL:   snprintf(buf, sizeof(buf), "RS485:MANUAL  BTN:MENU"); break;
+                default:                    snprintf(buf, sizeof(buf), "RS485:IDLE  BTN:MENU");   break;
             }
             break;
         default:
@@ -228,6 +227,7 @@ void Display::drawMenu(uint8_t selectedIdx) {
         { C_DISABLED, "DISABLED" },
         { C_VELOCITY, "MANUAL"   },
         { C_ANIMCOM,  "ANIMCOM"  },
+        { C_MANUAL,   "CONFIG"   },
     };
 
     for (uint8_t i = 0; i < NUM_APP_STATES; i++) {
@@ -252,13 +252,6 @@ void Display::drawMenu(uint8_t selectedIdx) {
         canvas.print(kItems[i].label);
     }
 
-    // Hint bar at bottom
-    hband(MENU_HINT_Y, MENU_HINT_H, C_BG);
-    canvas.setTextSize(1);
-    canvas.setTextColor(C_LGRAY, C_BG);
-    canvas.setCursor(4, MENU_HINT_Y + (MENU_HINT_H - 8) / 2);
-    canvas.print("Enc:scroll  Btn:enter");
-
     // Blit completed frame to display in one SPI burst — no partial updates visible.
     tft.drawRGBBitmap(0, 0, canvas.getBuffer(), SCR_W, SCR_H);
 }
@@ -278,6 +271,7 @@ void Display::update(AppState state, const DisplayState& ds) {
         case STATE_DISABLED: canvas.print("DISABLED      <MENU"); break;
         case STATE_MANUAL:   canvas.print("MANUAL        <MENU"); break;
         case STATE_ANIMCOM:  canvas.print("ANIMCOM       <MENU"); break;
+        case STATE_CONFIG:   canvas.print("CONFIG        <MENU"); break;
         default:             canvas.print("?             <MENU"); break;
     }
 
@@ -295,5 +289,88 @@ void Display::update(AppState state, const DisplayState& ds) {
     _drawStatusBar(state, ds);
 
     // Blit completed frame to display in one SPI burst — no partial updates visible.
+    tft.drawRGBBitmap(0, 0, canvas.getBuffer(), SCR_W, SCR_H);
+}
+
+// ---------------------------------------------------------------------------
+// Config screen — 128 × 160 portrait
+//
+// Layout:
+//   y=  0 – 15  : Header "CONFIG  Btn:edit/save"
+//   y= 16 – 33  : Item 0 — Station ID
+//   y= 34 – 51  : Item 1 — M0 Type
+//   y= 52 – 69  : Item 2 — M0 Vel Limit
+//   y= 70 – 87  : Item 3 — M0 Traverse Vel
+//   y= 88 –105  : Item 4 — M1 Type
+//   y=106 –123  : Item 5 — M1 Vel Limit
+//   y=124 –141  : Item 6 — M1 Traverse Vel
+//   y=142 –159  : Item 7 — SAVE (saves to flash, returns to menu)
+// ---------------------------------------------------------------------------
+
+static constexpr uint16_t CFG_HDR_H  = 16;
+static constexpr uint16_t CFG_ITEM_H = 18;
+// 16 + 8×18 = 160 — exactly fills the screen.
+
+static const char* const kMTypeLabels[3] = { "PWM%", "VEL ", "POS " };
+
+void Display::drawConfig(const ConfigDisplayState& cfg) {
+    if (!_ready) return;
+
+    // Header
+    hband(0, CFG_HDR_H, C_HEADER);
+    canvas.setTextSize(1);
+    canvas.setTextColor(C_WHITE, C_HEADER);
+    canvas.setCursor(3, (CFG_HDR_H - 8) / 2);
+    canvas.print("CONFIG  Btn:edit/save");
+
+    static const char* const kLabels[NUM_CFG_ITEMS] = {
+        "Station ID",
+        "M0 Type   ",
+        "M0 VelLim ",
+        "M0 TravVel",
+        "M1 Type   ",
+        "M1 VelLim ",
+        "M1 TravVel",
+        ">>> SAVE  ",
+    };
+
+    for (uint8_t i = 0; i < NUM_CFG_ITEMS; i++) {
+        uint16_t iy  = CFG_HDR_H + i * CFG_ITEM_H;
+        bool     sel = (i == cfg.selectedItem);
+        bool     ed  = sel && cfg.editMode;
+
+        uint16_t bg = ed  ? C_VELOCITY :   // bright green = actively editing
+                      sel ? C_DGRAY    :   // grey = selected, not editing
+                            C_BG;          // black = unselected
+
+        hband(iy, CFG_ITEM_H, bg);
+
+        canvas.setTextSize(1);
+        canvas.setTextColor(C_WHITE, bg);
+
+        // Selection arrow
+        canvas.setCursor(2, iy + (CFG_ITEM_H - 8) / 2);
+        canvas.print(sel ? ">" : " ");
+
+        // Label
+        canvas.setCursor(10, iy + (CFG_ITEM_H - 8) / 2);
+        canvas.print(kLabels[i]);
+
+        // Value (right column at x=76)
+        char val[10] = {};
+        switch (i) {
+            case 0: snprintf(val, sizeof(val), "0x%02X", cfg.nodeId);   break;
+            case 1: snprintf(val, sizeof(val), "%s", kMTypeLabels[cfg.mType[0] < 3 ? cfg.mType[0] : 0]); break;
+            case 2: snprintf(val, sizeof(val), "%4.0f", cfg.velLimit[0]); break;
+            case 3: snprintf(val, sizeof(val), "%4.0f", cfg.travVel[0]);  break;
+            case 4: snprintf(val, sizeof(val), "%s", kMTypeLabels[cfg.mType[1] < 3 ? cfg.mType[1] : 0]); break;
+            case 5: snprintf(val, sizeof(val), "%4.0f", cfg.velLimit[1]); break;
+            case 6: snprintf(val, sizeof(val), "%4.0f", cfg.travVel[1]);  break;
+            default: break;  // SAVE row — no value
+        }
+        canvas.setCursor(76, iy + (CFG_ITEM_H - 8) / 2);
+        canvas.print(val);
+    }
+
     tft.drawRGBBitmap(0, 0, canvas.getBuffer(), SCR_W, SCR_H);
 }

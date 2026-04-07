@@ -18,6 +18,12 @@ class AnimComSlave {
 public:
     void begin(const AnimComCallbacks& cb);
     void poll();
+
+    // Update the station ID checked by the frame parser at runtime.
+    // Call after begin() whenever the NVM nodeId is loaded or changed.
+    void setNodeId(uint8_t id) { _nodeId = id; }
+    uint8_t getNodeId() const  { return _nodeId; }
+
     bool isLinked() const { return (millis() - _lastFrameMs) < LINK_TIMEOUT_MS; }
     uint32_t getRxFrames() const { return _statRxFrames; }
     uint32_t getCrcErrors() const { return _statCrcErrors; }
@@ -32,6 +38,7 @@ private:
         PS_MSG_TYPE, PS_PAYLOAD_LEN, PS_PAYLOAD, PS_CRC_HI, PS_CRC_LO
     };
 
+    uint8_t          _nodeId = NODE_ID;
     AnimComCallbacks _cb = {};
     ParseState _ps = PS_SYNC0;
     AnimComFrame _frame = {};
