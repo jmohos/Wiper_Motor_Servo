@@ -92,9 +92,9 @@ static volatile uint32_t  g_lastManualCmdMs[NUM_MOTORS] = {0, 0};
 // Both Core 0 (writes via encoder ISR consumer) and Core 1 (reads for display)
 // access these.  They are uint8_t / bool so reads/writes are atomic on RP2040.
 // ---------------------------------------------------------------------------
-static volatile bool     g_inMenu   = true;
-static volatile uint8_t  g_menuSel  = 0;
-static volatile AppState g_appState = STATE_DISABLED;
+static volatile bool     g_inMenu   = false;           // start directly in ANIMCOM, not menu
+static volatile uint8_t  g_menuSel  = STATE_ANIMCOM;   // menu cursor pre-positioned on ANIMCOM
+static volatile AppState g_appState = STATE_ANIMCOM;   // default startup state
 
 // Config screen navigation — Core 0 writes, Core 1 reads for display.
 // CFG_* indices mirror kLabels[] in Display.cpp; keep in sync.
@@ -111,10 +111,13 @@ enum CfgItem : uint8_t {
 static volatile uint8_t g_cfgSel  = 0;      // selected config item
 static volatile bool    g_cfgEdit = false;   // true while encoder is editing
 
-// MANUAL mode motor selection.
-// 0xFF = no motor selected (button returns to menu in this state).
-// 0/1 = M0/M1 selected; encoder adjusts its parameter per its uiType.
-static volatile uint8_t g_manualSel = 0xFF;
+// MANUAL mode cursor.
+// g_manualSel: 0=M0, 1=M1, 2=S0, 3=S1, 4=EXIT  (cursor position in scroll mode)
+// g_manualEdit: true while encoder is adjusting the selected motor/servo setpoint.
+static constexpr uint8_t MANUAL_NUM_ITEMS = 5;   // M0, M1, S0, S1, EXIT
+static constexpr uint8_t MANUAL_EXIT_IDX  = 4;
+static volatile uint8_t  g_manualSel  = 0;
+static volatile bool     g_manualEdit = false;
 
 // RC servo instances — attached in setup(); driven by controlLoop() ramp.
 static Servo g_servo[NUM_SERVOS];
@@ -156,6 +159,7 @@ static volatile float       g_measPosAbs  [NUM_MOTORS] = {0.0f,                0
 
 static void applyAnimRunPattern(uint32_t nowMs)
 {
+    if (g_inMenu || g_appState != STATE_ANIMCOM) return;  // only active in ANIMCOM state
     if (g_animState != ANIMCOM_STATE_RUN_AUTO) {
         return;
     }
@@ -225,7 +229,7 @@ static void onAnimControlState(uint8_t state, uint8_t pattern, uint8_t speed_sca
     g_animPattern    = pattern;
     g_animSpeedScale = speed_scale;
 
-    if (g_appState != STATE_ANIMCOM) return;
+    if (g_appState != STATE_ANIMCOM || g_inMenu) return;
 
     if (state == ANIMCOM_STATE_STOP) {
         for (uint8_t m = 0; m < NUM_MOTORS; m++) {
@@ -242,7 +246,7 @@ static void onAnimControlState(uint8_t state, uint8_t pattern, uint8_t speed_sca
 
 static void onAnimManualSingle(uint8_t ch, uint8_t cmd_type, int32_t value)
 {
-    if (g_appState != STATE_ANIMCOM) return;
+    if (g_appState != STATE_ANIMCOM || g_inMenu) return;
     I2CSlave::lastCmdMs = millis();
 
     if (ch < NUM_MOTORS) {
@@ -305,7 +309,7 @@ static void onAnimTriggerEffect(uint8_t effect_type, uint8_t effect_id, uint16_t
 
 static void onAnimWatchdog()
 {
-    if (g_appState != STATE_ANIMCOM) return;
+    if (g_appState != STATE_ANIMCOM || g_inMenu) return;
     // Watchdog fired — coast all motors and center servos.
     for (uint8_t m = 0; m < NUM_MOTORS; m++) {
         g_mode[m] = MANUAL;
@@ -465,6 +469,9 @@ void loop1() {
             ds.animState      = g_animState;
             ds.animPattern    = g_animPattern;
             ds.animSpeedScale = g_animSpeedScale;
+            // In DISABLED the only cursor item is EXIT (idx 4); no motor highlighted.
+            ds.manualSel  = (g_appState == STATE_DISABLED) ? 4 : g_manualSel;
+            ds.manualEdit = (g_appState == STATE_DISABLED) ? false : g_manualEdit;
 
             Display::update(g_appState, ds);
         }
@@ -509,6 +516,10 @@ void setup() {
     acCb.onWatchdog      = onAnimWatchdog;
     g_animcom.begin(acCb);
     g_animcom.setNodeId(Settings::s.nodeId);   // apply NVM node ID
+
+    // Clear manual command timestamps so the ManualHold coast guard does not
+    // fire before the first MANUAL_SINGLE frame arrives after startup.
+    for (uint8_t m = 0; m < NUM_MOTORS; m++) g_lastManualCmdMs[m] = 0;
 
     Serial.println("[INFO] Dual wiper motor controller ready");
     if (!mag0Found) Serial.println("[WARN] Motor 0 AS5600 not found — check wiring");
@@ -1251,8 +1262,9 @@ void loop() {
             AppState entering = (AppState)g_menuSel;
             g_appState = entering;
             g_inMenu   = false;
-            g_manualSel = 0xFF;
-            g_cfgSel    = 0;
+            g_manualSel  = 0;
+            g_manualEdit = false;
+            g_cfgSel     = 0;
             g_cfgEdit   = false;
             if (entering == STATE_ANIMCOM) {
                 // Clear timestamps so the hold-timeout doesn't fire before
@@ -1340,51 +1352,76 @@ void loop() {
         }
 
     } else if (g_appState == STATE_MANUAL) {
-        // ---- MANUAL mode — encoder adjusts selected motor ---------------
-        if (btnPress) {
-            if (g_manualSel == 0xFF) {
-                g_manualSel = 0;   // select M0
-            } else if (g_manualSel == 0) {
-                g_manualSel = 1;   // select M1
-            } else {
-                // Deselect — return to menu.
-                coastAll();
-                g_inMenu = true;
+        // ---- MANUAL mode ------------------------------------------------
+        // Two sub-modes:
+        //   Scroll mode  — encoder moves cursor between items; button selects.
+        //   Adjust mode  — encoder changes the selected motor/servo setpoint;
+        //                  button returns to scroll mode.
+
+        if (!g_manualEdit) {
+            // --- Scroll mode ---
+            if (encDelta != 0) {
+                int8_t sel = (int8_t)g_manualSel + (encDelta > 0 ? 1 : -1);
+                if (sel < 0)                          sel = MANUAL_EXIT_IDX;
+                if (sel > (int8_t)MANUAL_EXIT_IDX)    sel = 0;
+                g_manualSel = (uint8_t)sel;
             }
-        }
-        if (encDelta != 0 && g_manualSel != 0xFF) {
-            uint8_t m = g_manualSel;
-            int8_t  d = (encDelta > 0) ? 1 : -1;
-            switch ((UiMotorType)Settings::s.motor[m].uiType) {
-                case UI_PWM_PERCENT: {
-                    // Map duty ±PWM_WRAP to ±100%, step 1%.
-                    int16_t step  = (int16_t)(PWM_WRAP / 100);
-                    int32_t duty  = (int32_t)MotorPWM::rawDuty[m] + d * step;
-                    duty = constrain(duty, -(int32_t)PWM_WRAP, (int32_t)PWM_WRAP);
-                    g_mode[m] = MANUAL;
-                    MotorPWM::setMotorDuty(m, (int16_t)duty);
-                    break;
+            if (btnPress) {
+                if (g_manualSel == MANUAL_EXIT_IDX) {
+                    coastAll();
+                    g_inMenu = true;
+                } else {
+                    g_manualEdit = true;   // enter adjust mode for this item
                 }
-                case UI_VELOCITY: {
-                    float limit = Settings::s.motor[m].velLimit;
-                    float vel   = g_targetVel[m] + d * 5.0f;
-                    vel = constrain(vel, -limit, limit);
-                    g_targetVel[m] = vel;
-                    if (g_mode[m] != VELOCITY) g_velPid[m].reset();
-                    g_mode[m] = VELOCITY;
-                    break;
-                }
-                case UI_POSITION: {
-                    float pos = g_targetPos[m] + d * 5.0f;
-                    if (g_mode[m] != POSITION) {
-                        g_velPid[m].reset();
-                        g_posPid[m].reset();
-                        g_commandedPos[m] = (float)g_measPosAbs[m];
+            }
+        } else {
+            // --- Adjust mode ---
+            if (encDelta != 0) {
+                int8_t  d   = (encDelta > 0) ? 1 : -1;
+                uint8_t sel = g_manualSel;
+
+                if (sel < NUM_MOTORS) {
+                    // DC motor adjustment
+                    uint8_t m = sel;
+                    switch ((UiMotorType)Settings::s.motor[m].uiType) {
+                        case UI_PWM_PERCENT: {
+                            int16_t step = (int16_t)(PWM_WRAP / 100);  // 1% per step
+                            int32_t duty = (int32_t)MotorPWM::rawDuty[m] + d * step;
+                            duty = constrain(duty, -(int32_t)PWM_WRAP, (int32_t)PWM_WRAP);
+                            g_mode[m] = MANUAL;
+                            MotorPWM::setMotorDuty(m, (int16_t)duty);
+                            break;
+                        }
+                        case UI_VELOCITY: {
+                            float limit = Settings::s.motor[m].velLimit;
+                            float vel   = g_targetVel[m] + d * 5.0f;
+                            vel = constrain(vel, -limit, limit);
+                            g_targetVel[m] = vel;
+                            if (g_mode[m] != VELOCITY) g_velPid[m].reset();
+                            g_mode[m] = VELOCITY;
+                            break;
+                        }
+                        case UI_POSITION: {
+                            float pos = g_targetPos[m] + d * 5.0f;
+                            if (g_mode[m] != POSITION) {
+                                g_velPid[m].reset();
+                                g_posPid[m].reset();
+                                g_commandedPos[m] = (float)g_measPosAbs[m];
+                            }
+                            g_targetPos[m] = pos;
+                            g_mode[m] = POSITION;
+                            break;
+                        }
                     }
-                    g_targetPos[m] = pos;
-                    g_mode[m] = POSITION;
-                    break;
+                } else {
+                    // Servo adjustment — always by angle, 1° per step
+                    uint8_t si = sel - NUM_MOTORS;
+                    float   pos = g_servoTarget[si] + d * 1.0f;
+                    g_servoTarget[si] = constrain(pos, 0.0f, 180.0f);
                 }
+            }
+            if (btnPress) {
+                g_manualEdit = false;   // return to scroll mode
             }
         }
 

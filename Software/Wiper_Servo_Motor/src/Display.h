@@ -86,6 +86,10 @@ struct DisplayState {
     uint8_t animState;       // 0=STOP  1=MANUAL  2=RUN_AUTO
     uint8_t animPattern;     // active pattern index
     uint8_t animSpeedScale;  // speed scale 0–100 %
+
+    // MANUAL mode cursor state (for drawing selection highlight)
+    uint8_t manualSel;       // 0=M0 1=M1 2=S0 3=S1 4=EXIT
+    bool    manualEdit;      // true while encoder is in adjust mode
 };
 
 // ---------------------------------------------------------------------------

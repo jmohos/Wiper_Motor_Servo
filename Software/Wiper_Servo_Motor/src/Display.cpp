@@ -99,7 +99,7 @@ void Display::_colorBar(uint16_t y, uint16_t h, uint16_t bg, const char* label) 
 void Display::_drawMotorSection(uint8_t m, uint16_t yb, const DisplayState& ds) {
     char buf[22];
 
-    // Mode bar
+    // Mode bar — in MANUAL mode, highlight when cursor is on this motor.
     uint16_t    barCol;
     const char* barLabel;
     switch (ds.mode[m]) {
@@ -107,7 +107,14 @@ void Display::_drawMotorSection(uint8_t m, uint16_t yb, const DisplayState& ds) 
         case 1:  barCol = C_VELOCITY; barLabel = m ? "M2 VELOCITY" : "M1 VELOCITY"; break;
         default: barCol = C_MANUAL;   barLabel = m ? "M2 MANUAL  " : "M1 MANUAL  "; break;
     }
-    _colorBar(yb + 0, MO_BAR_H, barCol, barLabel);
+    // Cursor: selected=white outline bar, edit=bright green bar
+    bool mSel  = (ds.manualSel == m);
+    bool mEdit = mSel && ds.manualEdit;
+    if (mEdit)     barCol = C_VELOCITY;   // green = actively editing
+    else if (mSel) barCol = C_WHITE;      // white = cursor here, not editing
+    char labelBuf[14];
+    snprintf(labelBuf, sizeof(labelBuf), "%s%s", mSel ? ">" : " ", barLabel);
+    _colorBar(yb + 0, MO_BAR_H, barCol, labelBuf);
 
     // Primary value (scale 2)
     switch (ds.mode[m]) {
@@ -144,7 +151,14 @@ void Display::_drawMotorSection(uint8_t m, uint16_t yb, const DisplayState& ds) 
 // ---------------------------------------------------------------------------
 void Display::_drawServoRow(uint8_t idx, uint16_t ybar, const DisplayState& ds) {
     char buf[22];
-    _colorBar(ybar, H_SRV_BAR, C_SERVO, idx ? "S2 SERVO" : "S1 SERVO");
+    // Cursor highlight: servo cursor index is NUM_MOTORS + idx (2 or 3)
+    bool sSel  = (ds.manualSel == (uint8_t)(NUM_MOTORS + idx));
+    bool sEdit = sSel && ds.manualEdit;
+    uint16_t barCol = sEdit  ? C_VELOCITY :
+                      sSel   ? C_WHITE    : C_SERVO;
+    char label[12];
+    snprintf(label, sizeof(label), "%sS%d SERVO", sSel ? ">" : " ", idx + 1);
+    _colorBar(ybar, H_SRV_BAR, barCol, label);
     if (ds.servoActual[idx] != ds.servoTarget[idx]) {
         snprintf(buf, sizeof(buf), "%d->%ddeg", ds.servoActual[idx], ds.servoTarget[idx]);
     } else {
@@ -162,13 +176,26 @@ void Display::_drawStatusBar(AppState state, const DisplayState& ds) {
 
     switch (state) {
         case STATE_DISABLED:
-            barCol = C_DISABLED;
-            snprintf(buf, sizeof(buf), "DISABLED  BTN:MENU");
-            break;
-        case STATE_MANUAL:
-            barCol = C_VELOCITY;
-            snprintf(buf, sizeof(buf), "LOCAL CTRL  BTN:MENU");
-            break;
+            // EXIT is the only selectable item — always shown as selected.
+            hband(Y_STATUS_BAR, H_STATUS_BAR, C_WHITE);
+            canvas.setTextSize(1);
+            canvas.setTextColor(C_BG, C_WHITE);
+            canvas.setCursor(3, Y_STATUS_BAR + (H_STATUS_BAR - 8) / 2);
+            canvas.print("> EXIT");
+            return;
+        case STATE_MANUAL: {
+            // Bottom row is the EXIT cursor item.
+            bool exitSel  = (ds.manualSel == 4);
+            bool exitEdit = exitSel && ds.manualEdit;
+            barCol = exitSel ? (exitEdit ? C_VELOCITY : C_WHITE) : C_DGRAY;
+            uint16_t fg   = exitSel ? C_BG : C_LGRAY;
+            hband(Y_STATUS_BAR, H_STATUS_BAR, barCol);
+            canvas.setTextSize(1);
+            canvas.setTextColor(fg, barCol);
+            canvas.setCursor(3, Y_STATUS_BAR + (H_STATUS_BAR - 8) / 2);
+            canvas.print(exitSel ? "> EXIT" : "  EXIT");
+            return;   // skip _colorBar at the bottom of this function
+        }
         case STATE_ANIMCOM:
             barCol = C_ANIMCOM;
             switch (ds.animState) {

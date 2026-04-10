@@ -24,11 +24,22 @@
 #include <Arduino.h>
 
 // ---------------------------------------------------------------------------
+// Motor driver pin assignments — BTS7960 ×2
+//   Each motor has an IN1 (forward PWM) and IN2 (reverse PWM) pin.
+//   Both pins of a motor must be on the same RP2040 PWM slice so that
+//   the complementary outputs share a common counter.
+//   Motor 0: slice 0  (GPIO0 / GPIO1)
+//   Motor 1: slice 1  (GPIO2 / GPIO3)
+// ---------------------------------------------------------------------------
+#define MOTOR_0_IN1_PIN   1   // PWM slice 0A — forward
+#define MOTOR_0_IN2_PIN   0   // PWM slice 0B — reverse
+#define MOTOR_1_IN1_PIN   3   // PWM slice 1A — forward
+#define MOTOR_1_IN2_PIN   2   // PWM slice 1B — reverse
+#define NUM_MOTORS        2
+
+// ---------------------------------------------------------------------------
 // PWM parameters — 25 kHz, 5000-step duty range
 //
-// MotorPWM maps motor index to GPIOs as: IN1 = idx*2, IN2 = idx*2+1
-//   Motor 0 → GPIO0 / GPIO1  (PWM slice 0)
-//   Motor 1 → GPIO2 / GPIO3  (PWM slice 1)
 // analogWriteFreq() / analogWriteRange() are global, so both slices run at
 // exactly the same 25 kHz base — no inter-motor frequency drift.
 // ---------------------------------------------------------------------------
@@ -101,11 +112,6 @@
 // If no valid command is received within this window the motors are coasted.
 // ---------------------------------------------------------------------------
 #define WATCHDOG_TIMEOUT_MS  5000
-
-// ---------------------------------------------------------------------------
-// Motor count
-// ---------------------------------------------------------------------------
-#define NUM_MOTORS  2
 
 // ---------------------------------------------------------------------------
 // Status LED

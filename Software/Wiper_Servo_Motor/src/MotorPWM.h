@@ -2,9 +2,9 @@
 // =============================================================================
 //  MotorPWM.h — 25 kHz PWM generation for two BTS7960 motor drivers
 //
-//  GPIO mapping: IN1 = idx*2, IN2 = idx*2+1
-//    Motor 0: IN1=GPIO0 (slice 0A), IN2=GPIO1 (slice 0B)
-//    Motor 1: IN1=GPIO2 (slice 1A), IN2=GPIO3 (slice 1B)
+//  GPIO mapping: defined by MOTOR_x_IN1/IN2_PIN in Config.h
+//    Motor 0: IN1=MOTOR_0_IN1_PIN (slice 0A), IN2=MOTOR_0_IN2_PIN (slice 0B)
+//    Motor 1: IN1=MOTOR_1_IN1_PIN (slice 1A), IN2=MOTOR_1_IN2_PIN (slice 1B)
 //
 //  Both slices share the same base frequency via analogWriteFreq().
 //
