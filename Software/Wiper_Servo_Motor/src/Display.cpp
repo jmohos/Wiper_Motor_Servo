@@ -116,33 +116,43 @@ void Display::_drawMotorSection(uint8_t m, uint16_t yb, const DisplayState& ds) 
     snprintf(labelBuf, sizeof(labelBuf), "%s%s", mSel ? ">" : " ", barLabel);
     _colorBar(yb + 0, MO_BAR_H, barCol, labelBuf);
 
-    // Primary value (scale 2)
-    switch (ds.mode[m]) {
-        case 2:  snprintf(buf, sizeof(buf), "%.1fdeg", ds.measPosAbs[m]);  break;
-        case 1:  snprintf(buf, sizeof(buf), "%.1fd/s", ds.measVel[m]);     break;
-        default: snprintf(buf, sizeof(buf), "Dty%+d",  (int)ds.duty[m]);   break;
+    // Primary value (scale 2) — show OFFLINE alert for encoder-dependent modes.
+    bool encFault = ds.encoderOffline[m] && (ds.mode[m] != 0);
+    if (encFault) {
+        _txtAt(2, yb + MO_VAL_Y, 2, C_DISABLED, "OFFLINE");
+    } else {
+        switch (ds.mode[m]) {
+            case 2:  snprintf(buf, sizeof(buf), "%.1fdeg", ds.measPosAbs[m]);  break;
+            case 1:  snprintf(buf, sizeof(buf), "%.1fd/s", ds.measVel[m]);     break;
+            default: snprintf(buf, sizeof(buf), "Dty%+d",  (int)ds.duty[m]);   break;
+        }
+        _txtAt(2, yb + MO_VAL_Y, 2, C_WHITE, buf);
     }
-    _txtAt(2, yb + MO_VAL_Y, 2, C_WHITE, buf);
 
     // Detail lines (scale 1)
-    switch (ds.mode[m]) {
-        case 2:  // POSITION
-            snprintf(buf, sizeof(buf), "Tgt:%.1f E:%+.1f", ds.targetPos[m], ds.posError[m]);
-            _txtAt(2, yb + MO_LINE1_Y, 1, C_LGRAY, buf);
-            snprintf(buf, sizeof(buf), "V:%.1fd/s", ds.measVel[m]);
-            _txtAt(2, yb + MO_LINE2_Y, 1, C_LGRAY, buf);
-            break;
-        case 1:  // VELOCITY
-            snprintf(buf, sizeof(buf), "Cmd:%.1fd/s", ds.commandedVel[m]);
-            _txtAt(2, yb + MO_LINE1_Y, 1, C_LGRAY, buf);
-            snprintf(buf, sizeof(buf), "Abs:%.1fdeg", ds.measPosAbs[m]);
-            _txtAt(2, yb + MO_LINE2_Y, 1, C_LGRAY, buf);
-            break;
-        default:  // MANUAL
-            snprintf(buf, sizeof(buf), "Abs:%.1fdeg", ds.measPosAbs[m]);
-            _txtAt(2, yb + MO_LINE1_Y, 1, C_LGRAY, buf);
-            _txtAt(2, yb + MO_LINE2_Y, 1, C_LGRAY, "");
-            break;
+    if (encFault) {
+        _txtAt(2, yb + MO_LINE1_Y, 1, C_DISABLED, "encoder offline");
+        _txtAt(2, yb + MO_LINE2_Y, 1, C_LGRAY,    "");
+    } else {
+        switch (ds.mode[m]) {
+            case 2:  // POSITION
+                snprintf(buf, sizeof(buf), "Tgt:%.1f E:%+.1f", ds.targetPos[m], ds.posError[m]);
+                _txtAt(2, yb + MO_LINE1_Y, 1, C_LGRAY, buf);
+                snprintf(buf, sizeof(buf), "V:%.1fd/s", ds.measVel[m]);
+                _txtAt(2, yb + MO_LINE2_Y, 1, C_LGRAY, buf);
+                break;
+            case 1:  // VELOCITY
+                snprintf(buf, sizeof(buf), "Cmd:%.1fd/s", ds.commandedVel[m]);
+                _txtAt(2, yb + MO_LINE1_Y, 1, C_LGRAY, buf);
+                snprintf(buf, sizeof(buf), "Abs:%.1fdeg", ds.measPosAbs[m]);
+                _txtAt(2, yb + MO_LINE2_Y, 1, C_LGRAY, buf);
+                break;
+            default:  // MANUAL
+                snprintf(buf, sizeof(buf), "Abs:%.1fdeg", ds.measPosAbs[m]);
+                _txtAt(2, yb + MO_LINE1_Y, 1, C_LGRAY, buf);
+                _txtAt(2, yb + MO_LINE2_Y, 1, C_LGRAY, "");
+                break;
+        }
     }
 }
 
@@ -200,7 +210,7 @@ void Display::_drawStatusBar(AppState state, const DisplayState& ds) {
             barCol = C_ANIMCOM;
             switch (ds.animState) {
                 case ANIMCOM_STATE_RUN_AUTO: snprintf(buf, sizeof(buf), "RS485:P%d@%d%%  BTN:MENU",
-                                                     ds.animPattern, ds.animSpeedScale); break;
+                                                     ds.animPattern, ds.animShowIntensity); break;
                 case ANIMCOM_STATE_MANUAL:   snprintf(buf, sizeof(buf), "RS485:MANUAL  BTN:MENU"); break;
                 default:                    snprintf(buf, sizeof(buf), "RS485:IDLE  BTN:MENU");   break;
             }
@@ -322,21 +332,22 @@ void Display::update(AppState state, const DisplayState& ds) {
 // ---------------------------------------------------------------------------
 // Config screen — 128 × 160 portrait
 //
-// Layout:
-//   y=  0 – 15  : Header "CONFIG  Btn:edit/save"
-//   y= 16 – 33  : Item 0 — Station ID
-//   y= 34 – 51  : Item 1 — M0 Type
-//   y= 52 – 69  : Item 2 — M0 Vel Limit
-//   y= 70 – 87  : Item 3 — M0 Traverse Vel
-//   y= 88 –105  : Item 4 — M1 Type
-//   y=106 –123  : Item 5 — M1 Vel Limit
-//   y=124 –141  : Item 6 — M1 Traverse Vel
-//   y=142 –159  : Item 7 — SAVE (saves to flash, returns to menu)
+// Layout:  16 px header + 9 × 16 px items = 160 px exactly.
+//   y=  0 – 15  : Header "CONFIG  Btn:edit/OK"
+//   y= 16 – 31  : Item 0 — Station ID
+//   y= 32 – 47  : Item 1 — M0 Type
+//   y= 48 – 63  : Item 2 — M0 Vel Limit
+//   y= 64 – 79  : Item 3 — M0 Traverse Vel
+//   y= 80 – 95  : Item 4 — M1 Type
+//   y= 96 –111  : Item 5 — M1 Vel Limit
+//   y=112 –127  : Item 6 — M1 Traverse Vel
+//   y=128 –143  : Item 7 — SAVE (saves to flash, returns to menu)
+//   y=144 –159  : Item 8 — EXIT (discards unsaved changes, returns to menu)
 // ---------------------------------------------------------------------------
 
 static constexpr uint16_t CFG_HDR_H  = 16;
-static constexpr uint16_t CFG_ITEM_H = 18;
-// 16 + 8×18 = 160 — exactly fills the screen.
+static constexpr uint16_t CFG_ITEM_H = 16;
+// 16 + 9×16 = 160 — exactly fills the screen.
 
 static const char* const kMTypeLabels[3] = { "PWM%", "VEL ", "POS " };
 
@@ -348,7 +359,7 @@ void Display::drawConfig(const ConfigDisplayState& cfg) {
     canvas.setTextSize(1);
     canvas.setTextColor(C_WHITE, C_HEADER);
     canvas.setCursor(3, (CFG_HDR_H - 8) / 2);
-    canvas.print("CONFIG  Btn:edit/save");
+    canvas.print("CONFIG  Btn:edit/OK  ");
 
     static const char* const kLabels[NUM_CFG_ITEMS] = {
         "Station ID",
@@ -359,6 +370,7 @@ void Display::drawConfig(const ConfigDisplayState& cfg) {
         "M1 VelLim ",
         "M1 TravVel",
         ">>> SAVE  ",
+        ">>> EXIT  ",
     };
 
     for (uint8_t i = 0; i < NUM_CFG_ITEMS; i++) {

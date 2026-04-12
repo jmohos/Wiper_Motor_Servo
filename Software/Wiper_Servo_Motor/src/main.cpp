@@ -69,6 +69,7 @@
 #include <Servo.h>
 #include "Display.h"
 #include "AnimComSlave.h"
+#include "StationAnim.h"
 
 // AnimCom RS485 slave
 static AnimComSlave g_animcom;
@@ -76,7 +77,7 @@ static AnimComSlave g_animcom;
 // AnimCom global control state — written by callbacks, read by controlLoop().
 static volatile uint8_t  g_animState      = ANIMCOM_STATE_STOP;
 static volatile uint8_t  g_animPattern    = 0;
-static volatile uint8_t  g_animSpeedScale = 100;
+static volatile uint8_t  g_animShowIntensity = 100;
 
 // Timestamp of the last MANUAL_SINGLE command per motor channel.
 // Used to detect ManualHold (keepalives arrive but no channel commands).
@@ -107,6 +108,7 @@ enum CfgItem : uint8_t {
     CFG_M1_VELLIM  = 5,
     CFG_M1_TRAVVEL = 6,
     CFG_SAVE       = 7,
+    CFG_EXIT       = 8,
 };
 static volatile uint8_t g_cfgSel  = 0;      // selected config item
 static volatile bool    g_cfgEdit = false;   // true while encoder is editing
@@ -156,19 +158,52 @@ static volatile float       g_measPos     [NUM_MOTORS] = {0.0f,                0
 static volatile float       g_pidOutput   [NUM_MOTORS] = {0.0f,                0.0f};
 static volatile float       g_posError    [NUM_MOTORS] = {0.0f,                0.0f};
 static volatile float       g_measPosAbs  [NUM_MOTORS] = {0.0f,                0.0f};  // accumulated multi-turn (deg)
+static volatile bool        g_encoderOffline[NUM_MOTORS] = {false,             false}; // true when AS5600 returns 0xFFFF
+static volatile bool        g_streamEnabled  = true;    // serial status stream on/off
 
 static void applyAnimRunPattern(uint32_t nowMs)
 {
     if (g_inMenu || g_appState != STATE_ANIMCOM) return;  // only active in ANIMCOM state
-    if (g_animState != ANIMCOM_STATE_RUN_AUTO) {
-        return;
-    }
-    if (g_animSpeedScale == 0) {
+    if (g_animState != ANIMCOM_STATE_RUN_AUTO) return;
+
+    // Station-specific animation takes priority over generic patterns.
+    // Each nodeId with a registered handler gets its own motion behaviour
+    // instead of the generic sine-wave patterns below.
+    if (stationAnim_hasHandler(Settings::s.nodeId)) {
+        // Initialise outputs from current state; the handler only writes the
+        // channels it owns so uncontrolled motors/servos are left unchanged.
+        float   posMin[NUM_MOTORS], posMax[NUM_MOTORS];
+        uint8_t outMode[NUM_MOTORS];
+        float   outTargetPos[NUM_MOTORS], outTargetVel[NUM_MOTORS];
+        float   outServoTarget[NUM_SERVOS];
+
+        for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+            posMin[m]      = Settings::s.motor[m].posMin;
+            posMax[m]      = Settings::s.motor[m].posMax;
+            outMode[m]      = (uint8_t)g_mode[m];
+            outTargetPos[m] = g_targetPos[m];
+            outTargetVel[m] = g_targetVel[m];
+        }
+        for (uint8_t s = 0; s < NUM_SERVOS; s++) outServoTarget[s] = g_servoTarget[s];
+
+        stationAnim_update(Settings::s.nodeId, nowMs, g_animShowIntensity,
+                           posMin, posMax,
+                           outMode, outTargetPos, outTargetVel, outServoTarget);
+
+        for (uint8_t m = 0; m < NUM_MOTORS; m++) {
+            g_mode[m]      = (ControlMode)outMode[m];
+            g_targetPos[m] = outTargetPos[m];
+            g_targetVel[m] = outTargetVel[m];
+        }
+        for (uint8_t s = 0; s < NUM_SERVOS; s++) g_servoTarget[s] = outServoTarget[s];
         return;
     }
 
-    const float speedFactor = (float)g_animSpeedScale / 100.0f;
-    const float theta = ((float)nowMs * speedFactor) * (2.0f * PI / 6000.0f);
+    // Generic patterns — used by units without a dedicated station handler.
+    if (g_animShowIntensity == 0) return;
+
+    const float intensityFactor = (float)g_animShowIntensity / 100.0f;
+    const float theta = ((float)nowMs * intensityFactor) * (2.0f * PI / 6000.0f);
     const float sin0 = sinf(theta);
     const float sin1 = sinf(theta + (PI * 0.5f));
 
@@ -222,12 +257,12 @@ static PIDController g_posPid[NUM_MOTORS] = {
 // AnimCom callback implementations
 // ---------------------------------------------------------------------------
 
-static void onAnimControlState(uint8_t state, uint8_t pattern, uint8_t speed_scale)
+static void onAnimControlState(uint8_t state, uint8_t pattern, uint8_t show_intensity)
 {
     // Always track RS485 state for display; only act on motors in ANIMCOM mode.
-    g_animState      = state;
-    g_animPattern    = pattern;
-    g_animSpeedScale = speed_scale;
+    g_animState         = state;
+    g_animPattern       = pattern;
+    g_animShowIntensity = show_intensity;
 
     if (g_appState != STATE_ANIMCOM || g_inMenu) return;
 
@@ -318,9 +353,19 @@ static void onAnimWatchdog()
         MotorPWM::setMotor(m, MCP_SPEED_IDLE);
     }
     for (uint8_t s = 0; s < NUM_SERVOS; s++) g_servoTarget[s] = 90.0f;
-    g_animState = ANIMCOM_STATE_STOP;
-    g_animPattern = 0;
-    g_animSpeedScale = 100;
+
+    // Stations with a dedicated handler resume their default animation rather
+    // than stopping, so the prop maintains a sensible stand-alone state when
+    // the animation controller is absent or the RS485 cable is disconnected.
+    if (stationAnim_hasHandler(Settings::s.nodeId)) {
+        g_animState      = ANIMCOM_STATE_RUN_AUTO;
+        g_animPattern    = 0;
+        g_animShowIntensity = stationAnim_defaultShowIntensity(Settings::s.nodeId);
+    } else {
+        g_animState      = ANIMCOM_STATE_STOP;
+        g_animPattern    = 0;
+        g_animShowIntensity = 100;
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -392,7 +437,7 @@ void loop1() {
     uint32_t now = millis();
 
     // ---- Serial status @ 2 Hz ----------------------------------------
-    if (now - lastSerialMs >= 500) {
+    if (g_streamEnabled && now - lastSerialMs >= 500) {
         lastSerialMs = now;
         for (uint8_t m = 0; m < NUM_MOTORS; m++) {
             ControlMode mode    = g_mode[m];
@@ -457,8 +502,9 @@ void loop1() {
                 ds.servoTarget[si] = (int)roundf(g_servoTarget[si]);
             }
             for (uint8_t m = 0; m < NUM_MOTORS; m++) {
-                ds.mode[m]         = (uint8_t)g_mode[m];
-                ds.measVel[m]      = g_measVel[m];
+                ds.mode[m]           = (uint8_t)g_mode[m];
+                ds.encoderOffline[m] = g_encoderOffline[m];
+                ds.measVel[m]        = g_measVel[m];
                 ds.measPosAbs[m]   = g_measPosAbs[m];
                 ds.targetVel[m]    = g_targetVel[m];
                 ds.commandedVel[m] = g_commandedVel[m];
@@ -468,7 +514,7 @@ void loop1() {
             }
             ds.animState      = g_animState;
             ds.animPattern    = g_animPattern;
-            ds.animSpeedScale = g_animSpeedScale;
+            ds.animShowIntensity = g_animShowIntensity;
             // In DISABLED the only cursor item is EXIT (idx 4); no motor highlighted.
             ds.manualSel  = (g_appState == STATE_DISABLED) ? 4 : g_manualSel;
             ds.manualEdit = (g_appState == STATE_DISABLED) ? false : g_manualEdit;
@@ -506,6 +552,16 @@ void setup() {
     DataLogger::begin();
     Settings::begin();
     applySettings();
+
+    // Stations with a dedicated handler start immediately in RUN_AUTO at their
+    // default intensity so the prop animates on power-up even with no
+    // animation controller connected on the RS485 bus.
+    if (stationAnim_hasHandler(Settings::s.nodeId)) {
+        g_animState      = ANIMCOM_STATE_RUN_AUTO;
+        g_animPattern    = 0;
+        g_animShowIntensity = stationAnim_defaultShowIntensity(Settings::s.nodeId);
+    }
+
     I2CSlave::lastCmdMs = millis();
 
     // AnimCom RS485 slave
@@ -524,8 +580,7 @@ void setup() {
     Serial.println("[INFO] Dual wiper motor controller ready");
     if (!mag0Found) Serial.println("[WARN] Motor 0 AS5600 not found — check wiring");
     if (!mag1Found) Serial.println("[WARN] Motor 1 AS5600 not found — check wiring");
-    Serial.println("[INFO] Commands require motor index m (0 or 1): v/va/p/pv/pmode/plim/r/stop/gains/kp/ki/kd/pkp/pki/pkd/zero");
-    Serial.println("[INFO] Non-indexed: freeze  resume  save  load  defaults");
+    Serial.println("[INFO] Type 'help' for command reference, 'help setup' for first-time tuning guide");
 }
 
 // ---------------------------------------------------------------------------
@@ -588,19 +643,44 @@ static void controlLoop(uint32_t now) {
 
         // --- Encoder read ---------------------------------------------
         uint16_t rawAngle = encoders[m]->readAngle();
-        if (rawAngle == 0xFFFF) continue;   // skip this motor this tick
+        g_encoderOffline[m] = (rawAngle == 0xFFFF);
+        if (rawAngle == 0xFFFF) {
+            // Encoder required for closed-loop modes — coast immediately.
+            // MANUAL (PWM) mode does not need the encoder; leave duty as-is.
+            if (g_mode[m] == VELOCITY || g_mode[m] == POSITION) {
+                MotorPWM::setMotor(m, MCP_SPEED_IDLE);
+                g_pidOutput[m] = 0.0f;
+                g_velPid[m].reset();
+                g_posPid[m].reset();
+            }
+            continue;
+        }
         if (m == 0) I2CSlave::encoderAngle = rawAngle;  // legacy compat
         g_lastRawAngle[m] = rawAngle;
 
         // Accumulate absolute multi-turn position.
         // Uses the same short-arc detection as measureVelocity so a single
         // 20 ms sample can never appear as more than a half-revolution step.
+        //
+        // On the FIRST read after boot, g_measPosAbs is seeded from the
+        // actual physical position (encoder reading minus zeroOffset) rather
+        // than starting at 0.  Without this, POSITION mode commands would
+        // be relative to the power-on position rather than the calibrated
+        // mechanical zero — causing the needle/actuator to drift further on
+        // every reboot when a station animation targets an absolute angle.
         {
             static uint16_t prevRaw  [NUM_MOTORS] = {};
             static bool     firstRead[NUM_MOTORS] = {true, true};
             if (firstRead[m]) {
                 prevRaw[m]   = rawAngle;
                 firstRead[m] = false;
+                // Seed absolute accumulator from calibrated physical position.
+                float initPos = rawAngle * (360.0f / 4096.0f) - g_zeroOffset[m];
+                // Normalise into (-180, +180] so the result is unambiguous for
+                // single-revolution constrained motors (e.g. 0-180° gauges).
+                if      (initPos >  180.0f) initPos -= 360.0f;
+                else if (initPos < -180.0f) initPos += 360.0f;
+                g_measPosAbs[m] = initPos;
             } else {
                 int16_t delta = (int16_t)rawAngle - (int16_t)prevRaw[m];
                 if      (delta >  2048) delta -= 4096;
@@ -829,6 +909,136 @@ static void printGains(uint8_t m) {
 }
 
 // ---------------------------------------------------------------------------
+// Help text
+// ---------------------------------------------------------------------------
+static void printHelp() {
+    Serial.println(F(""));
+    Serial.println(F("=== WIPER MOTOR CONTROLLER — COMMAND REFERENCE ==="));
+    Serial.println(F("  m = motor index (0 or 1)    idx = servo index (0 or 1)"));
+    Serial.println(F(""));
+    Serial.println(F("STREAM"));
+    Serial.println(F("  stream on/off          Enable or disable the 2 Hz status printout"));
+    Serial.println(F(""));
+    Serial.println(F("MOTION  (require motor index m)"));
+    Serial.println(F("  v <m> <deg/s>          Velocity mode — set target speed"));
+    Serial.println(F("  va <m> <deg/s2>        Velocity ramp acceleration"));
+    Serial.println(F("  p <m> <deg> [vel]      Position mode — move to angle (optional speed)"));
+    Serial.println(F("  pv <m> <deg/s>         Position traverse speed"));
+    Serial.println(F("  pmode <m> 0|1          Path: 0=SHORTEST  1=CONSTRAINED (uses plim)"));
+    Serial.println(F("  plim <m> <min> <max>   Travel limits in degrees (CONSTRAINED mode)"));
+    Serial.println(F("  r <m> <0-255>          Raw PWM: 0=rev-full  128=stop  255=fwd-full"));
+    Serial.println(F("  stop [m]               Coast all motors (or just m) to idle"));
+    Serial.println(F(""));
+    Serial.println(F("CALIBRATION"));
+    Serial.println(F("  zero <m>               Set current position as the zero reference"));
+    Serial.println(F("  gains [m]              Print current PID gains (all, or just m)"));
+    Serial.println(F(""));
+    Serial.println(F("VELOCITY PID  (closed-loop speed control)"));
+    Serial.println(F("  kp <m> <val>           Proportional gain"));
+    Serial.println(F("  ki <m> <val>           Integral gain  (resets integrator)"));
+    Serial.println(F("  kd <m> <val>           Derivative gain"));
+    Serial.println(F(""));
+    Serial.println(F("POSITION PID  (outputs velocity setpoint to inner velocity loop)"));
+    Serial.println(F("  pkp <m> <val>          Proportional gain"));
+    Serial.println(F("  pki <m> <val>          Integral gain  (resets integrator)"));
+    Serial.println(F("  pkd <m> <val>          Derivative gain"));
+    Serial.println(F(""));
+    Serial.println(F("SERVO"));
+    Serial.println(F("  servo <idx> <0-180>    Set RC servo target angle"));
+    Serial.println(F("  servor <idx> <deg/s>   Set RC servo ramp rate"));
+    Serial.println(F(""));
+    Serial.println(F("CONFIGURATION"));
+    Serial.println(F("  config                 Print all saved configuration"));
+    Serial.println(F("  nodeid [id]            Get/set RS485 station ID (hex ok: 0x07)"));
+    Serial.println(F("  mtype <m> [0|1|2]      Display type: 0=PWM%  1=VELOCITY  2=POSITION"));
+    Serial.println(F("  mvellim <m> [val]      Velocity cap 10-720 deg/s"));
+    Serial.println(F("  mtravvel <m> [val]     Default traverse velocity 10-720 deg/s"));
+    Serial.println(F(""));
+    Serial.println(F("SETTINGS"));
+    Serial.println(F("  save                   Write all RAM settings to flash"));
+    Serial.println(F("  load                   Reload settings from flash"));
+    Serial.println(F("  defaults               Restore factory defaults (RAM only)"));
+    Serial.println(F(""));
+    Serial.println(F("DIAGNOSTICS"));
+    Serial.println(F("  freeze                 Stop all motors and dump DataLogger to console"));
+    Serial.println(F("  resume                 Resume DataLogger recording after freeze"));
+    Serial.println(F(""));
+    Serial.println(F("SYSTEM"));
+    Serial.println(F("  bootload               Reboot into BOOTSEL/UF2 flash mode"));
+    Serial.println(F(""));
+    Serial.println(F("  help setup             Step-by-step guide: first-time setup and tuning"));
+    Serial.println(F("==================================================="));
+}
+
+static void printSetupGuide() {
+    Serial.println(F(""));
+    Serial.println(F("=== NEW MOTOR SETUP GUIDE ==="));
+    Serial.println(F(""));
+    Serial.println(F("STEP 1 — VERIFY ENCODER"));
+    Serial.println(F("  With stream running, rotate the shaft by hand."));
+    Serial.println(F("  Confirm the Abs value in the status line changes."));
+    Serial.println(F("  If 'ENCODER OFFLINE' appears: check AS5600 wiring"));
+    Serial.println(F("  (SDA/SCL/3.3V/GND) and confirm the diametric magnet"));
+    Serial.println(F("  is centred over the AS5600 IC within 0.5 mm."));
+    Serial.println(F(""));
+    Serial.println(F("STEP 2 — SET ZERO POSITION"));
+    Serial.println(F("  Move the mechanism to the desired home/zero position."));
+    Serial.println(F("    zero <m>       Sets current angle as origin"));
+    Serial.println(F("    save           Persist to flash"));
+    Serial.println(F("  The Abs value should now read ~0.0 deg."));
+    Serial.println(F(""));
+    Serial.println(F("STEP 3 — SET TRAVEL LIMITS  (position-controlled mechanisms)"));
+    Serial.println(F("  Move shaft to minimum stop, note Abs value."));
+    Serial.println(F("  Move shaft to maximum stop, note Abs value."));
+    Serial.println(F("    plim <m> <min> <max>   e.g. plim 0 0 180"));
+    Serial.println(F("    pmode <m> 1            Enable CONSTRAINED mode"));
+    Serial.println(F(""));
+    Serial.println(F("STEP 4 — SET MOTOR DISPLAY TYPE"));
+    Serial.println(F("    mtype <m> 0   PWM percent   (open-loop, no encoder needed)"));
+    Serial.println(F("    mtype <m> 1   VELOCITY       (closed-loop deg/s)"));
+    Serial.println(F("    mtype <m> 2   POSITION       (closed-loop degrees)"));
+    Serial.println(F(""));
+    Serial.println(F("STEP 5 — TUNE VELOCITY PID"));
+    Serial.println(F("  Turn stream off to keep console readable."));
+    Serial.println(F("    stream off"));
+    Serial.println(F("    v <m> 90          Command 90 deg/s"));
+    Serial.println(F("    gains <m>         View current gains"));
+    Serial.println(F("  Starting point:  kp=0.5  ki=0.3  kd=0.0"));
+    Serial.println(F("  Too slow/weak:   increase kp"));
+    Serial.println(F("  Oscillating:     decrease kp, add small kd"));
+    Serial.println(F("  Steady error:    increase ki (0.05-0.1 increments)"));
+    Serial.println(F("  Use 'stream on' briefly to observe, then off again."));
+    Serial.println(F("    stop <m>          Stop when done"));
+    Serial.println(F("    save              Persist gains"));
+    Serial.println(F(""));
+    Serial.println(F("STEP 6 — TUNE POSITION PID"));
+    Serial.println(F("  The position PID outputs a velocity setpoint fed into"));
+    Serial.println(F("  the velocity loop — tune velocity first (Step 5)."));
+    Serial.println(F("    p <m> 90          Move to 90 deg"));
+    Serial.println(F("    p <m> 0           Return to zero"));
+    Serial.println(F("  Starting point:  pkp=2.0  pki=0.0  pkd=0.0"));
+    Serial.println(F("  Too slow:        increase pkp"));
+    Serial.println(F("  Overshoot:       decrease pkp or lower pv (traverse speed)"));
+    Serial.println(F("  Hunting/buzzing: reduce pkp; ensure velocity loop is stable"));
+    Serial.println(F("  Steady offset:   add small pki (0.05 increments)"));
+    Serial.println(F("    save            Persist gains"));
+    Serial.println(F(""));
+    Serial.println(F("STEP 7 — SET VELOCITY AND TRAVERSE LIMITS"));
+    Serial.println(F("    mvellim <m> <val>    Max speed cap for PID output (deg/s)"));
+    Serial.println(F("                         Start at 180.  Lower = smoother, slower."));
+    Serial.println(F("    mtravvel <m> <val>   Default speed for 'p' commands (deg/s)"));
+    Serial.println(F("                         Start at 90."));
+    Serial.println(F("    save"));
+    Serial.println(F(""));
+    Serial.println(F("STEP 8 — SET RS485 NODE ID  (AnimCom controller)"));
+    Serial.println(F("    nodeid 0x07          Must match animation controller config"));
+    Serial.println(F("    save"));
+    Serial.println(F(""));
+    Serial.println(F("Type 'help' for full command reference."));
+    Serial.println(F("============================="));
+}
+
+// ---------------------------------------------------------------------------
 // Console command processor
 // ---------------------------------------------------------------------------
 static void processCommand(const String& raw) {
@@ -839,8 +1049,17 @@ static void processCommand(const String& raw) {
     uint8_t m;
     String  rest;
 
+    // ---- Help --------------------------------------------------------
+    if (cmd.equalsIgnoreCase("help")) {
+        printHelp();
+        return;
+
+    } else if (cmd.equalsIgnoreCase("help setup")) {
+        printSetupGuide();
+        return;
+
     // ---- Data logger commands (no motor index) -----------------------
-    if (cmd.equalsIgnoreCase("freeze")) {
+    } else if (cmd.equalsIgnoreCase("freeze")) {
         for (uint8_t i = 0; i < NUM_MOTORS; i++) {
             g_mode[i] = MANUAL;
             g_velPid[i].reset();
@@ -889,6 +1108,23 @@ static void processCommand(const String& raw) {
             g_posPid[i].reset();
         }
         Serial.println("[NVM] Factory defaults applied to all motors (RAM only — type 'save' to persist)");
+        return;
+
+    } else if (cmd.equalsIgnoreCase("stream on")) {
+        g_streamEnabled = true;
+        Serial.println("[INFO] Status stream enabled");
+        return;
+
+    } else if (cmd.equalsIgnoreCase("stream off")) {
+        g_streamEnabled = false;
+        Serial.println("[INFO] Status stream disabled");
+        return;
+
+    } else if (cmd.equalsIgnoreCase("bootload")) {
+        Serial.println("[SYS] Rebooting to BOOTSEL (UF2) mode — board will appear as RPI-RP2 drive");
+        Serial.flush();
+        delay(100);
+        rp2040.rebootToBootloader();
         return;
 
     // ---- gains (optional motor index) --------------------------------
@@ -1211,11 +1447,8 @@ static void processCommand(const String& raw) {
 
     // ---- Unknown command ---------------------------------------------
     } else {
-        Serial.print("[ERR] Unknown: "); Serial.println(cmd);
-        Serial.println("[ERR] Motor cmds (need index m): v va p pv pmode plim r stop gains kp ki kd pkp pki pkd zero");
-        Serial.println("[ERR] Global cmds: freeze resume save load defaults config");
-        Serial.println("[ERR] Config cmds: nodeid [id]  mtype <m> [0|1|2]  mvellim <m> [val]  mtravvel <m> [val]");
-        Serial.println("[ERR] Servo cmds: servo <idx> <angle 0-180>");
+        Serial.print("[ERR] Unknown command: "); Serial.println(cmd);
+        Serial.println("[ERR] Type 'help' for command reference, 'help setup' for tuning guide");
     }
 }
 
@@ -1343,6 +1576,17 @@ void loop() {
                 Settings::save();
                 Serial.printf("[NVM] Config saved — nodeId=0x%02X\n", Settings::s.nodeId);
                 coastAll();
+                g_inMenu = true;
+            } else if ((CfgItem)g_cfgSel == CFG_EXIT) {
+                // Discard unsaved changes by reloading the last saved flash state,
+                // then return to the menu without touching motor output.
+                if (!Settings::load()) Settings::defaults();
+                applySettings();
+                for (uint8_t i = 0; i < NUM_MOTORS; i++) {
+                    g_velPid[i].reset();
+                    g_posPid[i].reset();
+                }
+                Serial.println("[CFG] Exit without save — settings reloaded from flash");
                 g_inMenu = true;
             } else if (g_cfgEdit) {
                 g_cfgEdit = false;   // confirm edit, return to scroll

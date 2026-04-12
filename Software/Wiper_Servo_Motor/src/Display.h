@@ -52,7 +52,8 @@ enum AppState : uint8_t {
 // ---------------------------------------------------------------------------
 
 // Number of config items in the scrollable list (matches main.cpp CFG_* enum).
-static constexpr uint8_t NUM_CFG_ITEMS = 8;
+// 9 items × 16 px + 16 px header = 160 px exactly.
+static constexpr uint8_t NUM_CFG_ITEMS = 9;
 
 struct ConfigDisplayState {
     uint8_t selectedItem;           // 0 – NUM_CFG_ITEMS-1
@@ -70,6 +71,7 @@ struct ConfigDisplayState {
 struct DisplayState {
     // Closed-loop motors — index 0 = M1, index 1 = M2
     uint8_t mode[NUM_MOTORS];          // 0=MANUAL  1=VELOCITY  2=POSITION
+    bool    encoderOffline[NUM_MOTORS]; // true when AS5600 returns 0xFFFF
     float   measVel[NUM_MOTORS];       // measured angular velocity (deg/s)
     float   measPosAbs[NUM_MOTORS];    // absolute multi-turn position (deg)
     float   targetVel[NUM_MOTORS];     // velocity setpoint (deg/s)
@@ -85,7 +87,7 @@ struct DisplayState {
     // AnimCom RS485 state (for ANIMCOM mode status bar)
     uint8_t animState;       // 0=STOP  1=MANUAL  2=RUN_AUTO
     uint8_t animPattern;     // active pattern index
-    uint8_t animSpeedScale;  // speed scale 0–100 %
+    uint8_t animShowIntensity;  // show intensity 0–200 %
 
     // MANUAL mode cursor state (for drawing selection highlight)
     uint8_t manualSel;       // 0=M0 1=M1 2=S0 3=S1 4=EXIT

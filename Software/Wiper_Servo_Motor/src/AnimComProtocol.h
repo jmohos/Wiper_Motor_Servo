@@ -40,7 +40,7 @@ extern "C" {
  * CONTROL_STATE payload (0x01) -- 3 bytes
  *   [0] state       0=STOP, 1=RUN_AUTO, 2=MANUAL
  *   [1] pattern     animation pattern number, used in RUN_AUTO
- *   [2] speed_scale 0-200 percent, used in RUN_AUTO
+ *   [2] show_intensity 0-200 percent, used in RUN_AUTO
  */
 #define ANIMCOM_STATE_STOP      0u
 #define ANIMCOM_STATE_RUN_AUTO  1u
@@ -49,7 +49,7 @@ extern "C" {
 typedef struct {
     uint8_t state;
     uint8_t pattern;
-    uint8_t speed_scale;
+    uint8_t show_intensity;
 } AnimComPayloadControlState;
 
 /*

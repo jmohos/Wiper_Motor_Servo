@@ -141,17 +141,11 @@ void AnimComSlave::_dispatchFrame()
 
     switch (_frame.msg_type) {
     case ANIMCOM_MSG_CONTROL_STATE:
-        if (_frame.payload_len < 2) {
+        if (_frame.payload_len < 3) {
             break;
         }
         if (_cb.onControlState) {
-            uint8_t pattern = 0;
-            uint8_t speedScale = _frame.payload[1];
-            if (_frame.payload_len >= 3) {
-                pattern = _frame.payload[1];
-                speedScale = _frame.payload[2];
-            }
-            _cb.onControlState(_frame.payload[0], pattern, speedScale);
+            _cb.onControlState(_frame.payload[0], _frame.payload[1], _frame.payload[2]);
         }
         break;
 

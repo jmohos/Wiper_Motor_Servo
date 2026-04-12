@@ -14,10 +14,11 @@ Read this document before starting any new implementation session.
 5. [Display UI Design](#display-ui-design)
 6. [Encoder Navigation](#encoder-navigation)
 7. [AnimCom Protocol](#animcom-protocol)
-8. [NVM Settings](#nvm-settings)
-9. [Console Commands](#console-commands)
-10. [Build and Flash](#build-and-flash)
-11. [Implementation Status and Known Gaps](#implementation-status-and-known-gaps)
+8. [Station-Specific Animation Patterns](#station-specific-animation-patterns)
+9. [NVM Settings](#nvm-settings)
+10. [Console Commands](#console-commands)
+11. [Build and Flash](#build-and-flash)
+12. [Implementation Status and Known Gaps](#implementation-status-and-known-gaps)
 
 ---
 
@@ -208,7 +209,7 @@ RS485 AnimCom slave mode. The controller listens for frames addressed to its con
 
 **Watchdog:** If no valid AnimCom frame is received within 5000 ms, all motors are coasted and servos centered. The internal state returns to `ANIMCOM_STATE_STOP`.
 
-**Default animation fallback:** When `g_animState == ANIMCOM_STATE_RUN_AUTO`, `applyAnimRunPattern()` runs a sine-wave-driven pattern across all four outputs. `speedScale` multiplies into the sine wave time argument (controls cycle rate, not amplitude). Pattern numbers:
+**Default animation fallback:** When `g_animState == ANIMCOM_STATE_RUN_AUTO`, `applyAnimRunPattern()` runs a sine-wave-driven pattern across all four outputs. `showIntensity` multiplies into the sine wave time argument (controls cycle rate, not amplitude). Pattern numbers:
 - **0, 1 (default):** Both motors VELOCITY mode, sinusoidal velocity, servos sweep in phase
 - **2:** Both motors POSITION mode, large arcs (90+/-70 deg and 180+/-120 deg), servos sweep
 - **3:** Motor 0 VELOCITY bang-bang, Motor 1 POSITION, servos sweep at different rates
@@ -295,7 +296,7 @@ y=148 - 159   Status / hint bar        12 px, mode-coloured
 | VELOCITY | Green | M1/M2 VELOCITY | `NNN.N d/s` (measured vel) | `Cmd: NNN.N d/s` (ramped cmd) | `Abs: NNN.N deg` |
 | POSITION | Cyan | M1/M2 POSITION | `NNN.N deg` (measured abs pos) | `Tgt: NNN.N E: +/-NNN.N` | `V: NNN.N d/s` |
 
-**ENCODER OFFLINE alert (design intent, not yet implemented):** In ANIMCOM and MANUAL states, if a motor's `uiType` config requires an encoder (VELOCITY or POSITION) and the AS5600 is not responding, the primary value area should display `ENCODER OFFLINE` instead of stale data.
+**ENCODER OFFLINE alert:** In ANIMCOM and MANUAL states, if a motor's `uiType` config requires an encoder (VELOCITY or POSITION) and the AS5600 is not responding, the primary value area displays `OFFLINE` (red, scale-2) and the first detail line shows `encoder offline`. The second detail line is cleared. This is driven by `g_encoderOffline[m]` set in the control loop when `AS5600::readAngle()` returns `0xFFFF`.
 
 #### Servo Row Content
 
@@ -445,12 +446,12 @@ The controller accepts frames addressed to its configured `nodeId` or to broadca
 ```
 [0] state        0=STOP, 1=RUN_AUTO, 2=MANUAL
 [1] pattern      animation pattern number (used in RUN_AUTO)
-[2] speed_scale  0-200 percent (used in RUN_AUTO)
+[2] show_intensity  0-200 percent (used in RUN_AUTO)
 ```
 
 Sets the global operational state:
 - `STOP` (0): Coast all motors, center servos to 90 deg
-- `RUN_AUTO` (1): Run built-in animation pattern; `speedScale` controls cycle rate (not amplitude)
+- `RUN_AUTO` (1): Run built-in animation pattern; `showIntensity` controls cycle rate (not amplitude)
 - `MANUAL` (2): Accept per-channel `MANUAL_SINGLE` frames
 
 #### 0x02 — TRIGGER_EFFECT (4-byte payload)
@@ -498,11 +499,11 @@ This allows the animation controller to selectively park channels by ceasing per
 
 ### RUN_AUTO — Speed Scale Behaviour
 
-`speedScale` (0-200%) multiplies into the time argument of the sine wave generator:
+`showIntensity` (0-200%) multiplies into the time argument of the sine wave generator:
 
 ```cpp
-const float speedFactor = (float)g_animSpeedScale / 100.0f;
-const float theta = ((float)nowMs * speedFactor) * (2.0f * PI / 6000.0f);
+const float intensityFactor = (float)g_animShowIntensity / 100.0f;
+const float theta = ((float)nowMs * intensityFactor) * (2.0f * PI / 6000.0f);
 ```
 
 At 100% the base cycle period is 6 seconds. At 200% the cycle period is 3 seconds. At 50% the period is 12 seconds. Amplitude of all position/velocity targets is fixed — only cycle rate scales.
@@ -512,6 +513,88 @@ At 100% the base cycle period is 6 seconds. At 200% the cycle period is 3 second
 CRC-16/CCITT: polynomial 0x1021, initial value 0xFFFF, no input/output reflection, no final XOR.
 Coverage: bytes 2 through end of payload (station_id through last payload byte).
 Transmitted big-endian (high byte first) in the final two bytes of the frame.
+
+---
+
+## Station-Specific Animation Patterns
+
+Each physical installation of the Quad Motor Controller has a unique role in
+the animated show, identified by its RS485 station ID.  When the animation
+controller sends a `CONTROL_STATE RUN_AUTO` command, the firmware dispatches
+to a station-specific pattern function (in `src/StationAnim.cpp`) instead of
+the generic sine-wave patterns.
+
+**Design rules:**
+
+- Station-specific patterns take priority over generic patterns (0–3) whenever
+  the configured `nodeId` has a registered handler in `stationAnim_hasHandler()`.
+- On power-up with no animation controller connected, stations with a registered
+  handler automatically enter `ANIMCOM_STATE_RUN_AUTO` at a built-in default
+  speed scale so the prop animates immediately without any RS485 traffic.
+- After an AnimCom watchdog timeout (5 s with no RS485 frames), stations with a
+  registered handler restore their default `RUN_AUTO` state rather than coasting
+  to `STOP`, keeping the prop active during a cable or controller outage.
+- The `showIntensity` field in `CONTROL_STATE` frames is interpreted as an
+  **intensity / position scalar** (0–200%) by station handlers rather than as a
+  time multiplier.  Each station defines its own mapping.
+- Uncontrolled motors and servos are left in their current state — handlers only
+  write the output arrays for channels they explicitly own.
+
+### Station Registry
+
+| Station ID | Name      | Motor 0 Use                   | Motor 1 Use | Servo Use |
+|------------|-----------|-------------------------------|-------------|-----------|
+| 7          | Meter     | Needle position (0–180 deg)   | Unused      | Unused    |
+
+### Station 7 — Meter
+
+**Hardware:** Motor 0 drives the needle of a large analog gauge through a
+positional range of 0–180 degrees.  Motor 0 must be configured for POSITION
+mode with travel limits matching the physical gauge:
+
+```
+mtype 0 2         ; Motor 0 → POSITION mode
+plim 0 0 180      ; Travel limits 0-180 deg
+zero 0            ; Set mechanical zero (needle pointing to 0 on the gauge face)
+nodeid 7          ; Set RS485 station ID
+save              ; Persist to flash
+```
+
+**`showIntensity` interpretation:**
+
+| showIntensity (%) | Needle position |
+|----------------|-----------------|
+| 0              | 0 deg           |
+| 50 (default)   | 90 deg          |
+| 100            | 180 deg         |
+| > 100          | > 180 deg (clamped by `posMax`) |
+
+**Live oscillation:** A sinusoidal wobble of ±5 deg at a 2-second period is
+superimposed on the setpoint to simulate a live measurement reading with
+visible noise.  The final commanded position is clamped to
+`[posMin[0], posMax[0]]` from NVM so the needle never over-travels.
+
+```
+Final target = constrain(showIntensity × 1.8 + 5·sin(2π·t / 2 s), posMin, posMax)
+```
+
+**Standalone default:** With no animation controller present the needle rests
+at 90 deg (50% full scale) with oscillation active.
+
+**Implementation:** `src/StationAnim.cpp` — `updateMeter()`, dispatched via
+`stationAnim_update()` from `applyAnimRunPattern()` in `src/main.cpp` at 50 Hz.
+
+### How to Add a New Station
+
+1. Add a `case` to `stationAnim_hasHandler()` in `src/StationAnim.cpp` returning
+   `true` for the new station ID.
+2. Return the appropriate default `showIntensity` from
+   `stationAnim_defaultSpeedScale()`.
+3. Write a static handler function (e.g. `updateMyStation()`) that fills in
+   `outMode[]`, `outTargetPos[]`, `outTargetVel[]`, and/or `outServoTarget[]`
+   only for the channels it controls.  Leave all other array elements unchanged.
+4. Dispatch the new handler inside `stationAnim_update()`.
+5. Document the station in the registry table above and update this section.
 
 ---
 
@@ -744,6 +827,10 @@ This section is the handoff document for future implementation sessions. It capt
 - Endstop monitor hardware configuration (EndstopMonitor::begin())
 - Full-quadrature-cycle encoder debounce (0x87 CW / 0x4B CCW patterns)
 - 50 ms button dead-time debounce
+- Station-specific animation dispatch (`src/StationAnim.h/cpp`) keyed on NVM nodeId
+- Station 7 (Meter): needle position from showIntensity (0%=0°, 100%=180°) + ±5° / 2 s oscillation
+- Station 7 power-on default: 90° (50%) with oscillation active, no controller required
+- Station 7 watchdog recovery: resumes default 90° animation rather than coasting to STOP
 
 ### Not Yet Implemented — Design Intent Documented Above
 
@@ -767,13 +854,13 @@ And clear the `g_lastManualCmdMs[]` timestamps on startup just as is done when e
 
 The current implementation uses successive button presses to cycle M0 -> M1 -> EXIT. The design intent is a 5-item cursor (Motor 1, Motor 2, Servo 1, Servo 2, EXIT) scrolled by the encoder. Servo channels are not yet selectable or adjustable via the encoder in MANUAL mode. The full ADJUST mode with per-channel enter/exit is partially implemented for motors only.
 
-**3. ENCODER OFFLINE alert in motor sections.**
+**3. ~~ENCODER OFFLINE alert in motor sections.~~ — Implemented.**
 
-When a motor's `uiType` requires an encoder (VELOCITY or POSITION) and `AS5600::readAngle()` returns 0xFFFF (not found), the primary value line in that motor's display section should show `ENCODER OFFLINE` instead of stale position/velocity data.
+When a motor's `uiType` requires an encoder (VELOCITY or POSITION) and `AS5600::readAngle()` returns `0xFFFF`, `g_encoderOffline[m]` is set in the Core 0 control loop. `_drawMotorSection()` checks `encFault = encoderOffline[m] && mode[m] != 0` and replaces the primary value with `OFFLINE` (red, scale-2) and detail line 1 with `encoder offline` (red, scale-1).
 
-**4. CONFIG screen dedicated EXIT item.**
+**4. ~~CONFIG screen dedicated EXIT item.~~ — Implemented.**
 
-The CONFIG screen currently has 8 items (0-7), with item 7 being `>>> SAVE` (saves and exits to menu). A dedicated EXIT item that returns to the menu without saving is not present. The design intent is a 9th item (index 8) `>>> EXIT` after SAVE, which requires adjusting the layout: 16 + 9 x 18 = 178 px exceeds the screen, so either the row height must decrease (e.g. to 16 px: 16 + 9 x 16 = 160) or SAVE and EXIT must share a combined row.
+CONFIG screen now has 9 items (0-8): items 0-6 are editable settings, item 7 is `>>> SAVE` (saves and exits), item 8 is `>>> EXIT` (reloads settings from flash, resets PIDs, returns to menu without saving). Row height was reduced from 18 px to 16 px to fit: `16 + 9 × 16 = 160 px` exactly.
 
 **5. DISABLED state cursor design.**
 

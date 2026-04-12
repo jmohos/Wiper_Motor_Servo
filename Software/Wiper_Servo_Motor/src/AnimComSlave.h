@@ -8,7 +8,7 @@
 #include "AnimComProtocol.h"
 
 struct AnimComCallbacks {
-    void (*onControlState)(uint8_t state, uint8_t pattern, uint8_t speed_scale);
+    void (*onControlState)(uint8_t state, uint8_t pattern, uint8_t show_intensity);
     void (*onManualSingle)(uint8_t ch, uint8_t cmd_type, int32_t value);
     void (*onTriggerEffect)(uint8_t effect_type, uint8_t effect_id, uint16_t effect_param);
     void (*onWatchdog)();
