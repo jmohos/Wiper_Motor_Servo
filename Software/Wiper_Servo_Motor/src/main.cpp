@@ -178,11 +178,13 @@ static void applyAnimRunPattern(uint32_t nowMs)
         float   outServoTarget[NUM_SERVOS];
 
         for (uint8_t m = 0; m < NUM_MOTORS; m++) {
-            posMin[m]      = Settings::s.motor[m].posMin;
-            posMax[m]      = Settings::s.motor[m].posMax;
+            posMin[m]       = Settings::s.motor[m].posMin;
+            posMax[m]       = Settings::s.motor[m].posMax;
             outMode[m]      = (uint8_t)g_mode[m];
             outTargetPos[m] = g_targetPos[m];
-            outTargetVel[m] = g_targetVel[m];
+            // In POSITION mode outTargetVel carries traverse velocity;
+            // in VELOCITY/MANUAL mode it carries the velocity setpoint.
+            outTargetVel[m] = (g_mode[m] == POSITION) ? g_traverseVel[m] : g_targetVel[m];
         }
         for (uint8_t s = 0; s < NUM_SERVOS; s++) outServoTarget[s] = g_servoTarget[s];
 
@@ -193,7 +195,14 @@ static void applyAnimRunPattern(uint32_t nowMs)
         for (uint8_t m = 0; m < NUM_MOTORS; m++) {
             g_mode[m]      = (ControlMode)outMode[m];
             g_targetPos[m] = outTargetPos[m];
-            g_targetVel[m] = outTargetVel[m];
+            // Apply outTargetVel back to the correct variable for the output mode.
+            // A zero value means the handler left it unchanged — skip the write.
+            if (outTargetVel[m] > 0.0f) {
+                if ((ControlMode)outMode[m] == POSITION)
+                    g_traverseVel[m] = outTargetVel[m];
+                else
+                    g_targetVel[m] = outTargetVel[m];
+            }
         }
         for (uint8_t s = 0; s < NUM_SERVOS; s++) g_servoTarget[s] = outServoTarget[s];
         return;

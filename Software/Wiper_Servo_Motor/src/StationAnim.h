@@ -13,6 +13,7 @@
 //  servo targets.
 //
 //  Station registry (mirrors Animation Controller endpoint table):
+//    Station 6  — Robot: head (M0) + arms (M1) + servos dance ±45 deg in sync
 //    Station 7  — Meter: large analog gauge, 0-180 deg needle deflection
 //
 //  How to add a new station:
